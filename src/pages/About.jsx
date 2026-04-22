@@ -121,7 +121,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/c122df903_generated_3274acb5.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/2ea50fc7d_louisxray.png"
                 alt="Dr. Louis P. Bosse"
                 className="rounded-3xl shadow-xl w-full max-w-md mx-auto"
               />
