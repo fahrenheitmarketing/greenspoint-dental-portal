@@ -62,13 +62,13 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {navLinks.map(link => (
               <div key={link.path} className="relative group">
                 {link.submenu ? (
                   <>
                     <button
-                      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 ${
+                      className={`px-2.5 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${
                         location.pathname === link.path
                           ? 'text-primary bg-primary/5'
                           : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
@@ -92,7 +92,7 @@ export default function Navbar() {
                 ) : (
                   <Link
                     to={link.path}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    className={`px-2.5 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
                       location.pathname === link.path
                         ? 'text-primary bg-primary/5'
                         : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
