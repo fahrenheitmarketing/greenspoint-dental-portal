@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Heart, Globe, DollarSign, Shield, Smile } from 'lucide-react';
+import { CheckCircle, Heart, Globe, DollarSign, Shield, Smile, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const steps = [
@@ -61,7 +61,7 @@ export default function NewPatients() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/b6531bbe2_generated_66afc14d.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/f9e3b8c1a_generated_image.png"
                 alt="Happy family with healthy smiles"
                 className="rounded-3xl shadow-xl w-full"
               />
@@ -149,6 +149,49 @@ export default function NewPatients() {
                   <p className="text-sm text-muted-foreground">{item.text}</p>
                 </div>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* New Patient Forms */}
+      <section className="py-20 bg-muted/50">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Before Your Visit</p>
+            <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
+              New Patient Forms
+            </h2>
+            <p className="text-muted-foreground">
+              Please download and complete these forms before your first appointment. You can bring them with you or fill them out when you arrive.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { name: 'Patient Information', url: 'https://greenspointdental.com/app/uploads/2024/04/patient-information.pdf' },
+              { name: 'Medical History Form', url: 'https://greenspointdental.com/app/uploads/2024/04/medical-history-form.pdf' },
+              { name: 'Informed Consent for Treatment', url: 'https://greenspointdental.com/app/uploads/2024/04/INFORMED-CONSENT-FOR-TREATMENT.pdf' },
+              { name: 'Acknowledgement of Receipt', url: 'https://greenspointdental.com/app/uploads/2024/04/acknowledgement-of-receipt.pdf' },
+              { name: 'Privacy Policy', url: 'https://greenspointdental.com/app/uploads/2024/04/privacy.pdf' },
+            ].map((form, i) => (
+              <motion.a
+                key={form.name}
+                href={form.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="p-6 rounded-2xl bg-card border border-border hover:shadow-lg hover:border-primary/20 transition-all flex items-center gap-4 group"
+              >
+                <Download className="w-6 h-6 text-primary shrink-0 group-hover:scale-110 transition-transform" />
+                <div className="text-left">
+                  <p className="font-medium text-foreground">{form.name}</p>
+                  <p className="text-xs text-muted-foreground">PDF Download</p>
+                </div>
+              </motion.a>
             ))}
           </div>
         </div>
