@@ -26,8 +26,8 @@ export default function Footer() {
       </div>
 
       {/* Brand Section */}
-      <div className="bg-background border-b-4 border-foreground">
-        <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="bg-background border-b-4 border-foreground py-12">
+        <div className="max-w-7xl mx-auto px-4">
           <img src={LOGO_URL} alt="Greenspoint Dental" className="h-16 w-auto mb-4" />
           <p className="text-foreground/70 text-sm leading-relaxed mb-4 max-w-2xl">
             Serving the Greenspoint community with compassionate, affordable dental care since 1997. Our bilingual team is here to help you smile with confidence.
@@ -40,8 +40,9 @@ export default function Footer() {
       </div>
 
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="bg-foreground text-background py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
         {/* Quick Links */}
         <div>
@@ -113,11 +114,12 @@ export default function Footer() {
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-background/10">
+      <div className="bg-foreground border-t border-background/10">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-background/40">
           <p>© {new Date().getFullYear()} Greenspoint Dental. All rights reserved.</p>
           <p>Cosmetic | Family | Orthodontics</p>
