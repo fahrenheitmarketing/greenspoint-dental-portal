@@ -80,7 +80,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/feca373aa_generated_image.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/11693f3a5_generated_image.png"
                 alt="Greenspoint Dental team"
                 className="rounded-3xl shadow-xl w-full"
               />
