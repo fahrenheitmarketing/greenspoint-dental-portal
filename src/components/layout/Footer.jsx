@@ -8,8 +8,9 @@ export default function Footer() {
   return (
     <footer className="bg-foreground text-background">
       {/* CTA Banner */}
-      <div className="bg-primary">
-        <div className="max-w-7xl mx-auto px-4 py-12 text-center">
+      <div className="bg-primary relative overflow-hidden" style={{backgroundImage: 'url(https://media.base44.com/images/public/69e928fd4b865057d3a65de3/62b789d9a_1667.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <div className="absolute inset-0 bg-primary/85"></div>
+        <div className="max-w-7xl mx-auto px-4 py-12 text-center relative z-10">
           <h2 className="font-heading text-3xl md:text-4xl text-primary-foreground mb-3">
             Your Smile Deserves Compassionate Care
           </h2>
