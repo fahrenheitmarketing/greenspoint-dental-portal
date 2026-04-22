@@ -42,7 +42,7 @@ const faqs = [
 export default function CosmeticDentistry() {
   return (
     <div>
-      <section className="bg-gradient-to-br from-secondary/5 via-background to-primary/5 py-12 md:py-16">
+      <section className="bg-gradient-to-br from-secondary/5 via-background to-primary/5 py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
@@ -58,11 +58,12 @@ export default function CosmeticDentistry() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
+              className="flex items-end justify-center -mb-0.5"
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/674289435_generated_image.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/882f9e20f_generated_image.png"
                 alt="Woman with beautiful smile"
-                className="w-full max-w-md mx-auto"
+                className="w-full max-w-md"
               />
             </motion.div>
           </div>
