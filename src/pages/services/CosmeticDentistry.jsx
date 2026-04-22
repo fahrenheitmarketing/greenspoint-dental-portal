@@ -60,7 +60,7 @@ export default function CosmeticDentistry() {
               viewport={{ once: true }}
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/199ae8acd_generated_image.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/c58efc7da_generated_image.png"
                 alt="Woman with beautiful smile"
                 className="w-full max-w-md mx-auto"
               />
