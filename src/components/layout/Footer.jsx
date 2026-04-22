@@ -25,23 +25,26 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Brand Section */}
+      <div className="bg-background border-b-4 border-foreground">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <img src={LOGO_URL} alt="Greenspoint Dental" className="h-16 w-auto mb-4" />
+          <p className="text-foreground/70 text-sm leading-relaxed mb-4 max-w-2xl">
+            Serving the Greenspoint community with compassionate, affordable dental care since 1997. Our bilingual team is here to help you smile with confidence.
+          </p>
+          <div className="flex items-center gap-2 text-primary text-sm font-medium">
+            <Heart className="w-4 h-4" />
+            <span>A Judgment-Free Practice</span>
+          </div>
+        </div>
+      </div>
+
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div>
-            <img src={LOGO_URL} alt="Greenspoint Dental" className="h-12 w-auto mb-4 brightness-0 invert" />
-            <p className="text-background/60 text-sm leading-relaxed mb-4">
-              Serving the Greenspoint community with compassionate, affordable dental care since 1997. Our bilingual team is here to help you smile with confidence.
-            </p>
-            <div className="flex items-center gap-2 text-secondary text-sm font-medium">
-              <Heart className="w-4 h-4" />
-              <span>A Judgment-Free Practice</span>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-          {/* Quick Links */}
-          <div>
+        {/* Quick Links */}
+        <div>
             <h3 className="font-heading text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2.5">
               {[
@@ -61,8 +64,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
+        {/* Services */}
+        <div>
             <h3 className="font-heading text-lg mb-4">Services</h3>
             <ul className="space-y-2.5">
               {[
@@ -81,8 +84,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
+        {/* Contact */}
+        <div>
             <h3 className="font-heading text-lg mb-4">Visit Us</h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
