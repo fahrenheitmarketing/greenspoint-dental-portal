@@ -1,0 +1,58 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog post title"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short summary for previews"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full blog post content in markdown"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "affordable-dentistry",
+        "dental-health",
+        "smile-confidence",
+        "family-dental",
+        "insurance-financing",
+        "community"
+      ],
+      "description": "Blog category"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Featured image URL"
+    },
+    "published": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the post is published"
+    },
+    "author": {
+      "type": "string",
+      "default": "Greenspoint Dental Team",
+      "description": "Post author"
+    },
+    "read_time": {
+      "type": "number",
+      "description": "Estimated read time in minutes"
+    }
+  },
+  "required": [
+    "title",
+    "slug",
+    "content",
+    "category"
+  ]
+}
