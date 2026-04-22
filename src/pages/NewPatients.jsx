@@ -61,7 +61,7 @@ export default function NewPatients() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/f9e3b8c1a_generated_image.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/7784eee82_generated_image.png"
                 alt="Happy family with healthy smiles"
                 className="rounded-3xl shadow-xl w-full"
               />
