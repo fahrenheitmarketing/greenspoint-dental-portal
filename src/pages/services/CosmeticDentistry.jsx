@@ -44,14 +44,27 @@ export default function CosmeticDentistry() {
     <div>
       <section className="bg-gradient-to-br from-secondary/5 via-background to-primary/5 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="max-w-3xl">
-            <Link to="/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← All Services</Link>
-            <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Cosmetic Dentistry</h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Your smile is one of the most powerful things about you. It opens doors, builds connections, and boosts 
-              confidence. If you're not happy with your smile, we can help change that — and it may be more affordable 
-              than you think.
-            </p>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <Link to="/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← All Services</Link>
+              <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Cosmetic Dentistry</h1>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Your smile is one of the most powerful things about you. It opens doors, builds connections, and boosts 
+                confidence. If you're not happy with your smile, we can help change that — and it may be more affordable 
+                than you think.
+              </p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <img
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/199ae8acd_generated_image.png"
+                alt="Woman with beautiful smile"
+                className="w-full max-w-md mx-auto"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
