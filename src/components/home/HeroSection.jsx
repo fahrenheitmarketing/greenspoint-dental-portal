@@ -43,10 +43,12 @@ export default function HeroSection() {
                   Schedule Your Visit
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" disabled className="rounded-full px-8 text-base font-semibold border-primary/30 text-primary cursor-not-allowed opacity-60">
-                <Phone className="w-4 h-4 mr-2" />
-                (281) 823-9987
-              </Button>
+              <span>
+                <Button size="lg" variant="outline" className="rounded-full px-8 text-base font-semibold border-primary/30 text-primary pointer-events-none">
+                  <Phone className="w-4 h-4 mr-2" />
+                  (281) 823-9987
+                </Button>
+              </span>
             </div>
 
             {/* Trust indicators */}
