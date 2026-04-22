@@ -16,7 +16,6 @@ export default function Navbar() {
   const t = useTranslation();
 
   const navLinks = [
-    { label: t('navbar.home'), path: '/' },
     { label: t('navbar.about'), path: '/about' },
     { 
       label: t('navbar.services'), 
@@ -57,7 +56,7 @@ export default function Navbar() {
       {/* Main navbar */}
       <nav className="bg-background/95 backdrop-blur-md border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center gap-3 shrink-0">
+          <Link to="/" className="flex items-center gap-3 shrink-0 hover:opacity-80 transition-opacity">
             <img src={LOGO_URL} alt="Greenspoint Dental" className="h-28 w-auto" />
           </Link>
 
