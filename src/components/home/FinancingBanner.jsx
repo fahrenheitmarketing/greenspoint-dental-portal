@@ -23,7 +23,7 @@ export default function FinancingBanner() {
           viewport={{ once: true }}
           className="relative bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-10 md:p-16 text-primary-foreground overflow-hidden"
         >
-          <svg className="absolute inset-0 w-full h-full opacity-80 pointer-events-none rounded-3xl" preserveAspectRatio="xMidYMid slice">
+          <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none rounded-3xl" preserveAspectRatio="xMidYMid slice">
             <defs>
               <pattern id="floral-pattern-financing" patternUnits="userSpaceOnUse" width="200" height="200">
                 <circle cx="100" cy="100" r="8" fill="white" opacity="0.6" />
