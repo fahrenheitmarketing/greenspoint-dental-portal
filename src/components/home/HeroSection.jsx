@@ -77,8 +77,8 @@ export default function HeroSection() {
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/404e22d40_generated_6b1035f8.png"
-                alt="Welcoming dental office with diverse patients"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/9263aec0b_image.png"
+                alt="Greenspoint Dental office building"
                 className="w-full h-auto object-cover"
               />
             </div>
