@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
 
@@ -29,6 +30,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const location = useLocation();
+  const { language, changeLanguage } = useLanguage();
 
   return (
     <>
@@ -102,6 +104,28 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
+            <div className="flex gap-1 bg-muted rounded-full p-1">
+              <button
+                onClick={() => changeLanguage('en')}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  language === 'en' 
+                    ? 'bg-background text-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => changeLanguage('es')}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  language === 'es' 
+                    ? 'bg-background text-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                ES
+              </button>
+            </div>
             <Link to="/contact">
               <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold rounded-full px-6">
                 Book Appointment
@@ -185,6 +209,28 @@ export default function Navbar() {
                     )}
                   </div>
                 ))}
+                <div className="flex gap-2 mt-4 px-4">
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    className={`flex-1 py-2 rounded-full text-sm font-medium transition-colors ${
+                      language === 'en' 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-muted text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('es')}
+                    className={`flex-1 py-2 rounded-full text-sm font-medium transition-colors ${
+                      language === 'es' 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-muted text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    ES
+                  </button>
+                </div>
                 <Link to="/contact" onClick={() => setOpen(false)}>
                   <Button className="w-full mt-3 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold rounded-full">
                     Book Appointment
