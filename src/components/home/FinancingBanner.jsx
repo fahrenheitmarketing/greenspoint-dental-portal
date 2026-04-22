@@ -21,9 +21,31 @@ export default function FinancingBanner() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-10 md:p-16 text-primary-foreground"
+          className="relative bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-10 md:p-16 text-primary-foreground overflow-hidden"
         >
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
+          <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none rounded-3xl" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id="floral-pattern-financing" patternUnits="userSpaceOnUse" width="200" height="200">
+                <circle cx="100" cy="100" r="8" fill="white" opacity="0.6" />
+                <circle cx="80" cy="90" r="5" fill="white" opacity="0.5" />
+                <circle cx="120" cy="90" r="5" fill="white" opacity="0.5" />
+                <circle cx="75" cy="110" r="4" fill="white" opacity="0.55" />
+                <circle cx="125" cy="110" r="4" fill="white" opacity="0.55" />
+                <circle cx="100" cy="130" r="5" fill="white" opacity="0.5" />
+                <path d="M 100 80 Q 90 95 100 110 Q 110 95 100 80" fill="white" opacity="0.45" />
+                <path d="M 120 100 Q 135 90 120 80 Q 110 90 120 100" fill="white" opacity="0.45" />
+                <path d="M 80 100 Q 65 90 80 80 Q 90 90 80 100" fill="white" opacity="0.45" />
+                <path d="M 100 120 Q 90 105 80 120 Q 90 130 100 120" fill="white" opacity="0.45" />
+                <path d="M 100 120 Q 110 105 120 120 Q 110 130 100 120" fill="white" opacity="0.45" />
+                <path d="M 50 50 Q 60 45 70 50 Q 65 55 50 50" stroke="white" opacity="0.4" strokeWidth="1" fill="none" />
+                <path d="M 150 150 Q 160 145 170 150 Q 165 155 150 150" stroke="white" opacity="0.4" strokeWidth="1" fill="none" />
+                <circle cx="40" cy="160" r="3" fill="white" opacity="0.45" />
+                <circle cx="160" cy="40" r="3" fill="white" opacity="0.45" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#floral-pattern-financing)" />
+          </svg>
+          <div className="grid lg:grid-cols-2 gap-10 items-center relative z-10">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <CreditCard className="w-5 h-5" />
