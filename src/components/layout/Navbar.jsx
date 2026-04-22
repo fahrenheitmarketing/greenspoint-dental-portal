@@ -4,33 +4,35 @@ import { Menu, X, Phone, Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/lib/LanguageContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
-
-const navLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'About Us', path: '/about' },
-  { 
-    label: 'Services', 
-    path: '/services',
-    submenu: [
-      { label: 'General Dentistry', path: '/services/general' },
-      { label: 'Cosmetic Dentistry', path: '/services/cosmetic' },
-      { label: 'Restorative Dentistry', path: '/services/restorative' },
-      { label: 'Orthodontics', path: '/services/orthodontics' },
-    ]
-  },
-  { label: 'Financing', path: '/financing' },
-  { label: 'Blog', path: '/blog' },
-  { label: 'New Patients', path: '/new-patients' },
-  { label: 'Contact', path: '/contact' },
-];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const location = useLocation();
   const { language, changeLanguage } = useLanguage();
+  const t = useTranslation();
+
+  const navLinks = [
+    { label: t('navbar.home'), path: '/' },
+    { label: t('navbar.about'), path: '/about' },
+    { 
+      label: t('navbar.services'), 
+      path: '/services',
+      submenu: [
+        { label: t('navbar.generalDentistry'), path: '/services/general' },
+        { label: t('navbar.cosmeticDentistry'), path: '/services/cosmetic' },
+        { label: t('navbar.restorativeDentistry'), path: '/services/restorative' },
+        { label: t('navbar.orthodontics'), path: '/services/orthodontics' },
+      ]
+    },
+    { label: t('navbar.financing'), path: '/financing' },
+    { label: t('navbar.blog'), path: '/blog' },
+    { label: t('navbar.newPatients'), path: '/new-patients' },
+    { label: t('navbar.contact'), path: '/contact' },
+  ];
 
   return (
     <>
@@ -40,14 +42,14 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <a href="tel:2818239987" className="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
               <Phone className="w-3.5 h-3.5" />
-              <span>(281) 823-9987</span>
+              <span>{t('navbar.phone')}</span>
             </a>
             <span className="hidden sm:inline text-primary-foreground/60">|</span>
-            <span className="hidden sm:inline">12523 Greenspoint Dr, Houston, TX 77060</span>
+            <span className="hidden sm:inline">{t('navbar.address')}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Globe className="w-3.5 h-3.5" />
-            <span>English & Español</span>
+            <span>{t('navbar.language')}</span>
           </div>
         </div>
       </div>
@@ -128,7 +130,7 @@ export default function Navbar() {
             </div>
             <Link to="/contact">
               <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold rounded-full px-6">
-                Book Appointment
+                {t('navbar.bookAppointment')}
               </Button>
             </Link>
           </div>
@@ -233,7 +235,7 @@ export default function Navbar() {
                 </div>
                 <Link to="/contact" onClick={() => setOpen(false)}>
                   <Button className="w-full mt-3 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold rounded-full">
-                    Book Appointment
+                    {t('navbar.bookAppointment')}
                   </Button>
                 </Link>
               </div>
