@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Globe } from 'lucide-react';
+import { Menu, X, Phone, Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,7 +9,16 @@ const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about' },
-  { label: 'Services', path: '/services' },
+  { 
+    label: 'Services', 
+    path: '/services',
+    submenu: [
+      { label: 'General Dentistry', path: '/services/general' },
+      { label: 'Cosmetic Dentistry', path: '/services/cosmetic' },
+      { label: 'Restorative Dentistry', path: '/services/restorative' },
+      { label: 'Orthodontics', path: '/services/orthodontics' },
+    ]
+  },
   { label: 'Financing', path: '/financing' },
   { label: 'Blog', path: '/blog' },
   { label: 'New Patients', path: '/new-patients' },
@@ -18,6 +27,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -50,17 +60,44 @@ export default function Navbar() {
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-1">
             {navLinks.map(link => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === link.path
-                    ? 'text-primary bg-primary/5'
-                    : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
-                }`}
-              >
-                {link.label}
-              </Link>
+              <div key={link.path} className="relative group">
+                {link.submenu ? (
+                  <>
+                    <button
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 ${
+                        location.pathname === link.path
+                          ? 'text-primary bg-primary/5'
+                          : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
+                      }`}
+                    >
+                      {link.label}
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                    <div className="absolute left-0 mt-0 w-48 bg-card rounded-lg shadow-lg border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2 z-50">
+                      {link.submenu.map(subitem => (
+                        <Link
+                          key={subitem.path}
+                          to={subitem.path}
+                          className="block px-4 py-2 text-sm text-foreground/70 hover:text-primary hover:bg-primary/5 transition-colors"
+                        >
+                          {subitem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    to={link.path}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      location.pathname === link.path
+                        ? 'text-primary bg-primary/5'
+                        : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
 
@@ -92,18 +129,61 @@ export default function Navbar() {
             >
               <div className="px-4 py-4 space-y-1">
                 {navLinks.map(link => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setOpen(false)}
-                    className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                      location.pathname === link.path
-                        ? 'text-primary bg-primary/5'
-                        : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
+                  <div key={link.path}>
+                    {link.submenu ? (
+                      <>
+                        <button
+                          onClick={() => setServicesOpen(!servicesOpen)}
+                          className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors flex items-center justify-between ${
+                            location.pathname === link.path
+                              ? 'text-primary bg-primary/5'
+                              : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
+                          }`}
+                        >
+                          {link.label}
+                          <ChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence>
+                          {servicesOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="bg-muted/30 rounded-lg mt-1 space-y-1 py-2">
+                                {link.submenu.map(subitem => (
+                                  <Link
+                                    key={subitem.path}
+                                    to={subitem.path}
+                                    onClick={() => {
+                                      setOpen(false);
+                                      setServicesOpen(false);
+                                    }}
+                                    className="block px-6 py-2 text-sm text-foreground/70 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                                  >
+                                    {subitem.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    ) : (
+                      <Link
+                        to={link.path}
+                        onClick={() => setOpen(false)}
+                        className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                          location.pathname === link.path
+                            ? 'text-primary bg-primary/5'
+                            : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </div>
                 ))}
                 <Link to="/contact" onClick={() => setOpen(false)}>
                   <Button className="w-full mt-3 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold rounded-full">
