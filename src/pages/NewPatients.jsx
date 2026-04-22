@@ -32,7 +32,7 @@ export default function NewPatients() {
     <div>
       {/* Header */}
       <section className="relative bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24 overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" preserveAspectRatio="xMidYMid slice">
+        <svg className="absolute inset-0 w-full h-full opacity-80 pointer-events-none" preserveAspectRatio="xMidYMid slice">
           <defs>
             <pattern id="floral-pattern" patternUnits="userSpaceOnUse" width="200" height="200">
               {/* Intricate floral design */}
