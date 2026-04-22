@@ -38,7 +38,7 @@ export default function FinancingBanner() {
                 Your health is too important to put on hold.
               </p>
               <Link to="/financing">
-                <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-8 font-semibold">
+                <Button size="lg" className="bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full px-8 font-semibold transition-all duration-200">
                   View All Financing Options
                 </Button>
               </Link>
