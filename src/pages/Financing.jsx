@@ -21,11 +21,7 @@ const paymentOptions = [
     description: 'Small, low-interest loans for dental work. Their simple online process makes it quick and painless to get approved, so you can focus on your health instead of your wallet.',
     features: ['Low-interest loans', 'Simple online process', 'Fast approval', 'Flexible repayment terms'],
   },
-  {
-    title: 'In-House Payment Plans',
-    description: "For patients who need major work like full mouth rehabilitation, implants, or orthodontics, we'll create a customized payment schedule that works with your budget. Just ask us.",
-    features: ['Custom payment schedules', 'No third-party approval needed', 'Flexible terms', 'For larger treatments'],
-  },
+
 ];
 
 const insurancePlans = [
@@ -42,7 +38,7 @@ const faqs = [
   },
   {
     question: "Can I get a payment plan for braces or implants?",
-    answer: "Absolutely. We understand that orthodontics and implants are bigger investments. We offer CareCredit, HELPcard, LendingUSA, and our own in-house payment plans to break the cost into manageable monthly payments. We'll work with you to find a plan that fits your budget."
+    answer: "Absolutely. We understand that orthodontics and implants are bigger investments. We offer CareCredit, HELPcard, and LendingUSA to break the cost into manageable monthly payments. We'll work with you to find a plan that fits your budget."
   },
   {
     question: "How do I know if my insurance covers a procedure?",
