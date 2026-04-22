@@ -9,21 +9,21 @@ export default function Footer() {
     <footer className="bg-foreground text-background">
       {/* CTA Banner */}
       <div className="bg-primary relative overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full opacity-50 pointer-events-none" preserveAspectRatio="xMidYMid slice" viewBox="0 0 200 200">
+        <svg className="absolute inset-0 w-full h-full opacity-50 pointer-events-none" preserveAspectRatio="xMidYMid slice">
           <defs>
             <pattern id="floral-pattern-footer" patternUnits="userSpaceOnUse" width="200" height="200">
-              <circle cx="100" cy="100" r="12" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5"/>
-              <circle cx="100" cy="100" r="6" fill="rgba(255,255,255,0.6)"/>
-              <path d="M100 70 Q90 85 100 100 Q110 85 100 70" fill="rgba(255,255,255,0.5)"/>
-              <path d="M100 130 Q90 115 100 100 Q110 115 100 130" fill="rgba(255,255,255,0.5)"/>
-              <path d="M70 100 Q85 90 100 100 Q85 110 70 100" fill="rgba(255,255,255,0.5)"/>
-              <path d="M130 100 Q115 90 100 100 Q115 110 130 100" fill="rgba(255,255,255,0.5)"/>
-              <circle cx="80" cy="80" r="4" fill="rgba(255,255,255,0.6)"/>
-              <circle cx="120" cy="80" r="4" fill="rgba(255,255,255,0.6)"/>
-              <circle cx="80" cy="120" r="4" fill="rgba(255,255,255,0.6)"/>
-              <circle cx="120" cy="120" r="4" fill="rgba(255,255,255,0.6)"/>
-              <path d="M40 40 Q45 35 50 40 Q45 45 40 40" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/>
-              <path d="M160 160 Q165 155 170 160 Q165 165 160 160" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/>
+              <path d="M50,100 Q40,90 45,75 Q50,85 50,100" fill="none" stroke="#ffffff" strokeWidth="1.5" opacity="0.6"/>
+              <path d="M150,100 Q160,90 155,75 Q150,85 150,100" fill="none" stroke="#ffffff" strokeWidth="1.5" opacity="0.6"/>
+              <circle cx="100" cy="100" r="15" fill="none" stroke="#ffffff" strokeWidth="1.5" opacity="0.5"/>
+              <circle cx="100" cy="100" r="8" fill="#ffffff" opacity="0.4"/>
+              <path d="M100,60 Q95,70 100,80 Q105,70 100,60" fill="#ffffff" opacity="0.5"/>
+              <path d="M100,120 Q95,110 100,100 Q105,110 100,120" fill="#ffffff" opacity="0.5"/>
+              <path d="M60,100 Q70,95 80,100 Q70,105 60,100" fill="#ffffff" opacity="0.5"/>
+              <path d="M140,100 Q130,95 120,100 Q130,105 140,100" fill="#ffffff" opacity="0.5"/>
+              <circle cx="50" cy="50" r="3" fill="#ffffff" opacity="0.4"/>
+              <circle cx="150" cy="150" r="3" fill="#ffffff" opacity="0.4"/>
+              <path d="M30,30 Q35,25 40,30 Q35,35 30,30" fill="none" stroke="#ffffff" strokeWidth="1" opacity="0.4"/>
+              <path d="M170,170 Q175,165 180,170 Q175,175 170,170" fill="none" stroke="#ffffff" strokeWidth="1" opacity="0.4"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#floral-pattern-footer)" />
