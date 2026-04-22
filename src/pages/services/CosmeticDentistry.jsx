@@ -42,9 +42,9 @@ const faqs = [
 export default function CosmeticDentistry() {
   return (
     <div>
-      <section className="bg-gradient-to-br from-secondary/5 via-background to-primary/5 py-16 md:py-24">
+      <section className="bg-gradient-to-br from-secondary/5 via-background to-primary/5 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <Link to="/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← All Services</Link>
               <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Cosmetic Dentistry</h1>
@@ -60,7 +60,7 @@ export default function CosmeticDentistry() {
               viewport={{ once: true }}
             >
               <img
-                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/c58efc7da_generated_image.png"
+                src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/674289435_generated_image.png"
                 alt="Woman with beautiful smile"
                 className="w-full max-w-md mx-auto"
               />
