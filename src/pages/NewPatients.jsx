@@ -31,35 +31,8 @@ export default function NewPatients() {
   return (
     <div>
       {/* Header */}
-      <section className="relative bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24 overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <pattern id="floral-pattern" patternUnits="userSpaceOnUse" width="200" height="200">
-              {/* Intricate floral design */}
-              <circle cx="100" cy="100" r="8" fill="currentColor" className="text-primary/40" />
-              <circle cx="80" cy="90" r="5" fill="currentColor" className="text-primary/30" />
-              <circle cx="120" cy="90" r="5" fill="currentColor" className="text-primary/30" />
-              <circle cx="75" cy="110" r="4" fill="currentColor" className="text-primary/35" />
-              <circle cx="125" cy="110" r="4" fill="currentColor" className="text-primary/35" />
-              <circle cx="100" cy="130" r="5" fill="currentColor" className="text-primary/30" />
-              
-              {/* Petals pattern */}
-              <path d="M 100 80 Q 90 95 100 110 Q 110 95 100 80" fill="currentColor" className="text-primary/25" />
-              <path d="M 120 100 Q 135 90 120 80 Q 110 90 120 100" fill="currentColor" className="text-primary/25" />
-              <path d="M 80 100 Q 65 90 80 80 Q 90 90 80 100" fill="currentColor" className="text-primary/25" />
-              <path d="M 100 120 Q 90 105 80 120 Q 90 130 100 120" fill="currentColor" className="text-primary/25" />
-              <path d="M 100 120 Q 110 105 120 120 Q 110 130 100 120" fill="currentColor" className="text-primary/25" />
-              
-              {/* Decorative flourishes */}
-              <path d="M 50 50 Q 60 45 70 50 Q 65 55 50 50" stroke="currentColor" className="text-primary/20" strokeWidth="1" fill="none" />
-              <path d="M 150 150 Q 160 145 170 150 Q 165 155 150 150" stroke="currentColor" className="text-primary/20" strokeWidth="1" fill="none" />
-              <circle cx="40" cy="160" r="3" fill="currentColor" className="text-primary/25" />
-              <circle cx="160" cy="40" r="3" fill="currentColor" className="text-primary/25" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#floral-pattern)" />
-        </svg>
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">New Patients</p>
