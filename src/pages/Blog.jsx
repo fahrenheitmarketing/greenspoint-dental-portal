@@ -16,6 +16,10 @@ const categoryLabels = {
   'orthodontics': 'Orthodontics',
   'family-dental': 'Family Dental',
   'insurance-financing': 'Insurance & Financing',
+  'dental-health': 'Dental Health',
+  'smile-confidence': 'Smile & Confidence',
+  'affordable-dentistry': 'Affordable Dentistry',
+  'community': 'Community',
 };
 
 const categoryColors = {
@@ -25,6 +29,10 @@ const categoryColors = {
   'orthodontics': 'bg-chart-3/10 text-chart-3',
   'family-dental': 'bg-chart-4/10 text-chart-4',
   'insurance-financing': 'bg-chart-5/10 text-chart-5',
+  'dental-health': 'bg-primary/10 text-primary',
+  'smile-confidence': 'bg-accent/10 text-accent',
+  'affordable-dentistry': 'bg-secondary/10 text-secondary',
+  'community': 'bg-chart-1/10 text-chart-1',
 };
 
 export default function Blog() {
