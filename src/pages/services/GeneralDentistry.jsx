@@ -30,6 +30,10 @@ const services = [
     title: 'Sedation Dentistry',
     description: "Feel anxious about dental visits? We offer nitrous oxide (laughing gas), Novocaine, and even full sedation options so you can relax — or even sleep — through your procedure. There's no shame in needing a little help to feel comfortable.",
   },
+  {
+    title: 'Pediatric Dentistry',
+    description: "We love working with kids! From their first tooth through their teenage years, we provide gentle, judgment-free dental care that makes children feel safe and comfortable. We focus on building healthy habits early and making dental visits a positive experience.",
+  },
 ];
 
 const faqs = [
