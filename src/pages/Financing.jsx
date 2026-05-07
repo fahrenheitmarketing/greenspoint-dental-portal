@@ -68,8 +68,7 @@ export default function Financing() {
               {t('financing.title')}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              We believe that everyone deserves access to quality dental care, regardless of their financial 
-              situation. That's why we offer multiple ways to make your treatment affordable.
+              {t('financing.intro')}
             </p>
           </div>
         </div>
@@ -80,12 +79,10 @@ export default function Financing() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Heart className="w-10 h-10 text-primary mx-auto mb-4" />
           <h2 className="font-heading text-2xl md:text-3xl text-foreground mb-4">
-            We'll Never Turn You Away Because of Cost
+            {t('financing.coreMessage')}
           </h2>
           <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Your health is too important to put on hold. If cost has been keeping you from seeing a dentist, 
-            please talk to us. We'll work together to find a solution that fits your budget. There's always 
-            a way — and we're here to help you find it.
+            {t('financing.coreText')}
           </p>
         </div>
       </section>
@@ -94,12 +91,12 @@ export default function Financing() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Payment Options</p>
+            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('financing.paymentBadge')}</p>
             <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-              Flexible Ways to Pay
+              {t('financing.paymentTitle')}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We accept cash, check, all major credit cards, and several financing programs designed to make dental care affordable.
+              {t('financing.paymentDesc')}
             </p>
           </div>
 
@@ -136,13 +133,12 @@ export default function Financing() {
       <section className="py-20 bg-muted/50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Insurance</p>
+            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('financing.insuranceBadge')}</p>
             <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-              We Accept Most Insurance Plans
+              {t('financing.insuranceTitle')}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We submit all insurance forms for you and help you maximize your dental benefits to their fullest. 
-              Don't see your plan listed? Call us — we accept many more than what's shown here.
+              {t('financing.insuranceDesc')}
             </p>
           </div>
 
@@ -157,9 +153,8 @@ export default function Financing() {
           <div className="bg-card border border-border rounded-2xl p-6 max-w-2xl mx-auto text-center">
             <FileText className="w-8 h-8 text-primary mx-auto mb-3" />
             <p className="text-muted-foreground text-sm">
-              <strong className="text-foreground">Please note:</strong> We do not accept DMO, DHMO, Medicare, or Medicaid plans. 
-              However, our self-pay rates and financing options are designed to be affordable for everyone. 
-              Don't hesitate to call us to discuss your situation.
+              <strong className="text-foreground">{t('financing.insuranceNote')}
+              </strong>
             </p>
           </div>
         </div>
@@ -169,8 +164,8 @@ export default function Financing() {
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Common Questions</p>
-            <h2 className="font-heading text-3xl text-foreground mb-4">Financing FAQs</h2>
+            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('financing.faqBadge')}</p>
+            <h2 className="font-heading text-3xl text-foreground mb-4">{t('financing.faqTitle')}</h2>
           </div>
 
           <Accordion type="single" collapsible className="space-y-3">
@@ -191,19 +186,19 @@ export default function Financing() {
       {/* CTA */}
       <section className="py-16 bg-primary/5">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl text-foreground mb-4">Questions About Payment?</h2>
+          <h2 className="font-heading text-3xl text-foreground mb-4">{t('financing.ctaPayment')}</h2>
           <p className="text-muted-foreground mb-8">
-            Our friendly, bilingual team is happy to walk you through your options. Call us or send a message — we're here to help.
+            {t('financing.ctaPaymentDesc')}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="tel:2818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
-                Call (281) 823-9987
+                {t('financing.ctaCall')}
               </Button>
             </a>
             <Link to="/contact">
               <Button size="lg" variant="outline" className="rounded-full px-8 font-semibold border-primary/30 text-primary">
-                Send a Message
+                {t('financing.ctaMessage')}
               </Button>
             </Link>
           </div>
