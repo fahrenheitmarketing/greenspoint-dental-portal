@@ -1,0 +1,23 @@
+// Service and product links for inline blog content
+export const serviceLinks = {
+  'Zoom! Teeth Whitening': '/services/cosmetic',
+  'Zoom Teeth Whitening': '/services/cosmetic',
+  'teeth whitening': '/services/cosmetic',
+  'teeth bleaching': '/services/cosmetic',
+  'cosmetic dentistry': '/services/cosmetic',
+  'veneers': '/services/cosmetic',
+  'dental implants': '/services/restorative',
+  'implants': '/services/restorative',
+  'root canal': '/services/restorative',
+  'crowns': '/services/restorative',
+  'dental bridges': '/services/restorative',
+  'orthodontics': '/services/orthodontics',
+  'braces': '/services/orthodontics',
+  'Invisalign': '/services/orthodontics',
+  'clear aligners': '/services/orthodontics',
+  'general dentistry': '/services/general',
+  'dental cleanings': '/services/general',
+  'fillings': '/services/general',
+  'financing options': '/financing',
+  'dental financing': '/financing',
+};

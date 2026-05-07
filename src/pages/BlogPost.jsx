@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, Clock, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import RelatedContent from '@/components/blog/RelatedContent';
+import { serviceLinks } from '@/lib/serviceLinks';
 
 const categoryLabels = {
   'affordable-dentistry': 'Affordable Dentistry',
@@ -16,6 +17,60 @@ const categoryLabels = {
   'family-dental': 'Family Dental',
   'insurance-financing': 'Insurance & Financing',
   'community': 'Community',
+};
+
+// Custom paragraph renderer that auto-links service terms
+const ParagraphWithLinks = ({ children }) => {
+  if (!children || typeof children !== 'string') {
+    return <p>{children}</p>;
+  }
+
+  const sortedLinks = Object.keys(serviceLinks).sort((a, b) => b.length - a.length);
+  let content = children;
+  const parts = [];
+  let lastIndex = 0;
+
+  sortedLinks.forEach(term => {
+    const regex = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+    const matches = [...content.matchAll(regex)];
+
+    matches.forEach(match => {
+      const index = match.index;
+      if (index >= lastIndex) {
+        if (index > lastIndex) {
+          parts.push({ type: 'text', content: content.slice(lastIndex, index) });
+        }
+        parts.push({
+          type: 'link',
+          content: match[0],
+          href: serviceLinks[term],
+        });
+        lastIndex = index + match[0].length;
+      }
+    });
+  });
+
+  if (lastIndex < content.length) {
+    parts.push({ type: 'text', content: content.slice(lastIndex) });
+  }
+
+  if (parts.length === 0) {
+    return <p>{children}</p>;
+  }
+
+  return (
+    <p>
+      {parts.map((part, idx) =>
+        part.type === 'link' ? (
+          <Link key={idx} to={part.href} className="text-primary hover:underline font-medium">
+            {part.content}
+          </Link>
+        ) : (
+          <span key={idx}>{part.content}</span>
+        )
+      )}
+    </p>
+  );
 };
 
 export default function BlogPostPage() {
@@ -101,7 +156,9 @@ export default function BlogPostPage() {
                 />
               )}
               <article className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-2">
-                <ReactMarkdown>{post.content.replace(/^# .*\n/, '')}</ReactMarkdown>
+                <ReactMarkdown components={{ p: ParagraphWithLinks }}>
+                  {post.content.replace(/^# .*\n/, '')}
+                </ReactMarkdown>
               </article>
             </div>
 
