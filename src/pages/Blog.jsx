@@ -5,9 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { BookOpen, Search } from 'lucide-react';
+import { BookOpen, Search, Calendar } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
+import { format } from 'date-fns';
 
 const categoryLabels = {
   'general-dentistry': 'General Dentistry',
@@ -163,9 +164,15 @@ export default function Blog() {
                             {post.title}
                           </h3>
                           <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
-                          {post.read_time && (
-                            <p className="text-xs text-muted-foreground mt-3">{post.read_time} min read</p>
-                          )}
+                          <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              <span>{format(new Date(post.created_date), 'MMM d, yyyy')}</span>
+                            </div>
+                            {post.read_time && (
+                              <span>{post.read_time} min read</span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </Link>

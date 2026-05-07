@@ -5,7 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, Clock, User } from 'lucide-react';
+import { ArrowLeft, Clock, User, Calendar } from 'lucide-react';
+import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import RelatedContent from '@/components/blog/RelatedContent';
 import { serviceLinks } from '@/lib/serviceLinks';
@@ -128,6 +129,10 @@ export default function BlogPostPage() {
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4" />
+              <span>{format(new Date(post.created_date), 'MMM d, yyyy')}</span>
+            </div>
             <div className="flex items-center gap-1.5">
               <User className="w-4 h-4" />
               <span>{post.author || 'Greenspoint Dental Team'}</span>
