@@ -38,6 +38,7 @@ const categoryColors = {
 export default function Blog() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [displayCount, setDisplayCount] = useState(12);
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['blogPosts'],
@@ -51,6 +52,8 @@ export default function Blog() {
       post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch && post.published !== false;
   });
+
+  const displayed = filtered.slice(0, displayCount);
 
   return (
     <div>
@@ -129,44 +132,57 @@ export default function Blog() {
               <p className="text-muted-foreground">Try a different category or search term.</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filtered.map((post, i) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: Math.min(i * 0.05, 0.5) }}
-                >
-                  <Link
-                    to={`/blog/${post.slug}`}
-                    className="group block h-full"
+            <div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {displayed.map((post, i) => (
+                  <motion.div
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: Math.min(i * 0.05, 0.5) }}
                   >
-                    <div className="h-full rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-all duration-300">
-                      {post.image_url && (
-                        <div className="aspect-video overflow-hidden">
-                          <img
-                            src={post.image_url}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      <div className="p-6">
-                        <Badge className={`${categoryColors[post.category] || 'bg-muted text-muted-foreground'} mb-3 text-xs`}>
-                          {categoryLabels[post.category] || post.category}
-                        </Badge>
-                        <h3 className="font-heading text-lg text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
-                        {post.read_time && (
-                          <p className="text-xs text-muted-foreground mt-3">{post.read_time} min read</p>
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className="group block h-full"
+                    >
+                      <div className="h-full rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-all duration-300">
+                        {post.image_url && (
+                          <div className="aspect-video overflow-hidden">
+                            <img
+                              src={post.image_url}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
                         )}
+                        <div className="p-6">
+                          <Badge className={`${categoryColors[post.category] || 'bg-muted text-muted-foreground'} mb-3 text-xs`}>
+                            {categoryLabels[post.category] || post.category}
+                          </Badge>
+                          <h3 className="font-heading text-lg text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                            {post.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                          {post.read_time && (
+                            <p className="text-xs text-muted-foreground mt-3">{post.read_time} min read</p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+              {displayCount < filtered.length && (
+                <div className="flex justify-center mt-12">
+                  <Button 
+                    onClick={() => setDisplayCount(prev => prev + 12)}
+                    variant="outline"
+                    className="rounded-full px-8"
+                  >
+                    Load More Articles
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </div>
