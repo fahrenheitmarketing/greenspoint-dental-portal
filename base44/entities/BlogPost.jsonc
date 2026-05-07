@@ -21,14 +21,14 @@
     "category": {
       "type": "string",
       "enum": [
-        "affordable-dentistry",
-        "dental-health",
-        "smile-confidence",
+        "general-dentistry",
+        "cosmetic-dentistry",
+        "restorative-dentistry",
+        "orthodontics",
         "family-dental",
-        "insurance-financing",
-        "community"
+        "insurance-financing"
       ],
-      "description": "Blog category"
+      "description": "Blog category aligned with service pages"
     },
     "image_url": {
       "type": "string",

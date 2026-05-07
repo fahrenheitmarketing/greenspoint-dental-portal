@@ -10,21 +10,21 @@ import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 
 const categoryLabels = {
-  'affordable-dentistry': 'Affordable Dentistry',
-  'dental-health': 'Dental Health',
-  'smile-confidence': 'Smile & Confidence',
+  'general-dentistry': 'General Dentistry',
+  'cosmetic-dentistry': 'Cosmetic Dentistry',
+  'restorative-dentistry': 'Restorative Dentistry',
+  'orthodontics': 'Orthodontics',
   'family-dental': 'Family Dental',
   'insurance-financing': 'Insurance & Financing',
-  'community': 'Community',
 };
 
 const categoryColors = {
-  'affordable-dentistry': 'bg-primary/10 text-primary',
-  'dental-health': 'bg-secondary/10 text-secondary',
-  'smile-confidence': 'bg-accent/10 text-accent',
+  'general-dentistry': 'bg-primary/10 text-primary',
+  'cosmetic-dentistry': 'bg-accent/10 text-accent',
+  'restorative-dentistry': 'bg-secondary/10 text-secondary',
+  'orthodontics': 'bg-chart-3/10 text-chart-3',
   'family-dental': 'bg-chart-4/10 text-chart-4',
   'insurance-financing': 'bg-chart-5/10 text-chart-5',
-  'community': 'bg-muted text-muted-foreground',
 };
 
 export default function Blog() {
