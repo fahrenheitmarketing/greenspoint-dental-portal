@@ -1,6 +1,7 @@
 import React from 'react';
 import { Star, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const testimonials = [
   {
@@ -26,13 +27,15 @@ const testimonials = [
 ];
 
 export default function TestimonialsSection() {
+  const t = useTranslation();
+
   return (
     <section className="py-20 bg-primary/5">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-14">
-          <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Patient Stories</p>
+          <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('footer.testimonials') || 'Patient Stories'}</p>
           <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-            Real People, Real Smiles
+            {t('footer.realSmiles') || 'Real People, Real Smiles'}
           </h2>
           <div className="flex items-center justify-center gap-2 text-muted-foreground">
             <div className="flex">
@@ -40,7 +43,7 @@ export default function TestimonialsSection() {
                 <Star key={i} className="w-5 h-5 fill-secondary text-secondary" />
               ))}
             </div>
-            <span className="font-medium">4.9 rating from 327+ Google reviews</span>
+            <span className="font-medium">{t('footer.googleReviews') || '4.9 rating from 327+ Google reviews'}</span>
           </div>
         </div>
 
@@ -58,8 +61,8 @@ export default function TestimonialsSection() {
               <p className="text-foreground leading-relaxed mb-6">"{t.text}"</p>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-foreground">{t.name}</p>
-                  <p className="text-sm text-muted-foreground">Google Review</p>
+                   <p className="font-semibold text-foreground">{t.name}</p>
+                   <p className="text-sm text-muted-foreground">{t('footer.googleReview') || 'Google Review'}</p>
                 </div>
                 <div className="flex">
                   {[...Array(t.rating)].map((_, j) => (

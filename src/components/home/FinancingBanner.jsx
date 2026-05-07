@@ -3,17 +3,20 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { CreditCard, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const benefits = [
-  'Low monthly payment plans',
-  'CareCredit & HELPcard accepted',
-  'Most insurance plans accepted',
-  'No-interest financing available',
-  'Transparent pricing — no surprises',
-  'Payment plans for major treatments',
-];
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function FinancingBanner() {
+  const t = useTranslation();
+
+  const benefits = [
+    t('services.lowPayments'),
+    t('services.creditCard'),
+    t('services.insurance'),
+    t('services.noInterest'),
+    t('services.transparent'),
+    t('services.majorTreatments'),
+  ];
+
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
@@ -27,19 +30,17 @@ export default function FinancingBanner() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <CreditCard className="w-5 h-5" />
-                <span className="text-sm font-medium text-primary-foreground/80 uppercase tracking-wider">Financing Options</span>
+                <span className="text-sm font-medium text-primary-foreground/80 uppercase tracking-wider">{t('services.paymentTitle') || 'Financing Options'}</span>
               </div>
               <h2 className="font-heading text-3xl md:text-4xl mb-4">
-                Don't Let Cost Stop You From Getting the Care You Need
+                {t('services.financeTitle')}
               </h2>
               <p className="text-primary-foreground/80 leading-relaxed mb-8">
-                We understand that dental work can be expensive, especially for bigger treatments like braces, implants, or crowns. 
-                That's why we offer multiple financing options to help spread the cost into manageable monthly payments. 
-                Your health is too important to put on hold.
+                {t('services.financeDesc')}
               </p>
               <Link to="/financing">
                 <Button size="lg" className="bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full px-8 font-semibold transition-all duration-200">
-                  View All Financing Options
+                  {t('services.financing')}
                 </Button>
               </Link>
             </div>
