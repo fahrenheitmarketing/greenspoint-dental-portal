@@ -61,11 +61,11 @@ export default function BlogPostPage() {
       {/* Header */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline mb-6">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline mb-4">
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
           </Link>
-          <Badge className="bg-primary/10 text-primary mb-4">
+          <Badge className="bg-primary/10 text-primary mb-6 block w-fit">
             {categoryLabels[post.category] || post.category}
           </Badge>
           <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-4 leading-tight">
