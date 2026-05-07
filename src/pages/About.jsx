@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function About() {
-  const { t } = useTranslation();
+  const t = useTranslation();
   return (
     <div>
       {/* Page Header */}
