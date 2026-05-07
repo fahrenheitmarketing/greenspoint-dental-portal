@@ -88,4 +88,32 @@
   body {
     @apply bg-background text-foreground font-body;
   }
+
+  article h2 {
+    @apply text-2xl font-heading font-bold text-foreground mt-8 mb-4;
+  }
+
+  article h3 {
+    @apply text-xl font-heading font-semibold text-foreground mt-6 mb-3;
+  }
+
+  article p {
+    @apply text-muted-foreground leading-relaxed mb-4;
+  }
+
+  article ul, article ol {
+    @apply my-4 ml-6;
+  }
+
+  article li {
+    @apply my-2;
+  }
+
+  article strong {
+    @apply text-foreground font-semibold;
+  }
+
+  article a {
+    @apply text-primary hover:underline;
+  }
 }
