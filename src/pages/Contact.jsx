@@ -24,7 +24,7 @@ export default function Contact() {
           <div className="max-w-3xl">
             <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('contact.title')}</p>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">
-              {t('footer.contactHeader') || "We'd Love to Hear From You"}
+              {t('contact.contactHeader')}
             </h1>
             <p className="text-lg text-muted-foreground">
               {t('contact.subtitle')}
