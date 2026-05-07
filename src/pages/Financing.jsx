@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CreditCard, CheckCircle, Shield, Heart, DollarSign, FileText, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const paymentOptions = [
   {
@@ -55,15 +56,16 @@ const faqs = [
 ];
 
 export default function Financing() {
+  const t = useTranslation();
   return (
     <div>
       {/* Header */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
-            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Financing & Insurance</p>
+            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('financing.badge')}</p>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">
-              Great Dental Care Shouldn't Break the Bank
+              {t('financing.title')}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               We believe that everyone deserves access to quality dental care, regardless of their financial 

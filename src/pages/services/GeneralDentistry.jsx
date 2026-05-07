@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Heart, Globe, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const services = [
   {
@@ -44,6 +45,39 @@ const faqs = [
 ];
 
 export default function GeneralDentistry() {
+  const t = useTranslation();
+
+  const services = [
+    {
+      title: t('generalDentistry.cleanings'),
+      description: t('generalDentistry.cleaningsDesc'),
+    },
+    {
+      title: t('generalDentistry.fillings'),
+      description: t('generalDentistry.fillingsDesc'),
+    },
+    {
+      title: t('footer.sealants') || 'Dental Sealants',
+      description: t('footer.sealantsDesc') || "Sealants create a protective barrier on your teeth to prevent decay. They're especially great for kids, but adults can benefit too. It's a quick, painless, and affordable way to protect your smile.",
+    },
+    {
+      title: t('footer.cancerScreening') || 'Oral Cancer Screening',
+      description: t('footer.cancerScreeningDesc') || "As part of your regular exam, we check for signs of oral cancer. Early detection makes a huge difference in treatment outcomes. Dental professionals are often the first to spot oral cancer.",
+    },
+    {
+      title: t('footer.emergency') || 'Emergency Dental Care',
+      description: t('footer.emergencyDesc') || "Tooth pain or a dental injury can't wait. Call us and we'll do our best to see you the same day. We understand emergencies are stressful, and we'll get you out of pain as quickly as possible.",
+    },
+    {
+      title: t('footer.sedation') || 'Sedation Dentistry',
+      description: t('footer.sedationDesc') || "Feel anxious about dental visits? We offer nitrous oxide (laughing gas), Novocaine, and even full sedation options so you can relax — or even sleep — through your procedure. There's no shame in needing a little help to feel comfortable.",
+    },
+    {
+      title: t('footer.pediatric') || 'Pediatric Dentistry',
+      description: t('footer.pediatricDesc') || "We love working with kids! From their first tooth through their teenage years, we provide gentle, judgment-free dental care that makes children feel safe and comfortable. We focus on building healthy habits early and making dental visits a positive experience.",
+    },
+  ];
+
   return (
     <div>
       {/* Header */}
@@ -51,11 +85,9 @@ export default function GeneralDentistry() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
             <Link to="/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← All Services</Link>
-            <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">General Dentistry</h1>
+            <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">{t('generalDentistry.title')}</h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              The essentials of dental health — checkups, cleanings, fillings, and preventive care — 
-              delivered with compassion, honesty, and a gentle touch. We make every visit comfortable 
-              and anxiety-free, whether it's your first visit in years or your regular six-month checkup.
+              {t('generalDentistry.intro')}
             </p>
           </div>
         </div>
@@ -64,9 +96,9 @@ export default function GeneralDentistry() {
       {/* Values bar */}
       <div className="bg-primary/5 py-6">
         <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-8">
-          <div className="flex items-center gap-2 text-sm"><Heart className="w-4 h-4 text-primary" /> No judgment — everyone's welcome</div>
+          <div className="flex items-center gap-2 text-sm"><Heart className="w-4 h-4 text-primary" /> {t('footer.noJudgment')}</div>
           <div className="flex items-center gap-2 text-sm"><Globe className="w-4 h-4 text-secondary" /> Se habla español</div>
-          <div className="flex items-center gap-2 text-sm"><Shield className="w-4 h-4 text-accent" /> Sedation options available</div>
+          <div className="flex items-center gap-2 text-sm"><Shield className="w-4 h-4 text-accent" /> {t('footer.sedationAvailable') || 'Sedation options available'}</div>
         </div>
       </div>
 
@@ -97,7 +129,7 @@ export default function GeneralDentistry() {
       {/* FAQ */}
       <section className="py-20 bg-muted/50">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="font-heading text-3xl text-foreground mb-8 text-center">Common Questions</h2>
+          <h2 className="font-heading text-3xl text-foreground mb-8 text-center">{t('generalDentistry.commonQuestions')}</h2>
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-xl px-6 bg-card">
@@ -116,11 +148,11 @@ export default function GeneralDentistry() {
       {/* CTA */}
       <section className="py-16 bg-background">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl text-foreground mb-4">Ready for a Comfortable Dental Experience?</h2>
-          <p className="text-muted-foreground mb-8">New patient exam, X-rays & cleaning for just $99. No hidden costs.</p>
+          <h2 className="font-heading text-3xl text-foreground mb-4">{t('footer.ctaReady') || 'Ready for a Comfortable Dental Experience?'}</h2>
+          <p className="text-muted-foreground mb-8">{t('footer.newPatientCtaDesc') || 'New patient exam, X-rays & cleaning for just $99. No hidden costs.'}</p>
           <Link to="/contact">
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
-              Book Your Appointment
+              {t('navbar.bookAppointment')}
             </Button>
           </Link>
         </div>
