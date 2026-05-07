@@ -101,30 +101,71 @@ export default function Financing() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {paymentOptions.map((option, i) => (
-              <motion.div
-                key={option.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-all"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <CreditCard className="w-6 h-6 text-primary" />
-                  <h3 className="font-heading text-xl text-foreground">{option.title}</h3>
-                </div>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-5">{option.description}</p>
-                <div className="space-y-2">
-                  {option.features.map((feature) => (
-                    <div key={feature} className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-primary shrink-0" />
-                      <span className="text-sm text-foreground">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0 * 0.1 }}
+              className="p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-all"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <CreditCard className="w-6 h-6 text-primary" />
+                <h3 className="font-heading text-xl text-foreground">{t('financing.careCredit')}</h3>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t('financing.careCreditDesc')}</p>
+              <div className="space-y-2">
+                {[t('financing.careCreditFeatures')[0], t('financing.careCreditFeatures')[1], t('financing.careCreditFeatures')[2], t('financing.careCreditFeatures')[3]].map((feature) => (
+                  <div key={feature} className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-sm text-foreground">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-all"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <CreditCard className="w-6 h-6 text-primary" />
+                <h3 className="font-heading text-xl text-foreground">{t('financing.helpcard')}</h3>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t('financing.helpcardDesc')}</p>
+              <div className="space-y-2">
+                {[t('financing.helpcardFeatures')[0], t('financing.helpcardFeatures')[1], t('financing.helpcardFeatures')[2], t('financing.helpcardFeatures')[3]].map((feature) => (
+                  <div key={feature} className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-sm text-foreground">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-all"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <CreditCard className="w-6 h-6 text-primary" />
+                <h3 className="font-heading text-xl text-foreground">{t('financing.lendingUSA')}</h3>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t('financing.lendingUSADesc')}</p>
+              <div className="space-y-2">
+                {[t('financing.lendingUSAFeatures')[0], t('financing.lendingUSAFeatures')[1], t('financing.lendingUSAFeatures')[2], t('financing.lendingUSAFeatures')[3]].map((feature) => (
+                  <div key={feature} className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-sm text-foreground">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
