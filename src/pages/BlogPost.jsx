@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, Clock, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import RelatedContent from '@/components/blog/RelatedContent';
 
 const categoryLabels = {
   'affordable-dentistry': 'Affordable Dentistry',
@@ -87,26 +88,36 @@ export default function BlogPostPage() {
       </section>
 
       {/* Content */}
-      <section className="py-12">
-        <div className="max-w-3xl mx-auto px-4">
-          {post.image_url && (
-            <img
-              src={post.image_url}
-              alt={post.title}
-              className="w-full rounded-2xl shadow-lg mb-10"
-            />
-          )}
-          <article className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-2">
-            <ReactMarkdown>{post.content.replace(/^# .*\n/, '')}</ReactMarkdown>
-          </article>
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              {post.image_url && (
+                <img
+                  src={post.image_url}
+                  alt={post.title}
+                  className="w-full rounded-2xl shadow-lg mb-12"
+                />
+              )}
+              <article className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-2">
+                <ReactMarkdown>{post.content.replace(/^# .*\n/, '')}</ReactMarkdown>
+              </article>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <RelatedContent currentPostId={post.id} category={post.category} />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-12 bg-primary/5">
+      <section className="py-16 bg-primary/5 mt-8">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h3 className="font-heading text-2xl text-foreground mb-3">Questions About Your Dental Health?</h3>
-          <p className="text-muted-foreground mb-6">
+          <h3 className="font-heading text-2xl text-foreground mb-4">Questions About Your Dental Health?</h3>
+          <p className="text-muted-foreground mb-8 text-lg">
             Our bilingual team is happy to answer any questions. Schedule a free consultation today.
           </p>
           <Link to="/contact">
