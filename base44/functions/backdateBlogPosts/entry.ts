@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
       newDate.setDate(newDate.getDate() - daysBack);
 
       await base44.asServiceRole.entities.BlogPost.update(posts[i].id, {
-        created_date: newDate.toISOString(),
+        published_date: newDate.toISOString(),
       });
     }
 

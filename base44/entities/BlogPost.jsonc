@@ -47,6 +47,11 @@
     "read_time": {
       "type": "number",
       "description": "Estimated read time in minutes"
+    },
+    "published_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Custom publication date for sorting and display"
     }
   },
   "required": [

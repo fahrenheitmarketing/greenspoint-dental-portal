@@ -131,7 +131,7 @@ export default function BlogPostPage() {
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <Calendar className="w-4 h-4" />
-              <span>{format(new Date(post.created_date), 'MMM d, yyyy')}</span>
+              <span>{format(new Date(post.published_date || post.created_date), 'MMM d, yyyy')}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <User className="w-4 h-4" />

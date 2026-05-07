@@ -43,7 +43,7 @@ export default function Blog() {
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['blogPosts'],
-    queryFn: () => base44.entities.BlogPost.list('-created_date', 100),
+    queryFn: () => base44.entities.BlogPost.list('-published_date', 100),
   });
 
   const filtered = posts.filter(post => {
@@ -167,7 +167,7 @@ export default function Blog() {
                           <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-muted-foreground">
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              <span>{format(new Date(post.created_date), 'MMM d, yyyy')}</span>
+                              <span>{format(new Date(post.published_date || post.created_date), 'MMM d, yyyy')}</span>
                             </div>
                             {post.read_time && (
                               <span>{post.read_time} min read</span>
