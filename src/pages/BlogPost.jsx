@@ -156,7 +156,14 @@ export default function BlogPostPage() {
                 />
               )}
               <article className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-2">
-                <ReactMarkdown components={{ p: ParagraphWithLinks }}>
+                <ReactMarkdown 
+                  components={{ 
+                    p: ParagraphWithLinks,
+                    ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-2 text-muted-foreground my-4" {...props} />,
+                    ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-2 text-muted-foreground my-4" {...props} />,
+                    li: ({node, ...props}) => <li className="text-muted-foreground" {...props} />
+                  }}
+                >
                   {post.content.replace(/^# .*\n/, '')}
                 </ReactMarkdown>
               </article>
