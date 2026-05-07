@@ -20,6 +20,11 @@ import Blog from './pages/Blog';
 import BlogPostPage from './pages/BlogPost';
 import NewPatients from './pages/NewPatients';
 import Contact from './pages/Contact';
+import ServiceAreas from './pages/ServiceAreas';
+import ImperialValley from './pages/service-areas/ImperialValley';
+import Southbrook from './pages/service-areas/Southbrook';
+import ColonialHills from './pages/service-areas/ColonialHills';
+import GreenRidgeNorth from './pages/service-areas/GreenRidgeNorth';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -56,6 +61,11 @@ const AuthenticatedApp = () => {
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/new-patients" element={<NewPatients />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/service-areas" element={<ServiceAreas />} />
+        <Route path="/service-areas/imperial-valley" element={<ImperialValley />} />
+        <Route path="/service-areas/southbrook" element={<Southbrook />} />
+        <Route path="/service-areas/colonial-hills" element={<ColonialHills />} />
+        <Route path="/service-areas/green-ridge-north" element={<GreenRidgeNorth />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
