@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Tag, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const specials = [
   {
@@ -26,16 +27,39 @@ const specials = [
 ];
 
 export default function SpecialsSection() {
+  const t = useTranslation();
+  
+  const specials = [
+    {
+      title: t('hero.newPatientSpecial'),
+      description: t('hero.offer'),
+      price: t('hero.price'),
+      note: 'No hidden costs',
+    },
+    {
+      title: t('footer.exam') || 'Dental Exam & X-Rays',
+      description: t('footer.examDesc') || 'Quick checkup to see where you stand. Perfect if you haven\'t been to a dentist in a while and want to know your options.',
+      price: '$39',
+      note: 'No surprises',
+    },
+    {
+      title: t('footer.freeConsult') || 'Free Consultation',
+      description: t('footer.freeConsultDesc') || 'Thinking about braces, implants, or a smile makeover? Come in for a free consultation and we\'ll walk you through your options and costs.',
+      price: 'FREE',
+      note: 'No obligation',
+    },
+  ];
+
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-14">
-          <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Current Specials</p>
+          <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('footer.specials') || 'Current Specials'}</p>
           <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-            Quality Dental Care at Prices You Can Afford
+            {t('footer.specialsTitle') || 'Quality Dental Care at Prices You Can Afford'}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            We believe great dental care shouldn't break the bank. Take advantage of our specials to get started.
+            {t('footer.specialsDesc') || 'We believe great dental care shouldn\'t break the bank. Take advantage of our specials to get started.'}
           </p>
         </div>
 
@@ -72,7 +96,7 @@ export default function SpecialsSection() {
         <div className="text-center mt-12">
           <Link to="/financing">
             <Button variant="outline" className="rounded-full px-8 border-primary/30 text-primary hover:bg-primary/5">
-              View Financing Options
+              {t('services.financing') || 'View Financing Options'}
             </Button>
           </Link>
         </div>
