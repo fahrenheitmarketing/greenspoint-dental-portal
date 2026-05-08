@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from '@/hooks/useTranslation';
 import HeroSection from '../components/home/HeroSection';
 import ValuesSection from '../components/home/ValuesSection';
 import ServicesOverview from '../components/home/ServicesOverview';

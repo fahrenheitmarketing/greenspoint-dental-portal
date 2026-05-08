@@ -4,7 +4,6 @@ import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import { LanguageProvider } from '@/lib/LanguageContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 import Layout from './components/layout/Layout';
@@ -25,6 +24,18 @@ import ImperialValley from './pages/service-areas/ImperialValley';
 import Southbrook from './pages/service-areas/Southbrook';
 import ColonialHills from './pages/service-areas/ColonialHills';
 import GreenRidgeNorth from './pages/service-areas/GreenRidgeNorth';
+
+// Spanish pages
+import HomeES from './pages/es/Home';
+import AboutES from './pages/es/About';
+import ServicesES from './pages/es/Services';
+import FinancingES from './pages/es/Financing';
+import NewPatientsES from './pages/es/NewPatients';
+import ContactES from './pages/es/Contact';
+import GeneralDentistryES from './pages/es/services/GeneralDentistry';
+import CosmeticDentistryES from './pages/es/services/CosmeticDentistry';
+import RestorativeDentistryES from './pages/es/services/RestorativeDentistry';
+import OrthodonticsES from './pages/es/services/Orthodontics';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -66,6 +77,19 @@ const AuthenticatedApp = () => {
         <Route path="/service-areas/southbrook" element={<Southbrook />} />
         <Route path="/service-areas/colonial-hills" element={<ColonialHills />} />
         <Route path="/service-areas/green-ridge-north" element={<GreenRidgeNorth />} />
+
+        {/* Spanish routes */}
+        <Route path="/es" element={<HomeES />} />
+        <Route path="/es/about" element={<AboutES />} />
+        <Route path="/es/services" element={<ServicesES />} />
+        <Route path="/es/services/general" element={<GeneralDentistryES />} />
+        <Route path="/es/services/cosmetic" element={<CosmeticDentistryES />} />
+        <Route path="/es/services/restorative" element={<RestorativeDentistryES />} />
+        <Route path="/es/services/orthodontics" element={<OrthodonticsES />} />
+        <Route path="/es/financing" element={<FinancingES />} />
+        <Route path="/es/new-patients" element={<NewPatientsES />} />
+        <Route path="/es/contact" element={<ContactES />} />
+
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
@@ -74,16 +98,14 @@ const AuthenticatedApp = () => {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <AuthenticatedApp />
-          </Router>
-          <Toaster />
-        </QueryClientProvider>
-      </AuthProvider>
-    </LanguageProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClientInstance}>
+        <Router>
+          <AuthenticatedApp />
+        </Router>
+        <Toaster />
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }
 

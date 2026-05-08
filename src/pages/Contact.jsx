@@ -4,10 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, MapPin, Clock, Globe, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/hooks/useTranslation';
-
 export default function Contact() {
-  const t = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
 
@@ -22,12 +19,12 @@ export default function Contact() {
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
-            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('contact.title')}</p>
+            <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">Get in Touch</p>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">
-              {t('contact.contactHeader')}
+              We'd Love to Hear From You
             </h1>
             <p className="text-lg text-muted-foreground">
-              {t('contact.subtitle')}
+              New patients welcome. Same-day emergency appointments available. Our bilingual team is ready to help you — in English or Spanish.
             </p>
           </div>
         </div>
@@ -42,13 +39,13 @@ export default function Contact() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <h2 className="font-heading text-2xl text-foreground mb-6">{t('newPatients.scheduleFirst')}</h2>
+              <h2 className="font-heading text-2xl text-foreground mb-6">Schedule Your First Visit</h2>
               {submitted ? (
                 <div className="p-10 rounded-2xl bg-primary/5 border border-primary/20 text-center">
                   <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-                  <h3 className="font-heading text-2xl text-foreground mb-2">{t('contact.thankYou') || 'Thank You!'}</h3>
+                  <h3 className="font-heading text-2xl text-foreground mb-2">Thank You!</h3>
                   <p className="text-muted-foreground">
-                    {t('contact.confirmationMsg') || "We've received your message and will call you within one business day to confirm your appointment. ¡Gracias por contactarnos!"}
+                    We've received your message and will call you within one business day to confirm your appointment. ¡Gracias por contactarnos!
                   </p>
                 </div>
               ) : (

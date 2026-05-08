@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MapPin, ArrowRight, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/hooks/useTranslation';
 
 const locations = [
   {
@@ -37,15 +36,13 @@ const locations = [
 ];
 
 export default function ServiceAreas() {
-  const t = useTranslation();
-
   return (
     <div>
       {/* Header */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
-            <Link to="/" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← {t('navbar.home')}</Link>
+            <Link to="/" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Home</Link>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Service Areas Near Greenspoint</h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               We serve several neighborhoods in the Greenspoint area. Whether you live in Imperial Valley, Southbrook, Colonial Hills, or Green Ridge North, 

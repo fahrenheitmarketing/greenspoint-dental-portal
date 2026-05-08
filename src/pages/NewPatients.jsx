@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Heart, Globe, DollarSign, Shield, Smile, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/hooks/useTranslation';
 
 const steps = [
   {
@@ -29,7 +28,6 @@ const steps = [
 ];
 
 export default function NewPatients() {
-  const t = useTranslation();
   return (
     <div>
       {/* Header */}
@@ -37,9 +35,9 @@ export default function NewPatients() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">{t('newPatients.badge')}</p>
+              <p className="text-secondary font-medium text-sm uppercase tracking-wider mb-3">New Patients</p>
               <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">
-                {t('newPatients.title')}
+                Welcome — We're Glad You're Here
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                 Whether it's been six months or six years since your last dental visit, you're welcome here. 
