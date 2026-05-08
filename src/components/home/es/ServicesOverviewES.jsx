@@ -4,10 +4,10 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const services = [
-  { title: 'Odontología General', description: 'Exámenes de rutina, limpiezas, empastes y cuidado preventivo para mantener tu sonrisa saludable. Hacemos que cada visita sea cómoda y libre de ansiedad.', path: '/es/services/general', color: 'bg-primary/10 text-primary' },
-  { title: 'Odontología Cosmética', description: 'Blanqueamiento de dientes, carillas, Invisalign, restauraciones de sonrisa y más. Una sonrisa hermosa puede cambiar cómo te sientes contigo mismo — déjanos ayudarte a llegar allí.', path: '/es/services/cosmetic', color: 'bg-secondary/10 text-secondary' },
-  { title: 'Odontología Restauradora', description: 'Coronas, puentes, implantes, dentaduras y endodoncias. Restauraremos tu sonrisa y tu confianza — sin prejuicios, solo resultados.', path: '/es/services/restorative', color: 'bg-accent/10 text-accent' },
-  { title: 'Ortodoncia', description: 'Aparatos tradicionales e Invisalign para niños y adultos. Planes de pago asequibles hacen que una sonrisa recta sea posible para todos.', path: '/es/services/orthodontics', color: 'bg-chart-4/10 text-chart-4' },
+  { title: 'Odontología General', description: 'Exámenes de rutina, limpiezas, empastes y cuidado preventivo para mantener tu sonrisa saludable. Hacemos que cada visita sea cómoda y libre de ansiedad.', path: '/es/servicios/general', color: 'bg-primary/10 text-primary' },
+  { title: 'Odontología Cosmética', description: 'Blanqueamiento de dientes, carillas, Invisalign, restauraciones de sonrisa y más. Una sonrisa hermosa puede cambiar cómo te sientes contigo mismo — déjanos ayudarte a llegar allí.', path: '/es/servicios/cosmetica', color: 'bg-secondary/10 text-secondary' },
+  { title: 'Odontología Restauradora', description: 'Coronas, puentes, implantes, dentaduras y endodoncias. Restauraremos tu sonrisa y tu confianza — sin prejuicios, solo resultados.', path: '/es/servicios/restauracion', color: 'bg-accent/10 text-accent' },
+  { title: 'Ortodoncia', description: 'Aparatos tradicionales e Invisalign para niños y adultos. Planes de pago asequibles hacen que una sonrisa recta sea posible para todos.', path: '/es/servicios/ortodoncia', color: 'bg-chart-4/10 text-chart-4' },
 ];
 
 export default function ServicesOverviewES() {

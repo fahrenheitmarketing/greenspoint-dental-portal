@@ -53,6 +53,7 @@ export default function BlogPostPageES() {
         <Link to="/es/blog">
           <Button className="bg-primary hover:bg-primary/90 rounded-full px-8">Volver al Blog</Button>
         </Link>
+
       </div>
     );
   }
@@ -66,6 +67,7 @@ export default function BlogPostPageES() {
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/es/blog" className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline mb-4">
+
             <ArrowLeft className="w-4 h-4" />
             Volver al Blog
           </Link>
@@ -125,7 +127,7 @@ export default function BlogPostPageES() {
           <p className="text-muted-foreground mb-8 text-lg">
             Nuestro equipo bilingüe está feliz de responder tus preguntas. Programa una consulta gratuita hoy.
           </p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
               Programa Tu Visita
             </Button>

@@ -28,7 +28,7 @@ export default function NewPatientsES() {
                 <span>Hablamos Español — Nuestro equipo habla español con fluidez</span>
               </div>
               <div className="flex flex-wrap gap-4">
-                <Link to="/es/contact">
+                <Link to="/es/contacto">
                   <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Programa Tu Primera Visita</Button>
                 </Link>
               </div>
@@ -46,7 +46,7 @@ export default function NewPatientsES() {
           <p className="text-6xl font-heading font-bold text-primary my-4">$99</p>
           <p className="text-xl text-muted-foreground mb-2">Examen Completo, Radiografías Completas y Limpieza Profesional</p>
           <p className="text-sm text-muted-foreground mb-8">Sin costos ocultos. Sin sorpresas. Solo atención excelente a un precio justo.</p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-10 font-semibold">Aprovechar Esta Oferta</Button>
           </Link>
         </div>
@@ -132,7 +132,7 @@ export default function NewPatientsES() {
             <a href="tel:2818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Llamar (281) 823-9987</Button>
             </a>
-            <Link to="/es/contact">
+            <Link to="/es/contacto">
               <Button size="lg" variant="outline" className="rounded-full px-8 font-semibold border-primary/30 text-primary">Reservar en Línea</Button>
             </Link>
           </div>

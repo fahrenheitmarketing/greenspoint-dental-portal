@@ -23,7 +23,7 @@ export default function SpecialsSectionES() {
                 </div>
               ))}
             </div>
-            <Link to="/es/contact">
+            <Link to="/es/contacto">
               <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-8 font-semibold">Aprovechar Esta Oferta</Button>
             </Link>
           </motion.div>

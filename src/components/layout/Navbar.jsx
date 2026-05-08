@@ -24,35 +24,53 @@ const routeMap = {
   },
   es: {
     '/': '/es',
-    '/about': '/es/about',
-    '/services': '/es/services',
-    '/services/general': '/es/services/general',
-    '/services/cosmetic': '/es/services/cosmetic',
-    '/services/restorative': '/es/services/restorative',
-    '/services/orthodontics': '/es/services/orthodontics',
-    '/financing': '/es/financing',
+    '/about': '/es/acerca',
+    '/services': '/es/servicios',
+    '/services/general': '/es/servicios/general',
+    '/services/cosmetic': '/es/servicios/cosmetica',
+    '/services/restorative': '/es/servicios/restauracion',
+    '/services/orthodontics': '/es/servicios/ortodoncia',
+    '/financing': '/es/financiacion',
     '/blog': '/es/blog',
-    '/new-patients': '/es/new-patients',
-    '/contact': '/es/contact',
+    '/new-patients': '/es/nuevos-pacientes',
+    '/contact': '/es/contacto',
     '/service-areas': '/service-areas',
     '/es': '/es',
-    '/es/about': '/es/about',
-    '/es/services': '/es/services',
-    '/es/services/general': '/es/services/general',
-    '/es/services/cosmetic': '/es/services/cosmetic',
-    '/es/services/restorative': '/es/services/restorative',
-    '/es/services/orthodontics': '/es/services/orthodontics',
-    '/es/financing': '/es/financing',
+    '/es/acerca': '/es/acerca',
+    '/es/servicios': '/es/servicios',
+    '/es/servicios/general': '/es/servicios/general',
+    '/es/servicios/cosmetica': '/es/servicios/cosmetica',
+    '/es/servicios/restauracion': '/es/servicios/restauracion',
+    '/es/servicios/ortodoncia': '/es/servicios/ortodoncia',
+    '/es/financiacion': '/es/financiacion',
     '/es/blog': '/es/blog',
-    '/es/new-patients': '/es/new-patients',
-    '/es/contact': '/es/contact',
+    '/es/nuevos-pacientes': '/es/nuevos-pacientes',
+    '/es/contacto': '/es/contacto',
   }
 };
 
 // Normalize current path to its EN equivalent
+const esToEnMap = {
+  '/es': '/',
+  '/es/acerca': '/about',
+  '/es/servicios': '/services',
+  '/es/servicios/general': '/services/general',
+  '/es/servicios/cosmetica': '/services/cosmetic',
+  '/es/servicios/restauracion': '/services/restorative',
+  '/es/servicios/ortodoncia': '/services/orthodontics',
+  '/es/financiacion': '/financing',
+  '/es/blog': '/blog',
+  '/es/nuevos-pacientes': '/new-patients',
+  '/es/contacto': '/contact',
+};
+
 function toEnPath(path) {
-  if (path === '/es' || path === '/es/') return '/';
-  return path.replace(/^\/es\//, '/') || '/';
+  // Strip trailing slash for matching
+  const clean = path.replace(/\/$/, '') || '/';
+  if (esToEnMap[clean]) return esToEnMap[clean];
+  // Blog post pages
+  if (clean.startsWith('/es/blog/')) return clean.replace('/es/blog/', '/blog/');
+  return '/';
 }
 
 export default function Navbar() {
@@ -75,21 +93,21 @@ export default function Navbar() {
 
   const navLinks = isSpanish
     ? [
-        { label: 'Acerca de', path: '/es/about' },
+        { label: 'Acerca de', path: '/es/acerca' },
         {
           label: 'Servicios',
-          path: '/es/services',
+          path: '/es/servicios',
           submenu: [
-            { label: 'Odontología General', path: '/es/services/general' },
-            { label: 'Odontología Cosmética', path: '/es/services/cosmetic' },
-            { label: 'Odontología Restauradora', path: '/es/services/restorative' },
-            { label: 'Ortodoncia', path: '/es/services/orthodontics' },
+            { label: 'Odontología General', path: '/es/servicios/general' },
+            { label: 'Odontología Cosmética', path: '/es/servicios/cosmetica' },
+            { label: 'Odontología Restauradora', path: '/es/servicios/restauracion' },
+            { label: 'Ortodoncia', path: '/es/servicios/ortodoncia' },
           ]
         },
-        { label: 'Financiamiento', path: '/es/financing' },
+        { label: 'Financiamiento', path: '/es/financiacion' },
         { label: 'Blog', path: '/es/blog' },
-        { label: 'Pacientes Nuevos', path: '/es/new-patients' },
-        { label: 'Contacto', path: '/es/contact' },
+        { label: 'Pacientes Nuevos', path: '/es/nuevos-pacientes' },
+        { label: 'Contacto', path: '/es/contacto' },
       ]
     : [
         { label: 'About', path: '/about' },
@@ -110,7 +128,7 @@ export default function Navbar() {
       ];
 
   const bookLabel = isSpanish ? 'Reservar Cita' : 'Book Appointment';
-  const bookPath = isSpanish ? '/es/contact' : '/contact';
+  const bookPath = isSpanish ? '/es/contacto' : '/contact';
   const phoneLabel = '(281) 823-9987';
   const addressLabel = isSpanish ? '12523 Greenspoint Dr, Houston' : '12523 Greenspoint Dr, Houston';
 

@@ -28,7 +28,7 @@ export default function CosmeticDentistryES() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 items-stretch min-h-96">
             <div className="flex flex-col justify-center">
-              <Link to="/es/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
+              <Link to="/es/servicios" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
               <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Odontología Cosmética</h1>
               <p className="text-lg text-muted-foreground leading-relaxed">Tu sonrisa es una de las cosas más poderosas que tienes. Abre puertas, construye conexiones y aumenta la confianza. Si no estás feliz con tu sonrisa, podemos ayudarte a cambiarla — y puede ser más asequible de lo que piensas.</p>
             </div>
@@ -81,7 +81,7 @@ export default function CosmeticDentistryES() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl text-foreground mb-4">Consulta Cosmética Gratuita</h2>
           <p className="text-muted-foreground mb-8">Ven y hablemos sobre tus objetivos de sonrisa. Sin presión, sin obligación — solo consejo honesto y una idea clara de tus opciones y costos.</p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-8 font-semibold">Programa Tu Consulta Gratuita</Button>
           </Link>
         </div>

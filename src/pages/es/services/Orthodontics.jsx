@@ -26,7 +26,7 @@ export default function OrthodonticsES() {
       <section className="bg-gradient-to-br from-chart-4/5 via-background to-primary/5 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
-            <Link to="/es/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
+            <Link to="/es/servicios" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Ortodoncia</h1>
             <p className="text-lg text-muted-foreground leading-relaxed">Una sonrisa recta y alineada no se trata solo de apariencia — se trata de salud, confianza y calidad de vida. El Dr. Bosse tiene décadas de experiencia en ortodoncia y te ayudará a ti o a tu hijo a encontrar el tratamiento correcto a un precio que funcione.</p>
           </div>
@@ -61,7 +61,7 @@ export default function OrthodonticsES() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h3 className="font-heading text-2xl text-foreground mb-3">Los Aparatos No Deben Arruinar Tu Bolsillo</h3>
           <p className="text-muted-foreground mb-6">Ofrecemos planes de pago internos, financiamiento CareCredit y HELPcard para que tu familia pueda costear la atención de ortodoncia. Muchos pacientes pagan tan poco como la factura del celular por mes.</p>
-          <Link to="/es/financing">
+          <Link to="/es/financiacion">
             <Button variant="outline" className="rounded-full px-8 border-primary/30 text-primary">Ver Opciones de Financiamiento</Button>
           </Link>
         </div>
@@ -85,7 +85,7 @@ export default function OrthodonticsES() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl text-foreground mb-4">Consulta Ortodóntica Gratuita</h2>
           <p className="text-muted-foreground mb-8">Descubre qué opción es la correcta para ti o tu hijo. Sin costo, sin obligación. Se habla español.</p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Programa Tu Consulta Gratuita</Button>
           </Link>
         </div>

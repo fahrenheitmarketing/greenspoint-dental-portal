@@ -29,7 +29,7 @@ export default function RestorativeDentistryES() {
       <section className="bg-gradient-to-br from-accent/5 via-background to-primary/5 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
-            <Link to="/es/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
+            <Link to="/es/servicios" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Odontología Restauradora</h1>
             <p className="text-lg text-muted-foreground leading-relaxed">Ya sea que necesites una sola corona o una restauración completa de sonrisa, estamos aquí para ayudar — con compasión, habilidad y opciones de pago flexibles. Este es un espacio sin prejuicios, y tu nuevo comienzo empieza aquí.</p>
           </div>
@@ -79,7 +79,7 @@ export default function RestorativeDentistryES() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl text-foreground mb-4">Tu Restauración de Sonrisa Comienza Aquí</h2>
           <p className="text-muted-foreground mb-8">Consulta gratuita. Precios claros. Financiamiento disponible. Se habla español.</p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Programa Tu Consulta Gratuita</Button>
           </Link>
         </div>

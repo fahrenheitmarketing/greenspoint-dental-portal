@@ -113,7 +113,7 @@ export default function AboutES() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl text-foreground mb-4">¿Listo para Experimentar la Diferencia?</h2>
           <p className="text-muted-foreground mb-8">Tu primera consulta es gratuita. Ven a ver por qué las familias del área de Greenspoint han confiado en nosotros con sus sonrisas durante más de 25 años.</p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
               Programa Tu Consulta Gratuita
             </Button>

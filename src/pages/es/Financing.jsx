@@ -144,7 +144,7 @@ export default function FinancingES() {
             <a href="tel:2818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Llamar (281) 823-9987</Button>
             </a>
-            <Link to="/es/contact">
+            <Link to="/es/contacto">
               <Button size="lg" variant="outline" className="rounded-full px-8 font-semibold border-primary/30 text-primary">Enviar un Mensaje</Button>
             </Link>
           </div>

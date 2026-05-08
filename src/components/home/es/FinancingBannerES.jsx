@@ -28,7 +28,7 @@ export default function FinancingBannerES() {
               <p className="text-primary-foreground/80 leading-relaxed mb-8">
                 Entendemos que el trabajo dental puede ser costoso, especialmente para tratamientos más grandes como aparatos, implantes o coronas. Por eso ofrecemos múltiples opciones de financiamiento para ayudarte a distribuir el costo en pagos mensuales manejables. Tu salud es demasiado importante para posponerla.
               </p>
-              <Link to="/es/financing">
+              <Link to="/es/financiacion">
                 <Button size="lg" className="bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full px-8 font-semibold transition-all duration-200">Ver Todas las Opciones de Financiamiento</Button>
               </Link>
             </div>

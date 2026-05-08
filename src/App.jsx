@@ -82,17 +82,17 @@ const AuthenticatedApp = () => {
 
         {/* Spanish routes */}
         <Route path="/es" element={<HomeES />} />
-        <Route path="/es/about" element={<AboutES />} />
-        <Route path="/es/services" element={<ServicesES />} />
-        <Route path="/es/services/general" element={<GeneralDentistryES />} />
-        <Route path="/es/services/cosmetic" element={<CosmeticDentistryES />} />
-        <Route path="/es/services/restorative" element={<RestorativeDentistryES />} />
-        <Route path="/es/services/orthodontics" element={<OrthodonticsES />} />
-        <Route path="/es/financing" element={<FinancingES />} />
-        <Route path="/es/new-patients" element={<NewPatientsES />} />
+        <Route path="/es/acerca" element={<AboutES />} />
+        <Route path="/es/servicios" element={<ServicesES />} />
+        <Route path="/es/servicios/general" element={<GeneralDentistryES />} />
+        <Route path="/es/servicios/cosmetica" element={<CosmeticDentistryES />} />
+        <Route path="/es/servicios/restauracion" element={<RestorativeDentistryES />} />
+        <Route path="/es/servicios/ortodoncia" element={<OrthodonticsES />} />
+        <Route path="/es/financiacion" element={<FinancingES />} />
+        <Route path="/es/nuevos-pacientes" element={<NewPatientsES />} />
         <Route path="/es/blog" element={<BlogES />} />
         <Route path="/es/blog/:slug" element={<BlogPostPageES />} />
-        <Route path="/es/contact" element={<ContactES />} />
+        <Route path="/es/contacto" element={<ContactES />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Route>

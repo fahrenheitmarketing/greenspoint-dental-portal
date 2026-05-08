@@ -28,7 +28,7 @@ export default function GeneralDentistryES() {
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-3xl">
-            <Link to="/es/services" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
+            <Link to="/es/servicios" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← Todos los Servicios</Link>
             <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Odontología General</h1>
             <p className="text-lg text-muted-foreground leading-relaxed">Una boca saludable comienza con lo básico. Limpiezas regulares, exámenes y cuidado preventivo son la base de una vida de dientes y encías saludables.</p>
           </div>
@@ -77,7 +77,7 @@ export default function GeneralDentistryES() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl text-foreground mb-4">¿Listo para una Experiencia Dental Cómoda?</h2>
           <p className="text-muted-foreground mb-8">Examen para paciente nuevo, radiografías y limpieza por solo $99. Sin costos ocultos.</p>
-          <Link to="/es/contact">
+          <Link to="/es/contacto">
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Programa Tu Cita</Button>
           </Link>
         </div>

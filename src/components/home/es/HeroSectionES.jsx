@@ -26,7 +26,7 @@ export default function HeroSectionES() {
               <span>De confianza en Greenspoint desde 1997</span>
             </div>
             <div className="flex flex-wrap gap-4 mb-10">
-              <Link to="/es/contact">
+              <Link to="/es/contacto">
                 <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 text-base font-semibold">Programa Tu Visita</Button>
               </Link>
               <span>

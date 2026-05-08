@@ -9,28 +9,28 @@ const services = [
     title: 'Odontología General',
     description: 'Exámenes de rutina, limpiezas profesionales, empastes, selladores y detección de cáncer oral. La base de una sonrisa saludable para ti y tu familia.',
     items: ['Exámenes y Limpiezas', 'Empastes', 'Selladores', 'Detección de Cáncer Oral', 'Atención de Emergencia', 'Sedación con Óxido Nitroso'],
-    path: '/es/services/general',
+    path: '/es/servicios/general',
     color: 'from-primary/10 to-primary/5',
   },
   {
     title: 'Odontología Cosmética',
     description: 'Blanqueamiento, carillas de porcelana, Invisalign, restauraciones de sonrisa y más. Tu sonrisa es una de las primeras cosas que la gente nota — deja que brille.',
     items: ['Blanqueamiento Zoom!', 'Carillas de Porcelana', 'Alineadores Invisalign', 'Restauraciones de Sonrisa', 'Adhesión Dental', 'Contorneado de Encía'],
-    path: '/es/services/cosmetic',
+    path: '/es/servicios/cosmetica',
     color: 'from-secondary/10 to-secondary/5',
   },
   {
     title: 'Odontología Restauradora',
     description: 'Coronas, puentes, implantes, dentaduras, endodoncias y rehabilitación bucal completa. Restauraremos tu sonrisa y tu confianza, sin importar el punto de partida.',
     items: ['Coronas Dentales', 'Puentes', 'Implantes Dentales', 'Dentaduras', 'Terapia de Endodoncia', 'Rehabilitación Bucal Completa'],
-    path: '/es/services/restorative',
+    path: '/es/servicios/restauracion',
     color: 'from-accent/10 to-accent/5',
   },
   {
     title: 'Ortodoncia',
     description: 'Aparatos metálicos tradicionales, aparatos cerámicos e Invisalign para todas las edades. Una sonrisa recta es posible a cualquier edad, y nuestros planes de pago la hacen asequible.',
     items: ['Aparatos Metálicos', 'Aparatos Cerámicos', 'Invisalign', 'Retenedores', 'Ortodoncia Infantil y Juvenil', 'Ortodoncia para Adultos'],
-    path: '/es/services/orthodontics',
+    path: '/es/servicios/ortodoncia',
     color: 'from-chart-4/10 to-chart-4/5',
   },
 ];
@@ -90,10 +90,10 @@ export default function ServicesES() {
             Ofrecemos opciones de financiamiento flexible para todos los tratamientos. No dejes que el costo te impida obtener la atención que mereces. Encontremos un plan que funcione para ti.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/es/financing">
+            <Link to="/es/financiacion">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Ver Opciones de Financiamiento</Button>
             </Link>
-            <Link to="/es/contact">
+            <Link to="/es/contacto">
               <Button size="lg" variant="outline" className="rounded-full px-8 font-semibold border-primary/30 text-primary">Consulta Gratuita</Button>
             </Link>
           </div>
