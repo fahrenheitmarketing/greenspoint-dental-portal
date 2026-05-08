@@ -31,7 +31,7 @@ const routeMap = {
     '/services/restorative': '/es/services/restorative',
     '/services/orthodontics': '/es/services/orthodontics',
     '/financing': '/es/financing',
-    '/blog': '/blog',
+    '/blog': '/es/blog',
     '/new-patients': '/es/new-patients',
     '/contact': '/es/contact',
     '/service-areas': '/service-areas',
@@ -43,6 +43,7 @@ const routeMap = {
     '/es/services/restorative': '/es/services/restorative',
     '/es/services/orthodontics': '/es/services/orthodontics',
     '/es/financing': '/es/financing',
+    '/es/blog': '/es/blog',
     '/es/new-patients': '/es/new-patients',
     '/es/contact': '/es/contact',
   }
@@ -50,7 +51,8 @@ const routeMap = {
 
 // Normalize current path to its EN equivalent
 function toEnPath(path) {
-  return path.replace(/^\/es/, '') || '/';
+  if (path === '/es' || path === '/es/') return '/';
+  return path.replace(/^\/es\//, '/') || '/';
 }
 
 export default function Navbar() {
@@ -85,7 +87,7 @@ export default function Navbar() {
           ]
         },
         { label: 'Financiamiento', path: '/es/financing' },
-        { label: 'Blog', path: '/blog' },
+        { label: 'Blog', path: '/es/blog' },
         { label: 'Pacientes Nuevos', path: '/es/new-patients' },
         { label: 'Contacto', path: '/es/contact' },
       ]

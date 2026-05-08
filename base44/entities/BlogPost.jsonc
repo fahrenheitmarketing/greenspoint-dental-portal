@@ -4,19 +4,31 @@
   "properties": {
     "title": {
       "type": "string",
-      "description": "Blog post title"
+      "description": "Blog post title (English)"
+    },
+    "title_es": {
+      "type": "string",
+      "description": "Blog post title (Spanish)"
     },
     "slug": {
       "type": "string",
-      "description": "URL-friendly slug"
+      "description": "URL-friendly slug (shared between EN and ES)"
     },
     "excerpt": {
       "type": "string",
-      "description": "Short summary for previews"
+      "description": "Short summary for previews (English)"
+    },
+    "excerpt_es": {
+      "type": "string",
+      "description": "Short summary for previews (Spanish)"
     },
     "content": {
       "type": "string",
-      "description": "Full blog post content in markdown"
+      "description": "Full blog post content in markdown (English)"
+    },
+    "content_es": {
+      "type": "string",
+      "description": "Full blog post content in markdown (Spanish)"
     },
     "category": {
       "type": "string",

@@ -32,6 +32,8 @@ import ServicesES from './pages/es/Services';
 import FinancingES from './pages/es/Financing';
 import NewPatientsES from './pages/es/NewPatients';
 import ContactES from './pages/es/Contact';
+import BlogES from './pages/es/Blog';
+import BlogPostPageES from './pages/es/BlogPost';
 import GeneralDentistryES from './pages/es/services/GeneralDentistry';
 import CosmeticDentistryES from './pages/es/services/CosmeticDentistry';
 import RestorativeDentistryES from './pages/es/services/RestorativeDentistry';
@@ -88,6 +90,8 @@ const AuthenticatedApp = () => {
         <Route path="/es/services/orthodontics" element={<OrthodonticsES />} />
         <Route path="/es/financing" element={<FinancingES />} />
         <Route path="/es/new-patients" element={<NewPatientsES />} />
+        <Route path="/es/blog" element={<BlogES />} />
+        <Route path="/es/blog/:slug" element={<BlogPostPageES />} />
         <Route path="/es/contact" element={<ContactES />} />
 
         <Route path="*" element={<PageNotFound />} />
