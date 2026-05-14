@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Phone, MapPin, Clock, Heart } from 'lucide-react';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
+const LOGO_WHITE_URL = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/0710677bc_LogoWhitetext.svg";
 
 export default function Footer() {
   const location = useLocation();
@@ -70,9 +71,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <div className="inline-block bg-white rounded-lg p-2 mb-4">
-              <img src={LOGO_URL} alt="Greenspoint Dental" className="h-10 w-auto" />
-            </div>
+            <img src={LOGO_WHITE_URL} alt="Greenspoint Dental" className="h-12 w-auto mb-4" />
             <p className="text-background/60 text-sm leading-relaxed mb-4">
               {isSpanish
                 ? 'Sirviendo a la comunidad de Greenspoint con atención dental compasiva y asequible desde 1997. Nuestro equipo bilingüe está aquí para ayudarte a sonreír con confianza.'
