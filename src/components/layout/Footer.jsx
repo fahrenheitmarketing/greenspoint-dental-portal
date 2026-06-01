@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, MapPin, Clock, Heart, Facebook } from 'lucide-react';
+import { Phone, MapPin, Clock, Heart, Facebook, Instagram } from 'lucide-react';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
 const LOGO_WHITE_URL = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/0710677bc_LogoWhitetext.svg";
@@ -81,15 +81,26 @@ export default function Footer() {
               <Heart className="w-4 h-4" />
               <span>{isSpanish ? 'Una Práctica Sin Prejuicios' : 'A Judgment-Free Practice'}</span>
             </div>
-            <a
-              href="https://www.facebook.com/GreensPointDental/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm"
-            >
-              <Facebook className="w-5 h-5" />
-              <span>Follow us on Facebook</span>
-            </a>
+            <div className="flex flex-col gap-2">
+              <a
+                href="https://www.facebook.com/GreensPointDental/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm"
+              >
+                <Facebook className="w-5 h-5" />
+                <span>Follow us on Facebook</span>
+              </a>
+              <a
+                href="https://www.instagram.com/explore/locations/1860806004213291/greenspoint-dental/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm"
+              >
+                <Instagram className="w-5 h-5" />
+                <span>Find us on Instagram</span>
+              </a>
+            </div>
           </div>
 
           {/* Quick Links */}
