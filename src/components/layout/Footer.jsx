@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, MapPin, Clock, Heart } from 'lucide-react';
+import { Phone, MapPin, Clock, Heart, Facebook } from 'lucide-react';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
 const LOGO_WHITE_URL = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/0710677bc_LogoWhitetext.svg";
@@ -77,10 +77,19 @@ export default function Footer() {
                 ? 'Sirviendo a la comunidad de Greenspoint con atención dental compasiva y asequible desde 1997. Nuestro equipo bilingüe está aquí para ayudarte a sonreír con confianza.'
                 : 'Serving the Greenspoint community with compassionate, affordable dental care since 1997. Our bilingual team is here to help you smile with confidence.'}
             </p>
-            <div className="flex items-center gap-2 text-secondary text-sm font-medium">
+            <div className="flex items-center gap-2 text-secondary text-sm font-medium mb-4">
               <Heart className="w-4 h-4" />
               <span>{isSpanish ? 'Una Práctica Sin Prejuicios' : 'A Judgment-Free Practice'}</span>
             </div>
+            <a
+              href="https://www.facebook.com/GreensPointDental/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm"
+            >
+              <Facebook className="w-5 h-5" />
+              <span>Follow us on Facebook</span>
+            </a>
           </div>
 
           {/* Quick Links */}
