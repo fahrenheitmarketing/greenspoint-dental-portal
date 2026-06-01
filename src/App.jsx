@@ -14,6 +14,7 @@ import GeneralDentistry from './pages/services/GeneralDentistry';
 import CosmeticDentistry from './pages/services/CosmeticDentistry';
 import RestorativeDentistry from './pages/services/RestorativeDentistry';
 import Orthodontics from './pages/services/Orthodontics';
+import Specials from './pages/services/Specials';
 import Financing from './pages/Financing';
 import Blog from './pages/Blog';
 import BlogPostPage from './pages/BlogPost';
@@ -69,6 +70,7 @@ const AuthenticatedApp = () => {
         <Route path="/services/cosmetic" element={<CosmeticDentistry />} />
         <Route path="/services/restorative" element={<RestorativeDentistry />} />
         <Route path="/services/orthodontics" element={<Orthodontics />} />
+        <Route path="/services/specials" element={<Specials />} />
         <Route path="/financing" element={<Financing />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
