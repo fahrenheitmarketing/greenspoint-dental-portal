@@ -10,14 +10,14 @@ const ORTHO_IMAGE = "https://media.base44.com/images/public/69e928fd4b865057d3a6
 const veneerPackages = [
   {
     label: 'Set of 4',
-    price: '$2,500',
-    note: '$625 per veneer',
+    price: '$2,780',
+    note: '$695 per veneer',
     description: 'Perfect for refreshing your front four teeth — the ones that show most when you smile.',
   },
   {
     label: 'Set of 6',
-    price: '$3,750',
-    note: '$625 per veneer',
+    price: '$4,170',
+    note: '$695 per veneer',
     description: 'Our most popular package. Covers your full smile zone for a completely transformed look.',
   },
 ];
@@ -77,13 +77,13 @@ export default function Specials() {
                 <Star className="w-3.5 h-3.5" /> Featured Special
               </div>
               <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-                Porcelain Veneers — <span className="text-primary">$625 Each</span>
+                Porcelain Veneers — <span className="text-primary">$695 Each</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Porcelain veneers are one of the most powerful tools in cosmetic dentistry — ultra-thin, custom-crafted shells that bond to the front of your teeth to create a flawless, natural-looking smile. Whether you're dealing with staining that whitening can't fix, chips, gaps, or teeth that just never looked quite right, veneers can correct it all in as few as two visits.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                At Greenspoint Dental, we price our veneers at <strong className="text-foreground">$625 per veneer</strong> — significantly below the Houston market average — because we believe a beautiful smile shouldn't require a second mortgage.
+                At Greenspoint Dental, we price our veneers at <strong className="text-foreground">$695 per veneer</strong> (when receiving 4–6 veneers) — significantly below the Houston market average — because we believe a beautiful smile shouldn't require a second mortgage.
               </p>
 
               {/* Packages */}
