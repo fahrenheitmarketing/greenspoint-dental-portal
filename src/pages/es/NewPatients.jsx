@@ -106,11 +106,11 @@ export default function NewPatientsES() {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { name: 'Información del Paciente', url: 'https://greenspointdental.com/app/uploads/2024/04/patient-information.pdf' },
-              { name: 'Formulario de Historial Médico', url: 'https://greenspointdental.com/app/uploads/2024/04/medical-history-form.pdf' },
-              { name: 'Consentimiento Informado para Tratamiento', url: 'https://greenspointdental.com/app/uploads/2024/04/INFORMED-CONSENT-FOR-TREATMENT.pdf' },
-              { name: 'Reconocimiento de Recepción', url: 'https://greenspointdental.com/app/uploads/2024/04/acknowledgement-of-receipt.pdf' },
-              { name: 'Política de Privacidad', url: 'https://greenspointdental.com/app/uploads/2024/04/privacy.pdf' },
+              { name: 'Información del Paciente', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/6b3dc7a8c_patient-information.pdf' },
+              { name: 'Formulario de Historial Médico', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/a241ed784_medical-history-form.pdf' },
+              { name: 'Consentimiento Informado para Tratamiento', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/1a3fd91a8_INFORMED-CONSENT-FOR-TREATMENT.pdf' },
+              { name: 'Reconocimiento de Recepción', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/34e68004b_acknowledgement-of-receipt.pdf' },
+              { name: 'Política de Privacidad', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/7fb01bef4_privacy.pdf' },
             ].map((form, i) => (
               <motion.a key={form.name} href={form.url} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="p-6 rounded-2xl bg-card border border-border hover:shadow-lg hover:border-primary/20 transition-all flex items-center gap-4 group">
                 <Download className="w-6 h-6 text-primary shrink-0 group-hover:scale-110 transition-transform" />

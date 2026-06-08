@@ -169,11 +169,11 @@ export default function NewPatients() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { name: 'Patient Information', url: 'https://greenspointdental.com/app/uploads/2024/04/patient-information.pdf' },
-              { name: 'Medical History Form', url: 'https://greenspointdental.com/app/uploads/2024/04/medical-history-form.pdf' },
-              { name: 'Informed Consent for Treatment', url: 'https://greenspointdental.com/app/uploads/2024/04/INFORMED-CONSENT-FOR-TREATMENT.pdf' },
-              { name: 'Acknowledgement of Receipt', url: 'https://greenspointdental.com/app/uploads/2024/04/acknowledgement-of-receipt.pdf' },
-              { name: 'Privacy Policy', url: 'https://greenspointdental.com/app/uploads/2024/04/privacy.pdf' },
+              { name: 'Patient Information', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/6b3dc7a8c_patient-information.pdf' },
+              { name: 'Medical History Form', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/a241ed784_medical-history-form.pdf' },
+              { name: 'Informed Consent for Treatment', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/1a3fd91a8_INFORMED-CONSENT-FOR-TREATMENT.pdf' },
+              { name: 'Acknowledgement of Receipt', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/34e68004b_acknowledgement-of-receipt.pdf' },
+              { name: 'Privacy Policy', url: 'https://media.base44.com/files/public/69e928fd4b865057d3a65de3/7fb01bef4_privacy.pdf' },
             ].map((form, i) => (
               <motion.a
                 key={form.name}
