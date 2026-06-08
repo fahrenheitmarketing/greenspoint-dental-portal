@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import SmileSimulator from '@/components/services/SmileSimulator';
 
 const services = [
   {
@@ -98,6 +99,8 @@ export default function RestorativeDentistry() {
           </div>
         </div>
       </section>
+
+      <SmileSimulator />
 
       <section className="py-20 bg-muted/50">
         <div className="max-w-3xl mx-auto px-4">
