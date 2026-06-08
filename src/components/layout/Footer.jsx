@@ -92,7 +92,7 @@ export default function Footer() {
                 <span>Follow us on Facebook</span>
               </a>
               <a
-                href="https://www.instagram.com/explore/locations/1860806004213291/greenspoint-dental/"
+                href="https://www.instagram.com/greenspointdental/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm"
