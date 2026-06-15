@@ -100,6 +100,20 @@ export default function Footer() {
                 <Instagram className="w-5 h-5" />
                 <span>Find us on Instagram</span>
               </a>
+              <a
+                href="https://x.com/GreensPointDMD"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm group"
+              >
+                <img
+                  src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/1438f244a_x-icon.svg"
+                  alt="X (Twitter)"
+                  className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity"
+                  style={{ filter: 'invert(1)' }}
+                />
+                <span>Follow us on X</span>
+              </a>
             </div>
           </div>
 
