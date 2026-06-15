@@ -104,14 +104,11 @@ export default function Footer() {
                 href="https://x.com/GreensPointDMD"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm group"
+                className="inline-flex items-center gap-2 text-background/50 hover:text-secondary transition-colors text-sm"
               >
-                <img
-                  src="https://media.base44.com/images/public/69e928fd4b865057d3a65de3/1438f244a_x-icon.svg"
-                  alt="X (Twitter)"
-                  className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity"
-                  style={{ filter: 'invert(1)' }}
-                />
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
                 <span>Follow us on X</span>
               </a>
             </div>
