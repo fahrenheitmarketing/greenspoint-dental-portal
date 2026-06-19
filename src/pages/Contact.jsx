@@ -1,15 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, MapPin, Clock, Globe, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const RECAPTCHA_SITE_KEY = '6LdgfCgtAAAAANoWl1_s1qnYnxQnyeXgyij4t3MI';
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '', honeypot: '' });
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [recaptchaError, setRecaptchaError] = useState(false);
+  const recaptchaRef = useRef(null);
+
+  useEffect(() => {
+    // Load reCAPTCHA script if not already present
+    if (!document.getElementById('recaptcha-script')) {
+      const script = document.createElement('script');
+      script.id = 'recaptcha-script';
+      script.src = 'https://www.google.com/recaptcha/api.js';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+
+    // Expose callback for reCAPTCHA
+    window.onRecaptchaSuccess = (token) => {
+      setRecaptchaToken(token);
+      setRecaptchaError(false);
+    };
+    window.onRecaptchaExpired = () => {
+      setRecaptchaToken(null);
+    };
+
+    return () => {
+      delete window.onRecaptchaSuccess;
+      delete window.onRecaptchaExpired;
+    };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Honeypot check — bots fill hidden fields, humans don't
+    if (form.honeypot) return;
+    // reCAPTCHA check
+    if (!recaptchaToken) {
+      setRecaptchaError(true);
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -50,6 +89,19 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* Honeypot — hidden from real users, bots fill it */}
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex="-1"
+                      autoComplete="off"
+                      value={form.honeypot}
+                      onChange={(e) => setForm({ ...form, honeypot: e.target.value })}
+                    />
+                  </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium text-foreground mb-1.5 block">First Name *</label>
@@ -102,6 +154,20 @@ export default function Contact() {
                       className="rounded-xl"
                     />
                   </div>
+                  {/* reCAPTCHA v2 */}
+                  <div>
+                    <div
+                      ref={recaptchaRef}
+                      className="g-recaptcha"
+                      data-sitekey={RECAPTCHA_SITE_KEY}
+                      data-callback="onRecaptchaSuccess"
+                      data-expired-callback="onRecaptchaExpired"
+                    />
+                    {recaptchaError && (
+                      <p className="text-sm text-destructive mt-2">Please complete the reCAPTCHA to continue.</p>
+                    )}
+                  </div>
+
                   <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 rounded-full font-semibold">
                     Request Appointment
                   </Button>
