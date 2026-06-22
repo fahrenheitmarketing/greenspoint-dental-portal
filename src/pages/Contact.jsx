@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Phone, MapPin, Clock, Globe, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const RECAPTCHA_SITE_KEY = '6LdgfCgtAAAAANoWl1_s1qnYnxQnyeXgyij4t3MI';
+const RECAPTCHA_SITE_KEY = '6LcTHy4tAAAAANjcJOlUDHUDrIKcXILH28Sh_CYt';
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
