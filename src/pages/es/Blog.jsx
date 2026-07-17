@@ -46,7 +46,8 @@ export default function BlogES() {
     const matchesSearch = !searchQuery ||
       title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch && post.published !== false;
+    const hasSpanishContent = !!(post.title_es || post.content_es);
+    return matchesCategory && matchesSearch && post.published !== false && hasSpanishContent;
   });
 
   const displayed = filtered.slice(0, displayCount);

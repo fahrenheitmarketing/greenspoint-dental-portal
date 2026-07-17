@@ -51,7 +51,8 @@ export default function Blog() {
     const matchesSearch = !searchQuery || 
       post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch && post.published !== false;
+    const isEnglishPost = !post.title_es && !post.content_es;
+    return matchesCategory && matchesSearch && post.published !== false && isEnglishPost;
   });
 
   const displayed = filtered.slice(0, displayCount);
