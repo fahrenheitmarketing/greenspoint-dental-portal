@@ -46,8 +46,7 @@ export default function BlogES() {
     const matchesSearch = !searchQuery ||
       title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    // Spanish blog: show only Spanish posts (identified by a populated title_es field)
-    return matchesCategory && matchesSearch && post.published !== false && !!post.title_es;
+    return matchesCategory && matchesSearch && post.published !== false;
   });
 
   const displayed = filtered.slice(0, displayCount);

@@ -51,8 +51,7 @@ export default function Blog() {
     const matchesSearch = !searchQuery || 
       post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase());
-    // English blog: show only English posts (Spanish posts carry a title_es field)
-    return matchesCategory && matchesSearch && post.published !== false && !post.title_es;
+    return matchesCategory && matchesSearch && post.published !== false;
   });
 
   const displayed = filtered.slice(0, displayCount);
