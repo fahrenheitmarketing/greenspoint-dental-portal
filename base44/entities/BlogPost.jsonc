@@ -14,6 +14,10 @@
       "type": "string",
       "description": "URL-friendly slug (shared between EN and ES)"
     },
+    "translation_slug": {
+      "type": "string",
+      "description": "Slug of the counterpart translated post (ES slug for EN posts, EN slug for ES posts)"
+    },
     "excerpt": {
       "type": "string",
       "description": "Short summary for previews (English)"
