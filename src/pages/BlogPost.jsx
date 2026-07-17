@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, User, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import RelatedContent from '@/components/blog/RelatedContent';
+import BlogLanguageSwitcher from '@/components/blog/BlogLanguageSwitcher';
 import { serviceLinks } from '@/lib/serviceLinks';
 
 const categoryLabels = {
@@ -172,6 +173,7 @@ export default function BlogPostPage() {
                   {post.content.replace(/^# .*\n/, '')}
                 </ReactMarkdown>
               </article>
+              <BlogLanguageSwitcher slug={post.slug} current="en" />
             </div>
 
             {/* Sidebar */}
