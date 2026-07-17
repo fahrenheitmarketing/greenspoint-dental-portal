@@ -8,7 +8,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, Clock, User, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
-import RelatedContent from '@/components/blog/RelatedContent';
 import LanguageSwitcher from '@/components/blog/LanguageSwitcher';
 import { serviceLinks } from '@/lib/serviceLinks';
 
@@ -150,36 +149,26 @@ export default function BlogPostPage() {
 
       {/* Content */}
       <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              {post.image_url && (
-                <img
-                  src={post.image_url}
-                  alt={post.title}
-                  className="w-full rounded-2xl shadow-lg mb-12"
-                />
-              )}
-              <article className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-2">
-                <ReactMarkdown 
-                  components={{ 
-                    p: ParagraphWithLinks,
-                    ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-2 text-muted-foreground my-4" {...props} />,
-                    ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-2 text-muted-foreground my-4" {...props} />,
-                    li: ({node, ...props}) => <li className="text-muted-foreground" {...props} />
-                  }}
-                >
-                  {post.content.replace(/^# .*\n/, '')}
-                </ReactMarkdown>
-              </article>
-            </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <RelatedContent currentPostId={post.id} category={post.category} />
-            </div>
-          </div>
+        <div className="max-w-3xl mx-auto px-4">
+          {post.image_url && (
+            <img
+              src={post.image_url}
+              alt={post.title}
+              className="w-full rounded-2xl shadow-lg mb-12"
+            />
+          )}
+          <article className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-2">
+            <ReactMarkdown 
+              components={{ 
+                p: ParagraphWithLinks,
+                ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-2 text-muted-foreground my-4" {...props} />,
+                ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-2 text-muted-foreground my-4" {...props} />,
+                li: ({node, ...props}) => <li className="text-muted-foreground" {...props} />
+              }}
+            >
+              {post.content.replace(/^# .*\n/, '')}
+            </ReactMarkdown>
+          </article>
         </div>
       </section>
 
