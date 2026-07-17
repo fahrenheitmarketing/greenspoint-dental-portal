@@ -19,7 +19,6 @@ const categoryLabels = {
   'insurance-financing': 'Insurance & Financing',
   'dental-health': 'Dental Health',
   'smile-confidence': 'Smile & Confidence',
-  'affordable-dentistry': 'Affordable Dentistry',
   'community': 'Community',
 };
 
@@ -32,7 +31,6 @@ const categoryColors = {
   'insurance-financing': 'bg-chart-5/10 text-chart-5',
   'dental-health': 'bg-primary/10 text-primary',
   'smile-confidence': 'bg-accent/10 text-accent',
-  'affordable-dentistry': 'bg-secondary/10 text-secondary',
   'community': 'bg-chart-1/10 text-chart-1',
 };
 
