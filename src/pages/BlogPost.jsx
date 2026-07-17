@@ -174,21 +174,6 @@ export default function BlogPostPage() {
 
       {/* Language switcher */}
       <LanguageSwitcher currentLang="en" translationSlug={post.translation_slug} />
-
-      {/* CTA */}
-      <section className="py-16 bg-primary/5 mt-8">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h3 className="font-heading text-2xl text-foreground mb-4">Questions About Your Dental Health?</h3>
-          <p className="text-muted-foreground mb-8 text-lg">
-            Our bilingual team is happy to answer any questions. Schedule a free consultation today.
-          </p>
-          <Link to="/contact">
-            <Button className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
-              Schedule a Visit
-            </Button>
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

@@ -127,21 +127,6 @@ export default function BlogPostPageES() {
 
       {/* Language switcher */}
       <LanguageSwitcher currentLang="es" translationSlug={post.translation_slug} />
-
-      {/* CTA */}
-      <section className="py-16 bg-primary/5 mt-8">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h3 className="font-heading text-2xl text-foreground mb-4">¿Tienes preguntas sobre tu salud dental?</h3>
-          <p className="text-muted-foreground mb-8 text-lg">
-            Nuestro equipo bilingüe está feliz de responder tus preguntas. Programa una consulta gratuita hoy.
-          </p>
-          <Link to="/es/contacto">
-            <Button className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
-              Programa Tu Visita
-            </Button>
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }
