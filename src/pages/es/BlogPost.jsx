@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, User, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import ReactMarkdown from 'react-markdown';
+import LanguageSwitcher from '@/components/blog/LanguageSwitcher';
 
 const categoryLabels = {
   'general-dentistry': 'Odontología General',
@@ -121,6 +122,7 @@ export default function BlogPostPageES() {
               {content.replace(/^# .*\n/, '')}
             </ReactMarkdown>
           </article>
+          <LanguageSwitcher slug={post.slug} current="es" />
         </div>
       </section>
 
