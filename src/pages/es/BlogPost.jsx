@@ -59,7 +59,11 @@ export default function BlogPostPageES() {
   }
 
   const title = post.title_es || post.title;
-  const content = post.content_es || post.content;
+  let content = post.content_es || post.content || '';
+  // Reconstruct content split across content_es + content for oversized posts
+  if (content.includes('<!--BASE44_SPLIT-->')) {
+    content = content.replace('<!--BASE44_SPLIT-->', '') + (post.content || '');
+  }
 
   return (
     <div>
