@@ -120,7 +120,6 @@ export default function Navbar() {
             { label: 'Cosmetic Dentistry', path: '/services/cosmetic' },
             { label: 'Restorative Dentistry', path: '/services/restorative' },
             { label: 'Orthodontics', path: '/services/orthodontics' },
-            { label: '⭐ Specials', path: '/services/specials' },
           ]
         },
         { label: 'Financing', path: '/financing' },
