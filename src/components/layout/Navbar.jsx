@@ -108,6 +108,7 @@ export default function Navbar() {
         { label: 'Blog', path: '/es/blog' },
         { label: 'Pacientes Nuevos', path: '/es/nuevos-pacientes' },
         { label: 'Contacto', path: '/es/contacto' },
+        { label: '⭐ Ofertas', path: '/services/specials' },
       ]
     : [
         { label: 'About', path: '/about' },
@@ -126,6 +127,7 @@ export default function Navbar() {
         { label: 'Blog', path: '/blog' },
         { label: 'New Patients', path: '/new-patients' },
         { label: 'Contact', path: '/contact' },
+        { label: '⭐ Specials', path: '/services/specials' },
       ];
 
   const bookLabel = isSpanish ? 'Reservar Cita' : 'Book Appointment';
