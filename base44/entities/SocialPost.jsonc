@@ -1,0 +1,84 @@
+{
+  "name": "SocialPost",
+  "type": "object",
+  "properties": {
+    "platform": {
+      "type": "string",
+      "enum": [
+        "facebook",
+        "instagram",
+        "twitter",
+        "google_business"
+      ],
+      "description": "Target social platform"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Content topic/theme used for generation and image prompts"
+    },
+    "content": {
+      "type": "string",
+      "description": "Post copy/caption"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "AI-generated brand-compliant image for this post"
+    },
+    "resized_image_url": {
+      "type": "string",
+      "description": "Platform-specific cover-cropped image ready for publishing"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending",
+        "approved",
+        "rejected",
+        "ready_to_publish",
+        "scheduled",
+        "published"
+      ],
+      "default": "draft",
+      "description": "Approval/publish status"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date this post is scheduled to go out"
+    },
+    "campaign_month": {
+      "type": "string",
+      "description": "Label for the campaign month, e.g. 'August 2026'"
+    },
+    "clickup_task_id": {
+      "type": "string",
+      "description": "Synced ClickUp subtask ID"
+    },
+    "clickup_list_id": {
+      "type": "string",
+      "description": "ClickUp list ID this task lives in"
+    },
+    "brand_compliance_notes": {
+      "type": "string",
+      "description": "Notes on brand guide adherence for this post"
+    },
+    "postiz_post_id": {
+      "type": "string",
+      "description": "Postiz post ID once scheduled/published"
+    },
+    "processed_comment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "ClickUp comment IDs already processed by feedback automation"
+    }
+  },
+  "required": [
+    "platform",
+    "content",
+    "status"
+  ]
+}

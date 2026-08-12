@@ -1,0 +1,29 @@
+{
+  "name": "SocialMediaSettings",
+  "type": "object",
+  "properties": {
+    "clickup_list_id": {
+      "type": "string",
+      "description": "ClickUp list ID where 'GP - Social Posts' tasks are created for this client"
+    },
+    "clickup_workspace_id": {
+      "type": "string",
+      "description": "Optional ClickUp workspace (team) ID, used to fetch the Brand Reference Guide doc"
+    },
+    "clickup_doc_id": {
+      "type": "string",
+      "description": "Optional ClickUp Doc ID containing the Brand Reference Guide"
+    },
+    "clickup_doc_page_id": {
+      "type": "string",
+      "description": "Optional ClickUp Doc page ID containing the Brand Reference Guide"
+    },
+    "brand_guide_text": {
+      "type": "string",
+      "description": "Fallback/manual Brand Reference Guide text used if the ClickUp doc can't be fetched"
+    }
+  },
+  "required": [
+    "clickup_list_id"
+  ]
+}
