@@ -19,8 +19,7 @@ const PLATFORM_ORDER = ['facebook', 'instagram', 'twitter', 'google_business'];
 
 function getPlatformsForDate(dayOfWeek) {
   const platforms = [];
-  if (dayOfWeek >= 1 && dayOfWeek <= 5) platforms.push('twitter');
-  if (dayOfWeek === 2 || dayOfWeek === 4) { platforms.push('facebook'); platforms.push('instagram'); }
+  if (dayOfWeek === 2 || dayOfWeek === 4) { platforms.push('twitter'); platforms.push('facebook'); platforms.push('instagram'); }
   if (dayOfWeek === 4) platforms.push('google_business');
   return platforms;
 }
@@ -120,7 +119,7 @@ Generate one post for EACH of the following (date, platform) slots, in the same 
 Slots:
 ${schedule.map((s, i) => `${i + 1}. ${s.date} - ${s.platform}`).join('\n')}
 
-For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (a short description of a brand-compliant, welcoming, bright, lifestyle photo for this post — focus on happy Hispanic/Latino people smiling outdoors or in everyday settings, nature, fresh healthy food, or clean abstract textures. When people are shown, feature Hispanic/Latino individuals reflecting the local community. NO dental staff, NO clinic reception areas, NO dentist offices, NO dental chairs, NO scary tools, NO clinical shots, NO text in the photo, NO surgery).`,
+For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (a short, SPECIFIC description of a brand-compliant, welcoming, bright, lifestyle photo for this post. CRITICALLY: vary the visual approach so no two posts in this batch look the same — rotate between these visual themes based on the post topic: (a) a close-up of happy Hispanic/Latino people smiling in an everyday outdoor setting, (b) a flat-lay of fresh colorful food on a clean surface, (c) a wide nature scene with greenery or flowers, (d) an abstract clean texture or color-gradient background, (e) a single everyday object (e.g., a toothbrush, a glass of water, fruit) as a minimalist hero shot, (f) a family or group of Hispanic/Latino friends at a picnic, park, or community event. When people are shown, feature Hispanic/Latino individuals reflecting the local community. NO dental staff, NO clinic reception areas, NO dentist offices, NO dental chairs, NO scary tools, NO clinical shots, NO text in the photo, NO surgery).`,
       model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',
