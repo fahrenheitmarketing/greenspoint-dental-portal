@@ -55,6 +55,7 @@ export default async function (req) {
 
       // Track per-post updates to batch at the end
       const updates = {}; // postId -> { content?, status?, image_url?, newProcessedIds: [] }
+      const taskChanges = []; // per-comment change descriptions for the reply comment
 
       for (const post of taskPosts) {
         updates[post.id] = { newProcessedIds: [...(post.processed_comment_ids || [])] };
@@ -116,6 +117,20 @@ Brand guide for reference: ${brandGuide}`,
           notes: routing.notes,
           targets: targets.map((t) => t.id),
         });
+
+        // Build a human-readable change description for the reply comment
+        const targetLabels = targets.map((t) => `${t.platform} - ${t.scheduled_date || 'undated'}`);
+        if (routing.action === 'approve_publish') {
+          taskChanges.push(`Approved for publish: ${targetLabels.join(', ')}`);
+        } else if (routing.action === 'approve_schedule') {
+          taskChanges.push(`Approved for schedule: ${targetLabels.join(', ')}`);
+        } else if (routing.action === 'edit_copy') {
+          taskChanges.push(`Updated copy for: ${targetLabels.join(', ')}`);
+        } else if (routing.action === 'edit_image') {
+          taskChanges.push(`Regenerated image for: ${targetLabels.join(', ')}${routing.image_instruction ? ` (${routing.image_instruction})` : ''}`);
+        } else {
+          taskChanges.push(`No action needed: "${comment.comment_text.slice(0, 80)}"`);
+        }
       }
 
       // Persist all updates for this task
@@ -128,11 +143,9 @@ Brand guide for reference: ${brandGuide}`,
         await base44.asServiceRole.entities.SocialPost.update(post.id, patch);
       }
 
-      if (summaries.length > 0) {
-        const actionSummary = summaries
-          .map((s) => `${s.action} (${s.targets.length} post(s))`)
-          .join('; ');
-        await addClickUpComment(base44, taskId, `Automated update: ${actionSummary}.`);
+      if (taskChanges.length > 0) {
+        const reply = `Content Agent: I processed ${newComments.length} new comment(s) on this task.\n\n${taskChanges.map((c) => `- ${c}`).join('\n')}`;
+        await addClickUpComment(base44, taskId, reply);
       }
 
       processedCount++;
