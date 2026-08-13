@@ -97,7 +97,7 @@ Brand guide for reference: ${brandGuide}`,
           } else if (routing.action === 'edit_image' && routing.image_instruction) {
             try {
               const imgRes = await base44.asServiceRole.integrations.Core.GenerateImage({
-                prompt: `A welcoming, bright, lifestyle photo for a ${post.platform} dental practice post about "${post.topic}". Style: happy people smiling outdoors or in everyday settings, nature, fresh healthy food, clean abstract textures. ${brandGuide} No dental staff, no clinic reception areas, no dentist offices, no dental chairs, no scary tools, no clinical shots, no text in image. Adjust per: ${routing.image_instruction}`,
+                prompt: `A welcoming, bright, lifestyle photo for a ${post.platform} dental practice post about "${post.topic}". Style: happy Hispanic Latino people smiling outdoors or in everyday settings, nature, fresh healthy food, clean abstract textures. When people are shown, feature Hispanic/Latino individuals reflecting the local community. ${brandGuide} No dental staff, no clinic reception areas, no dentist offices, no dental chairs, no scary tools, no clinical shots, no text in image. Adjust per: ${routing.image_instruction}`,
               });
               u.image_url = imgRes.url;
             } catch (imgErr) {

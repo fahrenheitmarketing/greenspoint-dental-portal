@@ -120,7 +120,7 @@ Generate one post for EACH of the following (date, platform) slots, in the same 
 Slots:
 ${schedule.map((s, i) => `${i + 1}. ${s.date} - ${s.platform}`).join('\n')}
 
-For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (a short description of a brand-compliant, welcoming, bright, lifestyle photo for this post — focus on happy people smiling outdoors or in everyday settings, nature, fresh healthy food, or clean abstract textures. NO dental staff, NO clinic reception areas, NO dentist offices, NO dental chairs, NO scary tools, NO clinical shots, NO text in the photo, NO surgery).`,
+For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (a short description of a brand-compliant, welcoming, bright, lifestyle photo for this post — focus on happy Hispanic/Latino people smiling outdoors or in everyday settings, nature, fresh healthy food, or clean abstract textures. When people are shown, feature Hispanic/Latino individuals reflecting the local community. NO dental staff, NO clinic reception areas, NO dentist offices, NO dental chairs, NO scary tools, NO clinical shots, NO text in the photo, NO surgery).`,
       model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',
