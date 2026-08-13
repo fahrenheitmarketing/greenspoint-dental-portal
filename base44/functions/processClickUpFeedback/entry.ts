@@ -1,15 +1,16 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getClickUpComments, addClickUpComment, getBrandGuideText } from '../../shared/clickup.ts';
 
-const CLASSIFY_SCHEMA = {
+const ROUTE_SCHEMA = {
   type: 'object',
   properties: {
+    post_indices: { type: 'array', items: { type: 'number' } },
     action: { type: 'string', enum: ['approve_publish', 'approve_schedule', 'edit_copy', 'edit_image', 'no_action'] },
     notes: { type: 'string' },
     revised_copy: { type: 'string' },
     image_instruction: { type: 'string' },
   },
-  required: ['action', 'notes'],
+  required: ['post_indices', 'action', 'notes'],
 };
 
 export default async function (req) {
@@ -23,76 +24,121 @@ export default async function (req) {
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const brandGuide = settingsList[0] ? await getBrandGuideText(base44, settingsList[0]) : '';
 
-    const posts = await base44.asServiceRole.entities.SocialPost.filter({});
-    const relevant = posts.filter((p) => p.clickup_task_id && !['published', 'scheduled'].includes(p.status));
+    const allPosts = await base44.asServiceRole.entities.SocialPost.filter({});
+    const relevant = allPosts.filter((p) => p.clickup_task_id && !['published', 'scheduled'].includes(p.status));
+
+    // Group posts by their shared ClickUp task ID
+    const taskGroups = {};
+    for (const post of relevant) {
+      const tid = post.clickup_task_id;
+      if (!taskGroups[tid]) taskGroups[tid] = [];
+      taskGroups[tid].push(post);
+    }
 
     let processedCount = 0;
     const summaries = [];
 
-    for (const post of relevant) {
-      const comments = await getClickUpComments(base44, post.clickup_task_id);
-      const alreadyProcessed = new Set(post.processed_comment_ids || []);
-      const newComments = comments.filter((c) => !alreadyProcessed.has(c.id) && c.comment_text);
+    for (const [taskId, taskPosts] of Object.entries(taskGroups)) {
+      const comments = await getClickUpComments(base44, taskId);
+
+      // Build the set of comment IDs already processed by ANY post in this task
+      const allProcessed = new Set();
+      for (const p of taskPosts) {
+        (p.processed_comment_ids || []).forEach((id) => allProcessed.add(id));
+      }
+      const newComments = comments.filter((c) => !allProcessed.has(c.id) && c.comment_text);
 
       if (newComments.length === 0) continue;
 
-      const actionsTaken = [];
-      const newProcessedIds = [...(post.processed_comment_ids || [])];
-      let updatedContent = post.content;
-      let updatedStatus = post.status;
+      // Build a manifest so the LLM can route each comment to the right post
+      const manifest = taskPosts.map((p, i) => `${i}: ${p.platform} - ${p.scheduled_date || 'undated'} - ${p.topic}`).join('\n');
+
+      // Track per-post updates to batch at the end
+      const updates = {}; // postId -> { content?, status?, image_url?, newProcessedIds: [] }
+
+      for (const post of taskPosts) {
+        updates[post.id] = { newProcessedIds: [...(post.processed_comment_ids || [])] };
+      }
 
       for (const comment of newComments) {
-        const classification = await base44.asServiceRole.integrations.Core.InvokeLLM({
-          prompt: `A client left this comment on a social media post approval task: "${comment.comment_text}"
+        const routing = await base44.asServiceRole.integrations.Core.InvokeLLM({
+          prompt: `A reviewer left this comment on a ClickUp task containing multiple social media posts:
 
-Current post platform: ${post.platform}
-Current post copy: ${updatedContent}
-Brand guide: ${brandGuide}
+"${comment.comment_text}"
 
-Classify the comment's intent and respond accordingly:
-- "approve_publish": comment says something like "Approved for Publish"
-- "approve_schedule": comment says something like "Approved for Schedule"
-- "edit_copy": comment asks to change the wording/copy - provide the full revised_copy
-- "edit_image": comment asks for a different/new image - provide image_instruction describing what to change
-- "no_action": comment is just a question/note with nothing actionable`,
-          response_json_schema: CLASSIFY_SCHEMA,
+Available posts in this task (index - platform - date - topic):
+${manifest}
+
+Determine:
+1. post_indices: which post(s) this comment refers to, using the index numbers above. Use [-1] if it applies to ALL posts generally.
+2. action: classify the intent —
+   - "approve_publish" (comment says approved for publishing)
+   - "approve_schedule" (comment says approved for scheduling)
+   - "edit_copy" (comment asks to change wording — provide the full revised_copy)
+   - "edit_image" (comment asks for a different/new image — provide image_instruction)
+   - "no_action" (just a question/note with nothing actionable)
+3. If edit_copy: revised_copy = the full revised post copy.
+4. If edit_image: image_instruction = what to change about the image.
+
+Brand guide for reference: ${brandGuide}`,
+          response_json_schema: ROUTE_SCHEMA,
         });
 
-        newProcessedIds.push(comment.id);
+        const indices = routing.post_indices || [];
+        const targets = indices.includes(-1) ? taskPosts : taskPosts.filter((_, i) => indices.includes(i));
 
-        if (classification.action === 'approve_publish' || classification.action === 'approve_schedule') {
-          updatedStatus = 'approved';
-          actionsTaken.push(`Approved (${classification.action === 'approve_publish' ? 'publish' : 'schedule'})`);
-        } else if (classification.action === 'edit_copy' && classification.revised_copy) {
-          updatedContent = classification.revised_copy;
-          actionsTaken.push('Updated post copy per feedback');
-        } else if (classification.action === 'edit_image' && classification.image_instruction) {
-          const imgRes = await base44.asServiceRole.integrations.Core.GenerateImage({
-            prompt: `A welcoming, bright, patient-focused photo for a ${post.platform} dental practice post about "${post.topic}". ${brandGuide} No scary tools, no clinical shots, no text in image. Adjust per: ${classification.image_instruction}`,
-          });
-          await base44.asServiceRole.entities.SocialPost.update(post.id, { image_url: imgRes.url });
-          actionsTaken.push('Regenerated image per feedback');
+        for (const post of targets) {
+          const u = updates[post.id];
+          if (routing.action === 'approve_publish' || routing.action === 'approve_schedule') {
+            u.status = 'approved';
+          } else if (routing.action === 'edit_copy' && routing.revised_copy) {
+            u.content = routing.revised_copy;
+          } else if (routing.action === 'edit_image' && routing.image_instruction) {
+            try {
+              const imgRes = await base44.asServiceRole.integrations.Core.GenerateImage({
+                prompt: `A welcoming, bright, patient-focused photo for a ${post.platform} dental practice post about "${post.topic}". ${brandGuide} No scary tools, no clinical shots, no text in image. Adjust per: ${routing.image_instruction}`,
+              });
+              u.image_url = imgRes.url;
+            } catch (imgErr) {
+              console.error('Image regen failed for post', post.id, imgErr.message);
+            }
+          }
         }
+
+        // Mark this comment as processed on ALL posts in the task (shared task = shared processed set)
+        for (const post of taskPosts) {
+          updates[post.id].newProcessedIds.push(comment.id);
+        }
+
+        summaries.push({
+          comment_id: comment.id,
+          action: routing.action,
+          notes: routing.notes,
+          targets: targets.map((t) => t.id),
+        });
       }
 
-      await base44.asServiceRole.entities.SocialPost.update(post.id, {
-        content: updatedContent,
-        status: updatedStatus,
-        processed_comment_ids: newProcessedIds,
-      });
-
-      if (actionsTaken.length > 0) {
-        await addClickUpComment(
-          base44,
-          post.clickup_task_id,
-          `Automated update: ${actionsTaken.join('; ')}.`
-        );
-        summaries.push({ postId: post.id, actionsTaken });
-        processedCount++;
+      // Persist all updates for this task
+      for (const post of taskPosts) {
+        const u = updates[post.id];
+        const patch = { processed_comment_ids: u.newProcessedIds };
+        if (u.status) patch.status = u.status;
+        if (u.content) patch.content = u.content;
+        if (u.image_url) patch.image_url = u.image_url;
+        await base44.asServiceRole.entities.SocialPost.update(post.id, patch);
       }
+
+      if (summaries.length > 0) {
+        const actionSummary = summaries
+          .map((s) => `${s.action} (${s.targets.length} post(s))`)
+          .join('; ');
+        await addClickUpComment(base44, taskId, `Automated update: ${actionSummary}.`);
+      }
+
+      processedCount++;
     }
 
-    return Response.json({ success: true, posts_updated: processedCount, summaries });
+    return Response.json({ success: true, tasks_processed: processedCount, summaries });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

@@ -22,7 +22,11 @@ export default async function (req) {
       return Response.json({ error: 'This post has no linked ClickUp task' }, { status: 400 });
     }
 
-    await addClickUpComment(base44, post.clickup_task_id, note);
+    const dateLabel = post.scheduled_date
+      ? new Date(post.scheduled_date + 'T00:00:00Z').toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+      : 'undated';
+    const commentWithContext = `[${post.platform.toUpperCase()} - ${dateLabel}]\n${note}`;
+    await addClickUpComment(base44, post.clickup_task_id, commentWithContext);
 
     return Response.json({ success: true });
   } catch (error) {

@@ -8,8 +8,16 @@ const PLATFORM_TONE = {
   google_business: "Local practice updates, clear calls to action, community focused.",
 };
 
+const PLATFORM_LABEL = {
+  facebook: "FACEBOOK",
+  instagram: "INSTAGRAM",
+  twitter: "TWITTER / X",
+  google_business: "GOOGLE BUSINESS",
+};
+
+const PLATFORM_ORDER = ['facebook', 'instagram', 'twitter', 'google_business'];
+
 function getPlatformsForDate(dayOfWeek) {
-  // 0 = Sunday ... 6 = Saturday
   const platforms = [];
   if (dayOfWeek >= 1 && dayOfWeek <= 5) platforms.push('twitter');
   if (dayOfWeek === 2 || dayOfWeek === 4) { platforms.push('facebook'); platforms.push('instagram'); }
@@ -28,6 +36,30 @@ function buildSchedule(month, year) {
     }
   }
   return schedule;
+}
+
+function formatDateLabel(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
+function buildTaskDescription(campaignMonth, posts) {
+  let desc = `# GP - Social Posts [${campaignMonth}]\n\n`;
+  desc += `Monthly social media content pipeline for ${campaignMonth}.\n\n`;
+  desc += `**Review instructions:** Comment on this task with "Approved for Publish" or "Approved for Schedule". Reference the platform and date (e.g., "Facebook - Aug 15: Approved for Publish"). For copy edits, quote the platform/date and provide the revised text. For image changes, mention the platform/date and what to change. Creatives are attached to this task as files.\n\n---\n\n`;
+
+  for (const platform of PLATFORM_ORDER) {
+    const platformPosts = posts.filter((p) => p.platform === platform);
+    if (platformPosts.length === 0) continue;
+    desc += `## ${PLATFORM_LABEL[platform]}\n\n`;
+    for (const post of platformPosts) {
+      desc += `### ${formatDateLabel(post.date)} — ${post.topic}\n\n`;
+      desc += `${post.content}\n\n`;
+      desc += `*Image direction: ${post.image_prompt}*\n\n`;
+      desc += `---\n\n`;
+    }
+  }
+  return desc;
 }
 
 export default async function (req) {
@@ -89,7 +121,7 @@ Slots:
 ${schedule.map((s, i) => `${i + 1}. ${s.date} - ${s.platform}`).join('\n')}
 
 For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (a short description of a brand-compliant, welcoming, bright, patient-focused photo for this post - NO scary tools, NO clinical shots, NO text in the photo, NO surgery).`,
-      model: 'claude_sonnet_4_6',
+      model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',
         properties: {
@@ -114,44 +146,35 @@ For each slot return: date, platform, topic (short theme), content (the actual p
 
     const posts = genRes.posts || [];
 
-    // 3. Create the parent ClickUp task, then a subtask per post, then save SocialPost records
-    const parentTask = await createClickUpTask(base44, settings.clickup_list_id, {
+    // 3. Build the single task description with all posts grouped by platform
+    const description = buildTaskDescription(campaignMonth, posts);
+
+    // 4. Create ONE task in the ClickUp list
+    const task = await createClickUpTask(base44, settings.clickup_list_id, {
       name: `GP - Social Posts [${campaignMonth}]`,
-      description: `Monthly social media content pipeline for ${campaignMonth}. Comment "Approved for Publish" or "Approved for Schedule" on a subtask to approve it.`,
+      description,
     });
 
-    let created = 0;
-    for (const post of posts) {
-      try {
-        const subtask = await createClickUpTask(base44, settings.clickup_list_id, {
-          name: `[${post.platform}] ${post.topic} - ${post.date}`,
-          description: post.content,
-          parent: parentTask.id,
-          dueDate: post.date,
-        });
+    // 5. Save SocialPost records in bulk, all linked to the same task
+    const records = posts.map((post) => ({
+      platform: post.platform,
+      topic: post.topic,
+      content: post.content,
+      status: 'pending',
+      scheduled_date: post.date,
+      campaign_month: campaignMonth,
+      clickup_task_id: task.id,
+      clickup_list_id: settings.clickup_list_id,
+      brand_compliance_notes: post.image_prompt,
+    }));
 
-        await base44.asServiceRole.entities.SocialPost.create({
-          platform: post.platform,
-          topic: post.topic,
-          content: post.content,
-          status: 'pending',
-          scheduled_date: post.date,
-          campaign_month: campaignMonth,
-          clickup_task_id: subtask.id,
-          clickup_list_id: settings.clickup_list_id,
-          brand_compliance_notes: post.image_prompt,
-        });
-        created++;
-      } catch (innerErr) {
-        console.error('Failed to create post for slot', post.date, post.platform, innerErr.message);
-      }
-    }
+    const created = await base44.asServiceRole.entities.SocialPost.bulkCreate(records);
 
     return Response.json({
       success: true,
       campaign_month: campaignMonth,
-      parent_task_id: parentTask.id,
-      posts_created: created,
+      clickup_task_id: task.id,
+      posts_created: created.length,
       total_slots: schedule.length,
     });
   } catch (error) {

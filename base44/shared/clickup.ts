@@ -44,6 +44,33 @@ export async function getClickUpComments(base44, taskId) {
   return data.comments || [];
 }
 
+export async function updateClickUpTaskDescription(base44, taskId, description) {
+  return clickupFetch(base44, `/task/${taskId}`, {
+    method: "PUT",
+    body: JSON.stringify({ description }),
+  });
+}
+
+export async function uploadAttachmentToClickUpTask(base44, taskId, imageUrl, filename) {
+  const token = await getClickUpToken(base44);
+  const imgRes = await fetch(imageUrl);
+  if (!imgRes.ok) throw new Error(`Failed to download image from ${imageUrl}`);
+  const blob = await imgRes.blob();
+  const formData = new FormData();
+  formData.append("filename", filename);
+  formData.append("attachment", blob, filename);
+  const res = await fetch(`https://api.clickup.com/api/v2/task/${taskId}/attachment`, {
+    method: "POST",
+    headers: { Authorization: token },
+    body: formData,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(`ClickUp attachment error (${res.status}): ${JSON.stringify(data)}`);
+  }
+  return data;
+}
+
 const DEFAULT_BRAND_GUIDE =
   "No scary dental tools or invasive-surgery imagery. No overly clinical shots. No text embedded in photos. No unverified medical claims. All imagery must be welcoming, bright, patient-focused, and topic-relevant.";
 

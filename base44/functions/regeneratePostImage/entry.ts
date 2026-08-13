@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import { getBrandGuideText } from '../../shared/clickup.ts';
+import { getBrandGuideText, uploadAttachmentToClickUpTask } from '../../shared/clickup.ts';
 
 export default async function (req) {
   try {
@@ -28,7 +28,20 @@ export default async function (req) {
 
     await base44.asServiceRole.entities.SocialPost.update(postId, { image_url: url });
 
-    return Response.json({ success: true, image_url: url });
+    // Attach the creative to the linked ClickUp task
+    let attached = false;
+    if (post.clickup_task_id) {
+      try {
+        const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
+        const filename = `${post.platform}-${post.scheduled_date || 'undated'}-${safeTopic}.jpg`;
+        await uploadAttachmentToClickUpTask(base44, post.clickup_task_id, url, filename);
+        attached = true;
+      } catch (attachErr) {
+        console.error('ClickUp attachment upload failed:', attachErr.message);
+      }
+    }
+
+    return Response.json({ success: true, image_url: url, attached_to_clickup: attached });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
