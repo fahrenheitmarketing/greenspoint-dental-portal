@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { format } from "date-fns";
 import { ImageIcon } from "lucide-react";
@@ -8,6 +8,7 @@ import PostCardActions from "./PostCardActions";
 
 export default function PostCard({ post, onChanged }) {
   const [busy, setBusy] = useState(false);
+  const fileInputRef = useRef(null);
 
   const runAction = async (fn) => {
     setBusy(true);
@@ -42,9 +43,21 @@ export default function PostCard({ post, onChanged }) {
       }
     });
 
-  const handleApprove = () => setStatus("approved", "Post approved in the Social Media Studio dashboard.");
+  const handleApprove = () =>
+    runAction(() => base44.functions.invoke("approveAndSendImageToClickUp", { postId: post.id }));
+
   const handleReject = () => setStatus("rejected", "Post rejected in the Social Media Studio dashboard.");
   const handlePrepare = () => runAction(() => base44.functions.invoke("resizeImageForPlatform", { postId: post.id }));
+
+  const handleUploadFinalImage = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    runAction(async () => {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      await base44.entities.SocialPost.update(post.id, { image_url: file_url });
+    });
+    e.target.value = "";
+  };
 
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex flex-col">
@@ -66,6 +79,13 @@ export default function PostCard({ post, onChanged }) {
           </p>
         )}
         <p className="text-sm text-foreground/90 line-clamp-4 flex-1">{post.content}</p>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleUploadFinalImage}
+        />
         <PostCardActions
           post={post}
           busy={busy}
@@ -74,6 +94,7 @@ export default function PostCard({ post, onChanged }) {
           onApprove={handleApprove}
           onReject={handleReject}
           onPrepare={handlePrepare}
+          onUploadFinalImage={() => fileInputRef.current?.click()}
         />
       </div>
     </div>

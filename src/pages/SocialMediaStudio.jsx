@@ -26,9 +26,11 @@ export default function SocialMediaStudio() {
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
 
-  const filtered = posts.filter(
-    (p) => (platform === "all" || p.platform === platform) && (status === "all" || p.status === status)
-  );
+  const filtered = posts.filter((p) => {
+    const platformMatch = platform === "all" || p.platform === platform;
+    const statusMatch = status === "all" ? p.status !== "rejected" : p.status === status;
+    return platformMatch && statusMatch;
+  });
 
   const pendingCount = posts.filter((p) => p.status === "pending").length;
 

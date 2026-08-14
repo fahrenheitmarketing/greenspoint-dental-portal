@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Copy, Check, X, Send } from "lucide-react";
+import { Sparkles, Copy, Check, X, Send, Upload } from "lucide-react";
 
-export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare }) {
+export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage }) {
   return (
     <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
       <Button size="sm" variant="outline" disabled={busy} onClick={onRegenerateImage}>
@@ -26,10 +26,16 @@ export default function PostCardActions({ post, busy, onRegenerateImage, onClone
         </Button>
       )}
       {post.status === "approved" && (
-        <Button size="sm" variant="secondary" disabled={busy} onClick={onPrepare}>
-          <Send className="w-3.5 h-3.5 mr-1" />
-          Prepare for Publish
-        </Button>
+        <>
+          <Button size="sm" variant="outline" disabled={busy} onClick={onUploadFinalImage}>
+            <Upload className="w-3.5 h-3.5 mr-1" />
+            Upload Final Image
+          </Button>
+          <Button size="sm" variant="secondary" disabled={busy} onClick={onPrepare}>
+            <Send className="w-3.5 h-3.5 mr-1" />
+            Prepare for Publish
+          </Button>
+        </>
       )}
     </div>
   );
