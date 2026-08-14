@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Copy, Check, X, Send, Upload } from "lucide-react";
+import { Sparkles, Check, X, Send, Upload } from "lucide-react";
 
 export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage }) {
   return (
@@ -10,7 +10,7 @@ export default function PostCardActions({ post, busy, onRegenerateImage, onClone
         {post.image_url ? "Regenerate Image" : "Generate Image"}
       </Button>
       <Button size="sm" variant="outline" disabled={busy} onClick={onClone}>
-        <Copy className="w-3.5 h-3.5 mr-1" />
+        <Sparkles className="w-3.5 h-3.5 mr-1" />
         Create New Post
       </Button>
       {!["approved", "published", "scheduled", "ready_to_publish"].includes(post.status) && (

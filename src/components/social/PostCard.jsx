@@ -23,15 +23,13 @@ export default function PostCard({ post, onChanged }) {
   const handleRegenerateImage = () =>
     runAction(() => base44.functions.invoke("regeneratePostImage", { postId: post.id }));
 
-  const handleClone = () =>
+  const handleCreateNew = () =>
     runAction(() =>
-      base44.entities.SocialPost.create({
+      base44.functions.invoke("generateSinglePost", {
         platform: post.platform,
-        topic: post.topic,
-        content: post.content,
-        status: "draft",
-        scheduled_date: post.scheduled_date,
-        campaign_month: post.campaign_month,
+        campaignMonth: post.campaign_month,
+        scheduledDate: post.scheduled_date,
+        sourceTopic: post.topic,
       })
     );
 
@@ -93,7 +91,7 @@ export default function PostCard({ post, onChanged }) {
           post={post}
           busy={busy}
           onRegenerateImage={handleRegenerateImage}
-          onClone={handleClone}
+          onClone={handleCreateNew}
           onApprove={handleApprove}
           onReject={handleReject}
           onPrepare={handlePrepare}
