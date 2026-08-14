@@ -44,6 +44,22 @@ export async function getClickUpComments(base44, taskId) {
   return data.comments || [];
 }
 
+export async function getClickUpAttachments(base44, taskId, workspaceId) {
+  if (!workspaceId) {
+    throw new Error("ClickUp workspace ID is required to fetch attachments. Set it in Settings.");
+  }
+  const token = await getClickUpToken(base44);
+  const res = await fetch(
+    `https://api.clickup.com/api/v3/workspaces/${workspaceId}/attachments/${taskId}/attachments?limit=100`,
+    { headers: { Authorization: token } }
+  );
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(`ClickUp attachments error (${res.status}): ${JSON.stringify(data)}`);
+  }
+  return data.attachments || [];
+}
+
 export async function updateClickUpTaskDescription(base44, taskId, description) {
   return clickupFetch(base44, `/task/${taskId}`, {
     method: "PUT",

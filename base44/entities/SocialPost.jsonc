@@ -24,6 +24,10 @@
       "type": "string",
       "description": "AI-generated brand-compliant image for this post"
     },
+    "final_image_url": {
+      "type": "string",
+      "description": "Design-team branded/final image pulled back from ClickUp; used for Postiz scheduling"
+    },
     "resized_image_url": {
       "type": "string",
       "description": "Platform-specific cover-cropped image ready for publishing"
@@ -36,6 +40,7 @@
         "approved",
         "rejected",
         "ready_to_publish",
+        "needs_date_review",
         "scheduled",
         "published"
       ],

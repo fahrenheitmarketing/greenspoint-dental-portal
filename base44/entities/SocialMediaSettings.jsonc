@@ -8,7 +8,7 @@
     },
     "clickup_workspace_id": {
       "type": "string",
-      "description": "Optional ClickUp workspace (team) ID, used to fetch the Brand Reference Guide doc"
+      "description": "Optional ClickUp workspace (team) ID, used to fetch the Brand Reference Guide doc and task attachments"
     },
     "clickup_doc_id": {
       "type": "string",
@@ -21,6 +21,22 @@
     "brand_guide_text": {
       "type": "string",
       "description": "Fallback/manual Brand Reference Guide text used if the ClickUp doc can't be fetched"
+    },
+    "postiz_facebook_id": {
+      "type": "string",
+      "description": "Postiz integration ID for the client's Facebook account"
+    },
+    "postiz_instagram_id": {
+      "type": "string",
+      "description": "Postiz integration ID for the client's Instagram account"
+    },
+    "postiz_x_id": {
+      "type": "string",
+      "description": "Postiz integration ID for the client's X (Twitter) account"
+    },
+    "postiz_gmb_id": {
+      "type": "string",
+      "description": "Postiz integration ID for the client's Google Business profile"
     }
   },
   "required": [

@@ -1,0 +1,97 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
+import { uploadImageToPostiz, schedulePostToPostizWithSettings } from '../../shared/postiz.ts';
+
+// Map SocialPost platform → SocialMediaSettings field holding the Postiz integration ID
+const PLATFORM_TO_SETTINGS_FIELD = {
+  facebook: 'postiz_facebook_id',
+  instagram: 'postiz_instagram_id',
+  twitter: 'postiz_x_id',
+  google_business: 'postiz_gmb_id',
+};
+
+export default async function (req) {
+  try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Admin access required' }, { status: 403 });
+    }
+
+    const { campaignMonth } = await req.json();
+    if (!campaignMonth) {
+      return Response.json({ error: 'campaignMonth is required' }, { status: 400 });
+    }
+
+    const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
+    const settings = settingsList[0];
+    if (!settings) {
+      return Response.json({ error: 'Configure Social Media Settings first.' }, { status: 400 });
+    }
+
+    const posts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth, status: 'ready_to_publish' }, 'scheduled_date', 200);
+
+    const now = new Date();
+    let scheduled = 0;
+    let needsReview = 0;
+    let skipped = 0;
+    const errors = [];
+
+    for (const post of posts) {
+      // Skip posts without a branded/final image (AI-only images are not published)
+      if (!post.final_image_url) {
+        skipped++;
+        continue;
+      }
+
+      // Posts with a past scheduled date need manual review
+      const scheduledDate = new Date(post.scheduled_date);
+      if (scheduledDate <= now) {
+        await base44.asServiceRole.entities.SocialPost.update(post.id, { status: 'needs_date_review' });
+        needsReview++;
+        continue;
+      }
+
+      // Get the Postiz integration ID for this platform
+      const settingsField = PLATFORM_TO_SETTINGS_FIELD[post.platform];
+      const integrationId = settings[settingsField];
+      if (!integrationId) {
+        errors.push({ postId: post.id, platform: post.platform, error: 'No Postiz integration ID configured for this platform' });
+        skipped++;
+        continue;
+      }
+
+      try {
+        // Upload the final branded image to Postiz
+        const imageData = await uploadImageToPostiz(post.final_image_url);
+        // Schedule the post
+        const result = await schedulePostToPostizWithSettings({
+          integrationId,
+          date: scheduledDate.toISOString(),
+          content: post.content,
+          imageData,
+          platform: post.platform,
+        });
+        const postizPostId = result && result[0] ? result[0].postId : '';
+        await base44.asServiceRole.entities.SocialPost.update(post.id, {
+          status: 'scheduled',
+          postiz_post_id: postizPostId,
+        });
+        scheduled++;
+      } catch (e) {
+        console.error('Postiz scheduling failed for post', post.id, e.message);
+        errors.push({ postId: post.id, platform: post.platform, error: e.message });
+        skipped++;
+      }
+    }
+
+    return Response.json({
+      success: true,
+      scheduled,
+      needs_review: needsReview,
+      skipped,
+      errors: errors.slice(0, 20),
+    });
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+}
