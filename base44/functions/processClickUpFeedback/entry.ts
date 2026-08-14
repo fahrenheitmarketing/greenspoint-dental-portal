@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getClickUpComments, addClickUpComment, getBrandGuideText } from '../../shared/clickup.ts';
+import { buildImagePrompt } from '../../shared/imageRules.ts';
 
 const ROUTE_SCHEMA = {
   type: 'object',
@@ -97,7 +98,7 @@ Brand guide for reference: ${brandGuide}`,
           } else if (routing.action === 'edit_image' && routing.image_instruction) {
             try {
               const imgRes = await base44.asServiceRole.integrations.Core.GenerateImage({
-                prompt: `${post.brand_compliance_notes ? `Visual direction from creative brief: ${post.brand_compliance_notes}. ` : ''}A welcoming, bright, lifestyle photo for a ${post.platform} dental practice post about "${post.topic}". The post copy is: "${post.content}". Create an image that VISUALLY REPRESENTS this content — the image must directly reflect the message, not be a generic stock photo. If the post is about the dental office, staff, or "behind the scenes", do NOT show staff or a clinic — instead use a relevant visual metaphor like a welcoming front door with morning sunlight, a tidy desk with coffee, a sunrise over the neighborhood, or a "we're here for you" community scene. Ensure the image is anatomically correct and logically coherent — no extra limbs, no distorted faces, no physically impossible objects. Prefer simple, clean compositions with at most one or two people to avoid AI artifacts. ${brandGuide} When people are shown, feature Hispanic/Latino individuals reflecting the local community. No dental staff, no clinic reception areas, no dentist offices, no dental chairs, no scary tools, no clinical shots, no text in image. Adjust per: ${routing.image_instruction}`,
+                prompt: `${buildImagePrompt(post, brandGuide)} Adjust per: ${routing.image_instruction}`,
               });
               u.image_url = imgRes.url;
             } catch (imgErr) {

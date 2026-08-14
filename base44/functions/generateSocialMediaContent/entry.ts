@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText, createClickUpTask } from '../../shared/clickup.ts';
 import { PLATFORM_TONE, PLATFORM_LABEL, PLATFORM_ORDER, getPlatformsForDate, buildSchedule, formatDateLabel, buildTaskDescription } from '../../shared/scheduleBuilder.ts';
+import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
   try {
@@ -22,6 +23,10 @@ export default async function (req) {
     }
 
     const brandGuide = await getBrandGuideText(base44, settings);
+
+    // Fetch topics used in previous months to avoid repetition
+    const existingPosts = await base44.asServiceRole.entities.SocialPost.filter({}, 'scheduled_date', 500);
+    const usedTopics = [...new Set(existingPosts.map((p) => p.topic).filter(Boolean))].slice(0, 80);
 
     // 1. Research current trends
     const trendsRes = await base44.asServiceRole.integrations.Core.InvokeLLM({
@@ -50,6 +55,9 @@ ${brandGuide}
 Trending topics to draw from:
 ${topics.map((t) => `- ${t}`).join('\n')}
 
+Topics already used in previous months — do NOT repeat these or create near-duplicates:
+${usedTopics.map((t) => `- ${t}`).join('\n')}
+
 Platform tone/identity rules:
 - facebook: ${PLATFORM_TONE.facebook}
 - instagram: ${PLATFORM_TONE.instagram}
@@ -60,7 +68,7 @@ Generate one post for EACH of the following (date, platform) slots, in the same 
 Slots:
 ${schedule.map((s, i) => `${i + 1}. ${s.date} - ${s.platform}`).join('\n')}
 
-For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (a short, SPECIFIC description of a brand-compliant, welcoming, bright, lifestyle photo that VISUALLY REPRESENTS the post's content/copy. The image MUST directly reflect what the post is about so a reader who reads the copy finds the image naturally relevant — e.g., if the copy is about morning routines, show a bright morning scene with coffee/breakfast; if it's about healthy snacks for teeth, show colorful healthy food; if it's about family dental care, show a Hispanic/Latino family; if it's about confidence/smiles, show a close-up of a person smiling. CRITICAL: if the post is about the dental office, staff, or "behind the scenes", do NOT show staff or a clinic — instead use a relevant visual metaphor like a welcoming front door with morning sunlight, a tidy desk with coffee, a sunrise over the neighborhood, or a "we're here for you" community scene. Do NOT default to generic "family smiling" — match the specific message. Ensure the image is anatomically correct and logically coherent — no extra limbs, no distorted faces, no physically impossible objects. Prefer simple, clean compositions with at most one or two people to avoid AI artifacts. When people are shown, feature Hispanic/Latino individuals reflecting the local community. NO dental staff, NO clinic reception areas, NO dentist offices, NO dental chairs, NO scary tools, NO clinical shots, NO text in the photo, NO surgery).`,
+For each slot return: date, platform, topic (short theme), content (the actual post copy matching platform tone and length norms), image_prompt (${IMAGE_PROMPT_INSTRUCTION}).`,
       model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',
