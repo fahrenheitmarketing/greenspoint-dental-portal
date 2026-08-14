@@ -17,6 +17,8 @@ export const PLATFORM_LABEL = {
 
 export const PLATFORM_ORDER = ['facebook', 'instagram', 'twitter', 'google_business'];
 
+export const CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT make any claims of any kind. No medical claims, no health claims, no guarantees of results, no promises about outcomes. Do NOT say something "prevents cavities," "whitens teeth," "cures bad breath," "strengthens enamel," "guarantees a straighter smile," or any similar definitive statement. Frame everything as general educational tips and friendly suggestions using soft language like "can help support," "may contribute to," "consider," "try," or "many people find." Never state that a product, service, or habit will definitively achieve a specific result. Keep content informational and conversational only.`;
+
 export function getPlatformsForDate(dayOfWeek) {
   const platforms = [];
   if (dayOfWeek === 2 || dayOfWeek === 4) { platforms.push('twitter'); platforms.push('facebook'); platforms.push('instagram'); }

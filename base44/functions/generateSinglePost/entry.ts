@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -36,7 +36,8 @@ ${usedTopics.map((t) => `- ${t}`).join('\n')}
 
 ${sourceTopic ? `The user wants a new, DIFFERENT take on this theme (do NOT reuse the old copy): "${sourceTopic}"` : 'Generate a fresh, engaging topic for a dental practice social media post.'}
 
-Generate ONE new post for ${platform}${scheduledDate ? ` scheduled for ${scheduledDate}` : ''}. It must be factual (no medical claims), patient-friendly, and match the platform's tone and length norms.
+Generate ONE new post for ${platform}${scheduledDate ? ` scheduled for ${scheduledDate}` : ''}. It must be patient-friendly and match the platform's tone and length norms.
+${CONTENT_RULES}
 
 Return: topic (short theme), content (the actual post copy), image_prompt (${IMAGE_PROMPT_INSTRUCTION}).`,
       model: 'gemini_3_flash',

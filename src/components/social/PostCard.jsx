@@ -5,9 +5,11 @@ import { ImageIcon } from "lucide-react";
 import PlatformBadge from "./PlatformBadge";
 import StatusBadge from "./StatusBadge";
 import PostCardActions from "./PostCardActions";
+import PostDetailDialog from "./PostDetailDialog";
 
 export default function PostCard({ post, onChanged }) {
   const [busy, setBusy] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const fileInputRef = useRef(null);
 
   const runAction = async (fn) => {
@@ -79,7 +81,10 @@ export default function PostCard({ post, onChanged }) {
             {format(new Date(post.scheduled_date), "MMM d, yyyy")}
           </p>
         )}
-        <p className="text-sm text-foreground/90 line-clamp-4 flex-1">{post.content}</p>
+        <p className="text-sm text-foreground/90 line-clamp-4 flex-1 cursor-pointer hover:text-primary transition-colors" onClick={() => setShowDetail(true)} title="Click to view full post">
+          {post.content}
+        </p>
+        <button className="text-xs text-primary hover:underline self-start mb-2" onClick={() => setShowDetail(true)}>View full post</button>
         <input
           ref={fileInputRef}
           type="file"
@@ -98,6 +103,7 @@ export default function PostCard({ post, onChanged }) {
           onUploadFinalImage={() => fileInputRef.current?.click()}
         />
       </div>
+      <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} />
     </div>
   );
 }

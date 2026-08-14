@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText, createClickUpTask } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, PLATFORM_LABEL, PLATFORM_ORDER, getPlatformsForDate, buildSchedule, formatDateLabel, buildTaskDescription } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, PLATFORM_LABEL, PLATFORM_ORDER, getPlatformsForDate, buildSchedule, formatDateLabel, buildTaskDescription, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -64,7 +64,8 @@ Platform tone/identity rules:
 - twitter: ${PLATFORM_TONE.twitter}
 - google_business: ${PLATFORM_TONE.google_business}
 
-Generate one post for EACH of the following (date, platform) slots, in the same order. Every post must be factual (no medical claims), patient-friendly, and match its platform's tone.
+Generate one post for EACH of the following (date, platform) slots, in the same order. Every post must be patient-friendly and match its platform's tone.
+${CONTENT_RULES}
 Slots:
 ${schedule.map((s, i) => `${i + 1}. ${s.date} - ${s.platform}`).join('\n')}
 
