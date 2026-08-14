@@ -19,6 +19,7 @@ export default function SocialMediaStudio() {
   const [loading, setLoading] = useState(true);
   const [platform, setPlatform] = useState("all");
   const [status, setStatus] = useState("all");
+  const [campaignMonthFilter, setCampaignMonthFilter] = useState("all");
   const [showGenerate, setShowGenerate] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [processingFeedback, setProcessingFeedback] = useState(false);
@@ -44,10 +45,13 @@ export default function SocialMediaStudio() {
     }
   }, [posts]);
 
+  const uniqueMonths = [...new Set(posts.map((p) => p.campaign_month).filter(Boolean))].sort().reverse();
+
   const filtered = posts.filter((p) => {
+    const monthMatch = campaignMonthFilter === "all" || p.campaign_month === campaignMonthFilter;
     const platformMatch = platform === "all" || p.platform === platform;
     const statusMatch = status === "all" ? p.status !== "rejected" : p.status === status;
-    return platformMatch && statusMatch;
+    return monthMatch && platformMatch && statusMatch;
   });
 
   const filteredPendingIds = filtered.filter((p) => p.status === "pending").map((p) => p.id);
@@ -82,7 +86,7 @@ export default function SocialMediaStudio() {
         onRefresh={loadPosts}
       />
       <div className="mb-6">
-        <StudioFilterBar platform={platform} setPlatform={setPlatform} status={status} setStatus={setStatus} />
+        <StudioFilterBar platform={platform} setPlatform={setPlatform} status={status} setStatus={setStatus} campaignMonthFilter={campaignMonthFilter} setCampaignMonthFilter={setCampaignMonthFilter} campaignMonths={uniqueMonths} />
       </div>
 
       {loading ? (

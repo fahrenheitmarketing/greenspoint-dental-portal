@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const PLATFORMS = [
   { value: "all", label: "All Platforms" },
@@ -19,9 +20,22 @@ const STATUSES = [
   { value: "scheduled", label: "Scheduled" },
 ];
 
-export default function StudioFilterBar({ platform, setPlatform, status, setStatus }) {
+export default function StudioFilterBar({ platform, setPlatform, status, setStatus, campaignMonthFilter, setCampaignMonthFilter, campaignMonths }) {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap items-center gap-4">
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Month:</span>
+        <Select value={campaignMonthFilter} onValueChange={setCampaignMonthFilter}>
+          <SelectTrigger className="w-40 h-9"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Months</SelectItem>
+            {campaignMonths.map((m) => (
+              <SelectItem key={m} value={m}>{m}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="h-6 w-px bg-border hidden sm:block" />
       <div className="flex flex-wrap gap-2">
         {PLATFORMS.map((p) => (
           <Button key={p.value} size="sm" variant={platform === p.value ? "default" : "outline"} onClick={() => setPlatform(p.value)}>
