@@ -18,10 +18,6 @@ const PLATFORM_SETTINGS = {
   google_business: { __type: 'gmb', topicType: 'STANDARD' },
 };
 
-export function getPostizSettings(platform) {
-  return PLATFORM_SETTINGS[platform];
-}
-
 // Upload an image to Postiz and return { id, path } for use in the create-post body.
 export async function uploadImageToPostiz(imageUrl) {
   const key = getApiKey();
@@ -43,35 +39,6 @@ export async function uploadImageToPostiz(imageUrl) {
 }
 
 // Schedule a single post to a single integration. Returns the Postiz response array [{ postId, integration }].
-export async function schedulePostToPostiz({ integrationId, date, content, imageData }) {
-  const key = getApiKey();
-  const settings = getPostizSettingsForIntegration(integrationId);
-  const body = {
-    type: 'schedule',
-    date,
-    shortLink: false,
-    tags: [],
-    posts: [
-      {
-        integration: { id: integrationId },
-        value: [{ content, image: imageData ? [imageData] : [] }],
-        settings,
-      },
-    ],
-  };
-  const res = await fetch(`${POSTIZ_BASE}/posts`, {
-    method: 'POST',
-    headers: { Authorization: key, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error(`Postiz schedule error (${res.status}): ${JSON.stringify(data)}`);
-  }
-  return Array.isArray(data) ? data : [data];
-}
-
-// We don't know the platform from the integration id alone, so callers pass settings explicitly.
 export async function schedulePostToPostizWithSettings({ integrationId, date, content, imageData, platform }) {
   const key = getApiKey();
   const settings = PLATFORM_SETTINGS[platform];
@@ -99,8 +66,4 @@ export async function schedulePostToPostizWithSettings({ integrationId, date, co
     throw new Error(`Postiz schedule error (${res.status}): ${JSON.stringify(data)}`);
   }
   return Array.isArray(data) ? data : [data];
-}
-
-function getPostizSettingsForIntegration() {
-  return undefined; // not used — use schedulePostToPostizWithSettings instead
 }

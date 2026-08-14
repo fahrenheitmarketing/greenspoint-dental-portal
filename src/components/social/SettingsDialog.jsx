@@ -14,7 +14,7 @@ export default function SettingsDialog({ open, onOpenChange }) {
   useEffect(() => {
     if (open) {
       base44.entities.SocialMediaSettings.list().then((list) => {
-        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_doc_id: "", clickup_doc_page_id: "", brand_guide_text: "" });
+        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_doc_id: "", clickup_doc_page_id: "", brand_guide_text: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "" });
       });
     }
   }, [open]);
@@ -61,6 +61,28 @@ export default function SettingsDialog({ open, onOpenChange }) {
           <div>
             <Label>Brand Reference Guide (fallback text)</Label>
             <Textarea rows={5} value={settings.brand_guide_text} onChange={(e) => setSettings({ ...settings, brand_guide_text: e.target.value })} placeholder="Paste the brand guide here if you don't want to link a ClickUp doc" />
+          </div>
+          <div className="border-t border-border pt-4">
+            <h4 className="text-sm font-semibold mb-3 text-foreground">Postiz Integration IDs</h4>
+            <p className="text-xs text-muted-foreground mb-3">Find these in the Postiz app under Settings → Integrations. Each platform needs its own integration ID.</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Facebook</Label>
+                <Input value={settings.postiz_facebook_id || ""} onChange={(e) => setSettings({ ...settings, postiz_facebook_id: e.target.value })} placeholder="cmp..." />
+              </div>
+              <div>
+                <Label className="text-xs">Instagram</Label>
+                <Input value={settings.postiz_instagram_id || ""} onChange={(e) => setSettings({ ...settings, postiz_instagram_id: e.target.value })} placeholder="cmp..." />
+              </div>
+              <div>
+                <Label className="text-xs">X (Twitter)</Label>
+                <Input value={settings.postiz_x_id || ""} onChange={(e) => setSettings({ ...settings, postiz_x_id: e.target.value })} placeholder="cmp..." />
+              </div>
+              <div>
+                <Label className="text-xs">Google Business</Label>
+                <Input value={settings.postiz_gmb_id || ""} onChange={(e) => setSettings({ ...settings, postiz_gmb_id: e.target.value })} placeholder="cmp..." />
+              </div>
+            </div>
           </div>
         </div>
         <DialogFooter>

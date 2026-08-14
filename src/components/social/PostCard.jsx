@@ -54,18 +54,21 @@ export default function PostCard({ post, onChanged }) {
     if (!file) return;
     runAction(async () => {
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      await base44.entities.SocialPost.update(post.id, { image_url: file_url });
+      await base44.entities.SocialPost.update(post.id, { final_image_url: file_url, status: "ready_to_publish" });
     });
     e.target.value = "";
   };
 
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex flex-col">
-      <div className="aspect-square bg-muted flex items-center justify-center overflow-hidden">
-        {post.image_url ? (
-          <img src={post.image_url} alt={post.topic} className="w-full h-full object-cover" />
+      <div className="aspect-square bg-muted flex items-center justify-center overflow-hidden relative">
+        {post.final_image_url || post.image_url ? (
+          <img src={post.final_image_url || post.image_url} alt={post.topic} className="w-full h-full object-cover" />
         ) : (
           <ImageIcon className="w-10 h-10 text-muted-foreground/40" />
+        )}
+        {post.final_image_url && (
+          <span className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full font-medium shadow-sm">Final</span>
         )}
       </div>
       <div className="p-4 flex flex-col flex-1">

@@ -15,6 +15,8 @@ const STATUSES = [
   { value: "approved", label: "Approved" },
   { value: "rejected", label: "Rejected" },
   { value: "ready_to_publish", label: "Ready to Publish" },
+  { value: "needs_date_review", label: "Needs Date Review" },
+  { value: "scheduled", label: "Scheduled" },
 ];
 
 export default function StudioFilterBar({ platform, setPlatform, status, setStatus }) {

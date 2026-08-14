@@ -13,29 +13,29 @@ export default function PostCardActions({ post, busy, onRegenerateImage, onClone
         <Copy className="w-3.5 h-3.5 mr-1" />
         Create New Post
       </Button>
-      {post.status !== "approved" && post.status !== "published" && (
+      {!["approved", "published", "scheduled", "ready_to_publish"].includes(post.status) && (
         <Button size="sm" variant="default" disabled={busy} onClick={onApprove}>
           <Check className="w-3.5 h-3.5 mr-1" />
           Approve
         </Button>
       )}
-      {post.status !== "rejected" && (
+      {!["rejected", "published", "scheduled"].includes(post.status) && (
         <Button size="sm" variant="destructive" disabled={busy} onClick={onReject}>
           <X className="w-3.5 h-3.5 mr-1" />
           Reject
         </Button>
       )}
+      {(post.status === "approved" || post.status === "ready_to_publish") && (
+        <Button size="sm" variant="outline" disabled={busy} onClick={onUploadFinalImage}>
+          <Upload className="w-3.5 h-3.5 mr-1" />
+          {post.final_image_url ? "Replace Final" : "Upload Final Image"}
+        </Button>
+      )}
       {post.status === "approved" && (
-        <>
-          <Button size="sm" variant="outline" disabled={busy} onClick={onUploadFinalImage}>
-            <Upload className="w-3.5 h-3.5 mr-1" />
-            Upload Final Image
-          </Button>
-          <Button size="sm" variant="secondary" disabled={busy} onClick={onPrepare}>
-            <Send className="w-3.5 h-3.5 mr-1" />
-            Prepare for Publish
-          </Button>
-        </>
+        <Button size="sm" variant="secondary" disabled={busy} onClick={onPrepare}>
+          <Send className="w-3.5 h-3.5 mr-1" />
+          Prepare for Publish
+        </Button>
       )}
     </div>
   );

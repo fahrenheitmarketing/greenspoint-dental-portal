@@ -1,12 +1,18 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { useToast } from "@/components/ui/use-toast";
 import StudioHeader from "@/components/social/StudioHeader";
 import StudioFilterBar from "@/components/social/StudioFilterBar";
+import BulkActionBar from "@/components/social/BulkActionBar";
 import PostCard from "@/components/social/PostCard";
 import GenerateContentDialog from "@/components/social/GenerateContentDialog";
 import SettingsDialog from "@/components/social/SettingsDialog";
 import { Loader2 } from "lucide-react";
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
 
 export default function SocialMediaStudio() {
   const [posts, setPosts] = useState([]);
@@ -18,6 +24,10 @@ export default function SocialMediaStudio() {
   const [processingFeedback, setProcessingFeedback] = useState(false);
   const { toast } = useToast();
 
+  const now = new Date();
+  const [campaignMonth, setCampaignMonth] = useState(`${MONTHS[now.getMonth()]} ${now.getFullYear()}`);
+  const monthInitialized = useRef(false);
+
   const loadPosts = useCallback(async () => {
     const data = await base44.entities.SocialPost.list("-scheduled_date", 200);
     setPosts(data);
@@ -26,12 +36,21 @@ export default function SocialMediaStudio() {
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
 
+  // Auto-set the campaign month from the most recent post, but only once
+  useEffect(() => {
+    if (!monthInitialized.current && posts.length > 0 && posts[0]?.campaign_month) {
+      setCampaignMonth(posts[0].campaign_month);
+      monthInitialized.current = true;
+    }
+  }, [posts]);
+
   const filtered = posts.filter((p) => {
     const platformMatch = platform === "all" || p.platform === platform;
     const statusMatch = status === "all" ? p.status !== "rejected" : p.status === status;
     return platformMatch && statusMatch;
   });
 
+  const filteredPendingIds = filtered.filter((p) => p.status === "pending").map((p) => p.id);
   const pendingCount = posts.filter((p) => p.status === "pending").length;
 
   const handleProcessFeedback = async () => {
@@ -56,6 +75,12 @@ export default function SocialMediaStudio() {
         onSettings={() => setShowSettings(true)}
         processing={processingFeedback}
       />
+      <BulkActionBar
+        campaignMonth={campaignMonth}
+        onCampaignMonthChange={setCampaignMonth}
+        filteredPendingIds={filteredPendingIds}
+        onRefresh={loadPosts}
+      />
       <div className="mb-6">
         <StudioFilterBar platform={platform} setPlatform={setPlatform} status={status} setStatus={setStatus} />
       </div>
@@ -64,7 +89,7 @@ export default function SocialMediaStudio() {
         <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20 text-muted-foreground">
-          No posts yet. Click "Generate Monthly Content" to bootstrap this month's pipeline.
+          No posts yet. Click "Generate Full Month" to bootstrap this month's pipeline.
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
