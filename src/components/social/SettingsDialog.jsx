@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
+import ShortLinksEditor from "./ShortLinksEditor";
 
 export default function SettingsDialog({ open, onOpenChange }) {
   const [settings, setSettings] = useState(null);
@@ -14,7 +15,7 @@ export default function SettingsDialog({ open, onOpenChange }) {
   useEffect(() => {
     if (open) {
       base44.entities.SocialMediaSettings.list().then((list) => {
-        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_doc_id: "", clickup_doc_page_id: "", brand_guide_text: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "" });
+        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_doc_id: "", clickup_doc_page_id: "", brand_guide_text: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "", short_links: [] });
       });
     }
   }, [open]);
@@ -39,7 +40,7 @@ export default function SettingsDialog({ open, onOpenChange }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader><DialogTitle>Social Media Studio Settings</DialogTitle></DialogHeader>
-        <div className="space-y-4 py-2">
+        <div className="space-y-4 py-2 max-h-[70vh] overflow-y-auto pr-1">
           <div>
             <Label>ClickUp List ID *</Label>
             <Input value={settings.clickup_list_id} onChange={(e) => setSettings({ ...settings, clickup_list_id: e.target.value })} placeholder="e.g. 901234567" />
@@ -83,6 +84,11 @@ export default function SettingsDialog({ open, onOpenChange }) {
                 <Input value={settings.postiz_gmb_id || ""} onChange={(e) => setSettings({ ...settings, postiz_gmb_id: e.target.value })} placeholder="cmp..." />
               </div>
             </div>
+          </div>
+          <div className="border-t border-border pt-4">
+            <h4 className="text-sm font-semibold mb-1 text-foreground">Short Links</h4>
+            <p className="text-xs text-muted-foreground mb-3">Add a short link per page and platform so generated posts can link to the right landing page.</p>
+            <ShortLinksEditor value={settings.short_links || []} onChange={(links) => setSettings({ ...settings, short_links: links })} />
           </div>
         </div>
         <DialogFooter>

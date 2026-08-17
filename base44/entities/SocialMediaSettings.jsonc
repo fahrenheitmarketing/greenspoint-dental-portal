@@ -37,6 +37,40 @@
     "postiz_gmb_id": {
       "type": "string",
       "description": "Postiz integration ID for the client's Google Business profile"
+    },
+    "short_links": {
+      "type": "array",
+      "description": "Short links per page and platform, used when linking generated posts to landing pages",
+      "items": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "string",
+            "description": "App page path the short link points to (e.g. '/services/specials')"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "facebook",
+              "instagram",
+              "twitter",
+              "google_business",
+              "all"
+            ],
+            "description": "Platform this short link is intended for, or 'all' for any platform"
+          },
+          "url": {
+            "type": "string",
+            "description": "The short link URL"
+          }
+        },
+        "required": [
+          "page",
+          "platform",
+          "url"
+        ]
+      },
+      "default": []
     }
   },
   "required": [
