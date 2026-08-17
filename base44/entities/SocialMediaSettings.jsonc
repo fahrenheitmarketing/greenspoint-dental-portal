@@ -8,19 +8,15 @@
     },
     "clickup_workspace_id": {
       "type": "string",
-      "description": "Optional ClickUp workspace (team) ID, used to fetch the Brand Reference Guide doc and task attachments"
+      "description": "Optional ClickUp workspace (team) ID, used to fetch task attachments and (if needed) the Brand Reference Guide doc"
     },
-    "clickup_doc_id": {
+    "clickup_brand_doc_url": {
       "type": "string",
-      "description": "Optional ClickUp Doc ID containing the Brand Reference Guide"
-    },
-    "clickup_doc_page_id": {
-      "type": "string",
-      "description": "Optional ClickUp Doc page ID containing the Brand Reference Guide"
+      "description": "Full ClickUp Doc URL for the Brand Reference Guide; the doc and page IDs are parsed from this URL automatically"
     },
     "brand_guide_text": {
       "type": "string",
-      "description": "Fallback/manual Brand Reference Guide text used if the ClickUp doc can't be fetched"
+      "description": "Fallback/manual Brand Reference Guide text used if the ClickUp doc URL isn't set or can't be fetched"
     },
     "postiz_facebook_id": {
       "type": "string",

@@ -15,7 +15,7 @@ export default function SettingsDialog({ open, onOpenChange }) {
   useEffect(() => {
     if (open) {
       base44.entities.SocialMediaSettings.list().then((list) => {
-        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_doc_id: "", clickup_doc_page_id: "", brand_guide_text: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "", short_links: [] });
+        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_brand_doc_url: "", brand_guide_text: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "", short_links: [] });
       });
     }
   }, [open]);
@@ -45,18 +45,15 @@ export default function SettingsDialog({ open, onOpenChange }) {
             <Label>ClickUp List ID *</Label>
             <Input value={settings.clickup_list_id} onChange={(e) => setSettings({ ...settings, clickup_list_id: e.target.value })} placeholder="e.g. 901234567" />
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="space-y-3">
             <div>
               <Label className="text-xs">Workspace ID</Label>
               <Input value={settings.clickup_workspace_id} onChange={(e) => setSettings({ ...settings, clickup_workspace_id: e.target.value })} />
             </div>
             <div>
-              <Label className="text-xs">Brand Doc ID</Label>
-              <Input value={settings.clickup_doc_id} onChange={(e) => setSettings({ ...settings, clickup_doc_id: e.target.value })} />
-            </div>
-            <div>
-              <Label className="text-xs">Doc Page ID</Label>
-              <Input value={settings.clickup_doc_page_id} onChange={(e) => setSettings({ ...settings, clickup_doc_page_id: e.target.value })} />
+              <Label className="text-xs">Brand Guide Doc URL</Label>
+              <Input value={settings.clickup_brand_doc_url || ""} onChange={(e) => setSettings({ ...settings, clickup_brand_doc_url: e.target.value })} placeholder="https://app.clickup.com/.../docs/..." />
+              <p className="text-[11px] text-muted-foreground mt-1">Paste the full ClickUp doc URL — the doc and page IDs are read from it automatically.</p>
             </div>
           </div>
           <div>

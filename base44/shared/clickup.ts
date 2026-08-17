@@ -90,20 +90,56 @@ export async function uploadAttachmentToClickUpTask(base44, taskId, imageUrl, fi
 const DEFAULT_BRAND_GUIDE =
   "No scary dental tools or invasive-surgery imagery. No overly clinical shots. No text embedded in photos. No unverified medical claims. All imagery must be welcoming, bright, patient-focused, and topic-relevant.";
 
-export async function getBrandGuideText(base44, settings) {
-  if (settings.clickup_workspace_id && settings.clickup_doc_id && settings.clickup_doc_page_id) {
-    try {
-      const token = await getClickUpToken(base44);
-      const res = await fetch(
-        `https://api.clickup.com/api/v3/workspaces/${settings.clickup_workspace_id}/docs/${settings.clickup_doc_id}/pages/${settings.clickup_doc_page_id}`,
-        { headers: { Authorization: token } }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.content) return data.content;
+// Parse a ClickUp doc URL into its workspace (team), doc, and page IDs.
+// Supports formats like: app.clickup.com/{team}/docs/{docId} (with ?page={pageId} or a trailing path/hash segment)
+function parseClickUpDocUrl(url) {
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split("/").filter(Boolean);
+    let docId = null;
+    let teamId = null;
+    for (let i = 0; i < parts.length; i++) {
+      if ((parts[i] === "docs" || parts[i] === "d") && parts[i + 1]) {
+        docId = parts[i + 1];
+        if (i > 0 && /^\d+$/.test(parts[i - 1])) teamId = parts[i - 1];
+        break;
       }
-    } catch (e) {
-      // fall through to manual text
+    }
+    let pageId = u.searchParams.get("page");
+    if (!pageId && docId) {
+      const idx = parts.indexOf(docId);
+      if (idx >= 0 && parts[idx + 1] && parts[idx + 1] !== "d" && parts[idx + 1] !== "docs") {
+        pageId = parts[idx + 1];
+      }
+    }
+    if (!pageId) {
+      const hash = u.hash.replace(/^#/, "");
+      if (hash) pageId = new URLSearchParams(hash).get("page") || hash;
+    }
+    return { teamId, docId, pageId };
+  } catch {
+    return { teamId: null, docId: null, pageId: null };
+  }
+}
+
+export async function getBrandGuideText(base44, settings) {
+  if (settings.clickup_brand_doc_url) {
+    const { teamId, docId, pageId } = parseClickUpDocUrl(settings.clickup_brand_doc_url);
+    const workspaceId = settings.clickup_workspace_id || teamId;
+    if (workspaceId && docId && pageId) {
+      try {
+        const token = await getClickUpToken(base44);
+        const res = await fetch(
+          `https://api.clickup.com/api/v3/workspaces/${workspaceId}/docs/${docId}/pages/${pageId}`,
+          { headers: { Authorization: token } }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.content) return data.content;
+        }
+      } catch (e) {
+        // fall through to manual text
+      }
     }
   }
   return settings.brand_guide_text || DEFAULT_BRAND_GUIDE;
