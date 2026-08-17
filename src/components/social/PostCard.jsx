@@ -49,9 +49,6 @@ export default function PostCard({ post, onChanged }) {
   const handleReject = () =>
     runAction(async () => {
       await base44.entities.SocialPost.update(post.id, { status: "rejected" });
-      if (post.clickup_task_id) {
-        await base44.functions.invoke("syncPostToClickUp", { postId: post.id, note: "Post rejected in the Social Media Studio dashboard." });
-      }
       await base44.functions.invoke("generateSinglePost", {
         platform: post.platform,
         campaignMonth: post.campaign_month,

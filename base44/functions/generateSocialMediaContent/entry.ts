@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import { getBrandGuideText, createClickUpTask } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, PLATFORM_LABEL, PLATFORM_ORDER, getPlatformsForDate, buildSchedule, formatDateLabel, buildTaskDescription, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
+import { getBrandGuideText } from '../../shared/clickup.ts';
+import { PLATFORM_TONE, buildSchedule, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -95,16 +95,8 @@ For each slot return: date, platform, topic (short theme), content (the actual p
 
     const posts = genRes.posts || [];
 
-    // 3. Build the single task description with all posts grouped by platform
-    const description = buildTaskDescription(campaignMonth, posts);
-
-    // 4. Create ONE task in the ClickUp list
-    const task = await createClickUpTask(base44, settings.clickup_list_id, {
-      name: `GP - Social Posts [${campaignMonth}]`,
-      description,
-    });
-
-    // 5. Save SocialPost records in bulk, all linked to the same task
+    // Save SocialPost records as pending. They are NOT sent to ClickUp yet —
+    // content is only added to the ClickUp task when approved in the Studio dashboard.
     const records = posts.map((post) => ({
       platform: post.platform,
       topic: post.topic,
@@ -112,7 +104,6 @@ For each slot return: date, platform, topic (short theme), content (the actual p
       status: 'pending',
       scheduled_date: post.date,
       campaign_month: campaignMonth,
-      clickup_task_id: task.id,
       clickup_list_id: settings.clickup_list_id,
       brand_compliance_notes: post.image_prompt,
     }));
@@ -122,7 +113,6 @@ For each slot return: date, platform, topic (short theme), content (the actual p
     return Response.json({
       success: true,
       campaign_month: campaignMonth,
-      clickup_task_id: task.id,
       posts_created: created.length,
       total_slots: schedule.length,
     });

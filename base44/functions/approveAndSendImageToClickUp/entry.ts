@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import { uploadAttachmentToClickUpTask, addClickUpComment } from '../../shared/clickup.ts';
+import { createClickUpTask, uploadAttachmentToClickUpTask, addClickUpComment } from '../../shared/clickup.ts';
 
 export default async function (req) {
   try {
@@ -19,28 +19,64 @@ export default async function (req) {
       return Response.json({ error: 'Post not found' }, { status: 404 });
     }
 
+    const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
+    const settings = settingsList[0];
+    const listId = post.clickup_list_id || (settings && settings.clickup_list_id);
+    if (!listId) {
+      return Response.json({ error: 'ClickUp list ID is not configured' }, { status: 400 });
+    }
+
     // Mark the post as approved
     await base44.asServiceRole.entities.SocialPost.update(postId, { status: 'approved' });
 
-    // Attach the current image to the linked ClickUp task for the design team
+    // Resolve the ClickUp task for this campaign month: reuse an existing one if present,
+    // otherwise create a new one. Content is only added to ClickUp on approval.
+    let taskId = post.clickup_task_id;
+    if (!taskId && post.campaign_month) {
+      const monthPosts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: post.campaign_month }, 'scheduled_date', 200);
+      const withTask = monthPosts.find((p) => p.clickup_task_id);
+      if (withTask) taskId = withTask.clickup_task_id;
+    }
+    if (!taskId) {
+      const task = await createClickUpTask(base44, listId, {
+        name: `GP - Social Posts [${post.campaign_month || 'Approved'}]`,
+        description: `Approved social media content for ${post.campaign_month || 'this campaign'}.\n\nEach approved post is added below as a comment with its creative attached for design-team branding.`,
+      });
+      taskId = task.id;
+    }
+
+    // Persist the task link on this post
+    await base44.asServiceRole.entities.SocialPost.update(postId, { clickup_task_id: taskId, clickup_list_id: listId });
+
+    const dateLabel = post.scheduled_date
+      ? new Date(post.scheduled_date + 'T00:00:00Z').toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+      : 'undated';
+
+    // Attach the current image to the task for the design team
     let attached = false;
-    if (post.clickup_task_id && post.image_url) {
+    if (post.image_url) {
       try {
         const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
         const filename = `${post.platform}-${post.scheduled_date || 'undated'}-${safeTopic}.jpg`;
-        await uploadAttachmentToClickUpTask(base44, post.clickup_task_id, post.image_url, filename);
-        await addClickUpComment(
-          base44,
-          post.clickup_task_id,
-          `Content Agent: Post approved in the Social Media Studio. Image attached for design team alterations (logo, branding). Once the final branded version is ready, upload it back to this task or use "Upload Final Image" in the dashboard, then Prepare for Publish.`
-        );
+        await uploadAttachmentToClickUpTask(base44, taskId, post.image_url, filename);
         attached = true;
       } catch (attachErr) {
         console.error('ClickUp attachment upload failed:', attachErr.message);
       }
     }
 
-    return Response.json({ success: true, attached_to_clickup: attached });
+    // Add a comment with the post copy so the design team has context
+    try {
+      await addClickUpComment(
+        base44,
+        taskId,
+        `Content Agent: Post approved in the Social Media Studio.\n[${post.platform.toUpperCase()} - ${dateLabel}] Topic: ${post.topic || 'n/a'}\n\n${post.content}\n\nImage attached for design team branding. Once the final branded version is ready, upload it back to this task or use "Upload Final Image" in the dashboard, then Prepare for Publish.`
+      );
+    } catch (commentErr) {
+      console.error('ClickUp comment failed:', commentErr.message);
+    }
+
+    return Response.json({ success: true, clickup_task_id: taskId, attached_to_clickup: attached });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import { getBrandGuideText, createClickUpTask, uploadAttachmentToClickUpTask, addClickUpComment } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, PLATFORM_LABEL, PLATFORM_ORDER, getPlatformsForDate, buildSchedule, formatDateLabel, buildTaskDescription, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
+import { getBrandGuideText } from '../../shared/clickup.ts';
+import { PLATFORM_TONE, buildSchedule, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
 import { buildImagePrompt, IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 // Run async tasks with a concurrency cap to avoid overwhelming the image API.
@@ -109,14 +109,8 @@ For each slot return: date, platform, topic (short theme), content (the actual p
 
     const posts = genRes.posts || [];
 
-    // 3. Create ClickUp task with description
-    const description = buildTaskDescription(campaignMonth, posts);
-    const task = await createClickUpTask(base44, settings.clickup_list_id, {
-      name: `GP - Social Posts [${campaignMonth}]`,
-      description,
-    });
-
-    // 4. Save SocialPost records
+    // Save SocialPost records as pending. They are NOT sent to ClickUp yet —
+    // content is only added to the ClickUp task when approved in the Studio dashboard.
     const records = posts.map((post) => ({
       platform: post.platform,
       topic: post.topic,
@@ -124,16 +118,14 @@ For each slot return: date, platform, topic (short theme), content (the actual p
       status: 'pending',
       scheduled_date: post.date,
       campaign_month: campaignMonth,
-      clickup_task_id: task.id,
       clickup_list_id: settings.clickup_list_id,
       brand_compliance_notes: post.image_prompt,
     }));
     const created = await base44.asServiceRole.entities.SocialPost.bulkCreate(records);
 
-    // 5. Generate all images concurrently and attach to ClickUp
+    // Generate all images concurrently (stored on each post; attached to ClickUp on approval)
     let imagesGenerated = 0;
     let imagesFailed = 0;
-    let attachmentsUploaded = 0;
 
     await runConcurrent(created, async (post) => {
       try {
@@ -141,34 +133,18 @@ For each slot return: date, platform, topic (short theme), content (the actual p
         const { url } = await base44.asServiceRole.integrations.Core.GenerateImage({ prompt });
         await base44.asServiceRole.entities.SocialPost.update(post.id, { image_url: url });
         imagesGenerated++;
-        // Attach to ClickUp task
-        try {
-          const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
-          const filename = `${post.platform}-${post.scheduled_date || 'undated'}-${safeTopic}.jpg`;
-          await uploadAttachmentToClickUpTask(base44, task.id, url, filename);
-          attachmentsUploaded++;
-        } catch (attachErr) {
-          console.error('ClickUp attachment failed for post', post.id, attachErr.message);
-        }
       } catch (imgErr) {
         console.error('Image generation failed for post', post.id, imgErr.message);
         imagesFailed++;
       }
     }, 4);
 
-    // 6. Notify in ClickUp
-    try {
-      await addClickUpComment(base44, task.id, `Content Agent: Full month generated end-to-end. ${imagesGenerated} images created and ${attachmentsUploaded} attached to this task. Review the copy above and the attached creatives. Comment "Approved" to approve, or request changes.`);
-    } catch (e) { /* non-critical */ }
-
     return Response.json({
       success: true,
       campaign_month: campaignMonth,
-      clickup_task_id: task.id,
       posts_created: created.length,
       images_generated: imagesGenerated,
       images_failed: imagesFailed,
-      attachments_uploaded: attachmentsUploaded,
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
