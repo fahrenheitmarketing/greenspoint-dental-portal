@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2 } from "lucide-react";
+import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw } from "lucide-react";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -81,6 +81,19 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
         >
           {isBusy("generateFullMonth") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Zap className="w-4 h-4 mr-1" />}
           Generate Full Month
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={anyBusy}
+          onClick={() => runBulk(
+            "regenerateMonth",
+            () => base44.functions.invoke("regenerateMonthPosts", { campaignMonth }),
+            { title: "Month regenerated", desc: (d) => `${d.regenerated} posts regenerated, ${d.images_generated} images created, ${d.images_failed} failed.` }
+          )}
+        >
+          {isBusy("regenerateMonth") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-1" />}
+          Regenerate Month
         </Button>
         <Button
           size="sm"

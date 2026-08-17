@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, CONTENT_RULES } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -17,7 +17,9 @@ export default async function (req) {
     }
 
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
-    const brandGuide = settingsList[0] ? await getBrandGuideText(base44, settingsList[0]) : '';
+    const settings = settingsList[0];
+    const brandGuide = settings ? await getBrandGuideText(base44, settings) : '';
+    const ctaInstruction = settings ? buildShortLinkCtaInstruction(settings, platform) : '';
 
     // Fetch topics already used to avoid repetition
     const existingPosts = await base44.asServiceRole.entities.SocialPost.filter({}, 'scheduled_date', 500);
@@ -38,6 +40,7 @@ ${sourceTopic ? `The user wants a new, DIFFERENT take on this theme (do NOT reus
 
 Generate ONE new post for ${platform}${scheduledDate ? ` scheduled for ${scheduledDate}` : ''}. It must be patient-friendly and match the platform's tone and length norms.
 ${CONTENT_RULES}
+${ctaInstruction}
 
 Return: topic (short theme), content (the actual post copy), image_prompt (${IMAGE_PROMPT_INSTRUCTION}).`,
       model: 'gemini_3_flash',
