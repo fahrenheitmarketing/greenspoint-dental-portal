@@ -17,9 +17,9 @@ export default async function (req) {
       return Response.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const { campaignMonth } = await req.json();
-    if (!campaignMonth) {
-      return Response.json({ error: 'campaignMonth is required' }, { status: 400 });
+    const { campaignMonth, postId } = await req.json();
+    if (!campaignMonth && !postId) {
+      return Response.json({ error: 'campaignMonth or postId is required' }, { status: 400 });
     }
 
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
@@ -28,10 +28,16 @@ export default async function (req) {
       return Response.json({ error: 'Configure Social Media Settings first.' }, { status: 400 });
     }
 
-    const allCampaignPosts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth }, 'scheduled_date', 200);
-    const posts = allCampaignPosts.filter(
-      (p) => p.status === 'ready_to_publish' || (p.status === 'approved' && p.final_image_url)
-    );
+    let posts;
+    if (postId) {
+      const singlePost = await base44.asServiceRole.entities.SocialPost.get(postId);
+      posts = singlePost ? [singlePost] : [];
+    } else {
+      const allCampaignPosts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth }, 'scheduled_date', 200);
+      posts = allCampaignPosts.filter(
+        (p) => p.status === 'ready_to_publish' || (p.status === 'approved' && p.final_image_url)
+      );
+    }
 
     const now = new Date();
     let scheduled = 0;

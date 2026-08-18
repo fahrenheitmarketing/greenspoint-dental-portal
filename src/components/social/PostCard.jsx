@@ -51,6 +51,9 @@ export default function PostCard({ post, onAction }) {
   const handlePrepare = () =>
     runAction("Prepare for Publish", () => base44.functions.invoke("resizeImageForPlatform", { postId: post.id }));
 
+  const handleScheduleToPostiz = () =>
+    runAction("Schedule to Postiz", () => base44.functions.invoke("scheduleToPostiz", { postId: post.id }));
+
   const handleDelete = async () => {
     if (!window.confirm("Move this post to trash? You can restore it from the Deleted filter.")) return;
     runAction("Delete Post", () => base44.entities.SocialPost.update(post.id, { status: "deleted" }));
@@ -116,6 +119,7 @@ export default function PostCard({ post, onAction }) {
           onApprove={handleApprove}
           onReject={handleReject}
           onPrepare={handlePrepare}
+          onScheduleToPostiz={handleScheduleToPostiz}
           onUploadFinalImage={() => fileInputRef.current?.click()}
           onDelete={handleDelete}
           onRestore={handleRestore}
