@@ -18,6 +18,7 @@ const STATUSES = [
   { value: "ready_to_publish", label: "Ready to Publish" },
   { value: "needs_date_review", label: "Needs Date Review" },
   { value: "scheduled", label: "Scheduled" },
+  { value: "deleted", label: "Deleted" },
 ];
 
 export default function StudioFilterBar({ platform, setPlatform, status, setStatus, campaignMonthFilter, setCampaignMonthFilter, campaignMonths }) {

@@ -50,7 +50,7 @@ export default function SocialMediaStudio() {
   const filtered = posts.filter((p) => {
     const monthMatch = campaignMonthFilter === "all" || p.campaign_month === campaignMonthFilter;
     const platformMatch = platform === "all" || p.platform === platform;
-    const statusMatch = status === "all" ? p.status !== "rejected" : p.status === status;
+    const statusMatch = status === "all" ? (p.status !== "rejected" && p.status !== "deleted") : p.status === status;
     return monthMatch && platformMatch && statusMatch;
   });
 

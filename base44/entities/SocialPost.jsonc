@@ -42,7 +42,8 @@
         "ready_to_publish",
         "needs_date_review",
         "scheduled",
-        "published"
+        "published",
+        "deleted"
       ],
       "default": "draft",
       "description": "Approval/publish status"

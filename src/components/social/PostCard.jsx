@@ -59,15 +59,12 @@ export default function PostCard({ post, onChanged }) {
   const handlePrepare = () => runAction(() => base44.functions.invoke("resizeImageForPlatform", { postId: post.id }));
 
   const handleDelete = async () => {
-    if (!window.confirm("Delete this post? This cannot be undone.")) return;
-    setBusy(true);
-    try {
-      await base44.entities.SocialPost.delete(post.id);
-      onChanged();
-    } finally {
-      setBusy(false);
-    }
+    if (!window.confirm("Move this post to trash? You can restore it from the Deleted filter.")) return;
+    runAction(() => base44.entities.SocialPost.update(post.id, { status: "deleted" }));
   };
+
+  const handleRestore = () =>
+    runAction(() => base44.entities.SocialPost.update(post.id, { status: "pending" }));
 
   const handleUploadFinalImage = (e) => {
     const file = e.target.files?.[0];
@@ -122,6 +119,7 @@ export default function PostCard({ post, onChanged }) {
           onPrepare={handlePrepare}
           onUploadFinalImage={() => fileInputRef.current?.click()}
           onDelete={handleDelete}
+          onRestore={handleRestore}
         />
       </div>
       <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} />
