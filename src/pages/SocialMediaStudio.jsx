@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useToast } from "@/components/ui/use-toast";
 import StudioHeader from "@/components/social/StudioHeader";
@@ -21,6 +21,7 @@ export default function SocialMediaStudio() {
   const [platform, setPlatform] = useState("all");
   const [status, setStatus] = useState("all");
   const [campaignMonthFilter, setCampaignMonthFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState({ day: "all", month: "all", year: "all" });
   const [showGenerate, setShowGenerate] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [processingFeedback, setProcessingFeedback] = useState(false);
@@ -73,8 +74,23 @@ export default function SocialMediaStudio() {
     const monthMatch = campaignMonthFilter === "all" || p.campaign_month === campaignMonthFilter;
     const platformMatch = platform === "all" || p.platform === platform;
     const statusMatch = status === "all" ? (p.status !== "rejected" && p.status !== "deleted") : p.status === status;
-    return monthMatch && platformMatch && statusMatch;
+    let dateMatch = true;
+    if (p.scheduled_date) {
+      const d = new Date(p.scheduled_date);
+      dateMatch =
+        (dateFilter.day === "all" || String(d.getDate()) === dateFilter.day) &&
+        (dateFilter.month === "all" || String(d.getMonth()) === dateFilter.month) &&
+        (dateFilter.year === "all" || String(d.getFullYear()) === dateFilter.year);
+    } else if (dateFilter.day !== "all" || dateFilter.month !== "all" || dateFilter.year !== "all") {
+      dateMatch = false;
+    }
+    return monthMatch && platformMatch && statusMatch && dateMatch;
   });
+
+  const availableYears = useMemo(
+    () => [...new Set(posts.map((p) => p.scheduled_date ? new Date(p.scheduled_date).getFullYear() : null).filter(Boolean))].sort().reverse(),
+    [posts]
+  );
 
   const filteredPendingIds = filtered.filter((p) => p.status === "pending").map((p) => p.id);
   const pendingCount = posts.filter((p) => p.status === "pending").length;
@@ -116,7 +132,7 @@ export default function SocialMediaStudio() {
         runAction={runWithHistory}
       />
       <div className="mb-6">
-        <StudioFilterBar platform={platform} setPlatform={setPlatform} status={status} setStatus={setStatus} campaignMonthFilter={campaignMonthFilter} setCampaignMonthFilter={setCampaignMonthFilter} campaignMonths={uniqueMonths} />
+        <StudioFilterBar platform={platform} setPlatform={setPlatform} status={status} setStatus={setStatus} campaignMonthFilter={campaignMonthFilter} setCampaignMonthFilter={setCampaignMonthFilter} campaignMonths={uniqueMonths} dateFilter={dateFilter} setDateFilter={setDateFilter} availableYears={availableYears} />
       </div>
 
       {loading ? (

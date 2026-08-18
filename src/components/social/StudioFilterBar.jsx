@@ -21,7 +21,10 @@ const STATUSES = [
   { value: "deleted", label: "Deleted" },
 ];
 
-export default function StudioFilterBar({ platform, setPlatform, status, setStatus, campaignMonthFilter, setCampaignMonthFilter, campaignMonths }) {
+const DAYS = Array.from({ length: 31 }, (_, i) => String(i + 1));
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+export default function StudioFilterBar({ platform, setPlatform, status, setStatus, campaignMonthFilter, setCampaignMonthFilter, campaignMonths, dateFilter, setDateFilter, availableYears }) {
   return (
     <div className="flex flex-wrap items-center gap-4">
       <div className="flex items-center gap-2">
@@ -32,6 +35,37 @@ export default function StudioFilterBar({ platform, setPlatform, status, setStat
             <SelectItem value="all">All Months</SelectItem>
             {campaignMonths.map((m) => (
               <SelectItem key={m} value={m}>{m}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="h-6 w-px bg-border hidden sm:block" />
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Date:</span>
+        <Select value={dateFilter.day} onValueChange={(v) => setDateFilter((f) => ({ ...f, day: v }))}>
+          <SelectTrigger className="w-20 h-9"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Day</SelectItem>
+            {DAYS.map((d) => (
+              <SelectItem key={d} value={d}>{d}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={dateFilter.month} onValueChange={(v) => setDateFilter((f) => ({ ...f, month: v }))}>
+          <SelectTrigger className="w-28 h-9"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Month</SelectItem>
+            {MONTH_NAMES.map((m, i) => (
+              <SelectItem key={m} value={String(i)}>{m.slice(0, 3)}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={dateFilter.year} onValueChange={(v) => setDateFilter((f) => ({ ...f, year: v }))}>
+          <SelectTrigger className="w-24 h-9"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Year</SelectItem>
+            {availableYears.map((y) => (
+              <SelectItem key={y} value={y}>{y}</SelectItem>
             ))}
           </SelectContent>
         </Select>
