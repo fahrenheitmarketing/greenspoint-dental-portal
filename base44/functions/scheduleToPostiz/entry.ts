@@ -17,7 +17,7 @@ export default async function (req) {
       return Response.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const { campaignMonth, postId } = await req.json();
+    const { campaignMonth, postId, newDate, postNow } = await req.json();
     if (!campaignMonth && !postId) {
       return Response.json({ error: 'campaignMonth or postId is required' }, { status: 400 });
     }
@@ -52,9 +52,17 @@ export default async function (req) {
         continue;
       }
 
-      // Posts with a past scheduled date need manual review
-      const scheduledDate = new Date(post.scheduled_date);
-      if (scheduledDate <= now) {
+      // If a new date was provided, update it before scheduling
+      let scheduledDate;
+      if (newDate) {
+        scheduledDate = new Date(newDate);
+        await base44.asServiceRole.entities.SocialPost.update(post.id, { scheduled_date: newDate });
+      } else {
+        scheduledDate = new Date(post.scheduled_date);
+      }
+
+      // Posts with a past scheduled date need manual review (unless posting now)
+      if (!postNow && scheduledDate <= now) {
         await base44.asServiceRole.entities.SocialPost.update(post.id, { status: 'needs_date_review' });
         needsReview++;
         continue;
@@ -75,14 +83,15 @@ export default async function (req) {
         // Schedule the post
         const result = await schedulePostToPostizWithSettings({
           integrationId,
-          date: scheduledDate.toISOString(),
+          date: postNow ? new Date().toISOString() : scheduledDate.toISOString(),
           content: post.content,
           imageData,
           platform: post.platform,
+          postNow,
         });
         const postizPostId = result && result[0] ? result[0].postId : '';
         await base44.asServiceRole.entities.SocialPost.update(post.id, {
-          status: 'scheduled',
+          status: postNow ? 'published' : 'scheduled',
           postiz_post_id: postizPostId,
         });
         scheduled++;

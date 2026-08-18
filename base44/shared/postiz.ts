@@ -39,13 +39,13 @@ export async function uploadImageToPostiz(imageUrl) {
 }
 
 // Schedule a single post to a single integration. Returns the Postiz response array [{ postId, integration }].
-export async function schedulePostToPostizWithSettings({ integrationId, date, content, imageData, platform }) {
+export async function schedulePostToPostizWithSettings({ integrationId, date, content, imageData, platform, postNow }) {
   const key = getApiKey();
   const settings = PLATFORM_SETTINGS[platform];
   if (!settings) throw new Error(`No Postiz settings for platform: ${platform}`);
   const body = {
-    type: 'schedule',
-    date,
+    type: postNow ? 'now' : 'schedule',
+    ...(postNow ? {} : { date }),
     shortLink: false,
     tags: [],
     posts: [

@@ -6,10 +6,12 @@ import PlatformBadge from "./PlatformBadge";
 import StatusBadge from "./StatusBadge";
 import PostCardActions from "./PostCardActions";
 import PostDetailDialog from "./PostDetailDialog";
+import FixDateDialog from "./FixDateDialog";
 
 export default function PostCard({ post, onAction }) {
   const [busy, setBusy] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+  const [showFixDate, setShowFixDate] = useState(false);
   const fileInputRef = useRef(null);
 
   const runAction = async (label, fn) => {
@@ -53,6 +55,19 @@ export default function PostCard({ post, onAction }) {
 
   const handleScheduleToPostiz = () =>
     runAction("Schedule to Postiz", () => base44.functions.invoke("scheduleToPostiz", { postId: post.id }));
+
+  const handleFixDate = () => setShowFixDate(true);
+
+  const handleFixDateConfirm = (newDate) =>
+    runAction("Fix Date & Reschedule", async () => {
+      await base44.functions.invoke("scheduleToPostiz", { postId: post.id, newDate });
+      setShowFixDate(false);
+    });
+
+  const handlePostNow = () => {
+    if (!window.confirm("Publish this post to Postiz immediately?")) return;
+    runAction("Post Now", () => base44.functions.invoke("scheduleToPostiz", { postId: post.id, postNow: true }));
+  };
 
   const handleDelete = async () => {
     if (!window.confirm("Move this post to trash? You can restore it from the Deleted filter.")) return;
@@ -120,12 +135,15 @@ export default function PostCard({ post, onAction }) {
           onReject={handleReject}
           onPrepare={handlePrepare}
           onScheduleToPostiz={handleScheduleToPostiz}
+          onFixDate={handleFixDate}
+          onPostNow={handlePostNow}
           onUploadFinalImage={() => fileInputRef.current?.click()}
           onDelete={handleDelete}
           onRestore={handleRestore}
         />
       </div>
       <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onSaveField={onSaveField} />
+      <FixDateDialog post={post} open={showFixDate} onOpenChange={setShowFixDate} onConfirm={handleFixDateConfirm} />
     </div>
   );
 }
