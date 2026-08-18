@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Check, X, Send, Upload } from "lucide-react";
+import { Sparkles, Check, X, Send, Upload, Trash2 } from "lucide-react";
 
-export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage }) {
+export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage, onDelete }) {
   return (
     <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
       <Button size="sm" variant="outline" disabled={busy} onClick={onRegenerateImage}>
@@ -37,6 +37,10 @@ export default function PostCardActions({ post, busy, onRegenerateImage, onClone
           Prepare for Publish
         </Button>
       )}
+      <Button size="sm" variant="destructive" disabled={busy} onClick={onDelete}>
+        <Trash2 className="w-3.5 h-3.5 mr-1" />
+        Delete
+      </Button>
     </div>
   );
 }
