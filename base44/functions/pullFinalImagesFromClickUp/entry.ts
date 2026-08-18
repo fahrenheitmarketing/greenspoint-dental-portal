@@ -19,26 +19,56 @@ export default async function (req) {
       return Response.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const { campaignMonth } = await req.json();
-    if (!campaignMonth) {
-      return Response.json({ error: 'campaignMonth is required' }, { status: 400 });
+    const { campaignMonth, taskUrl } = await req.json();
+    if (!campaignMonth && !taskUrl) {
+      return Response.json({ error: 'Either campaignMonth or taskUrl is required' }, { status: 400 });
     }
 
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const settings = settingsList[0];
-    if (!settings || !settings.clickup_workspace_id) {
+
+    // Parse task ID from a ClickUp task URL if provided
+    let taskUrlTaskId = null;
+    if (taskUrl) {
+      try {
+        const u = new URL(taskUrl);
+        const parts = u.pathname.split("/").filter(Boolean);
+        const taskIdx = parts.indexOf("t");
+        if (taskIdx >= 0 && parts[taskIdx + 1]) {
+          taskUrlTaskId = parts[taskIdx + 1];
+        }
+        if (!taskUrlTaskId) {
+          for (let i = 0; i < parts.length; i++) {
+            if (parts[i] === "task" && parts[i + 1]) { taskUrlTaskId = parts[i + 1]; break; }
+          }
+        }
+      } catch {}
+      if (!taskUrlTaskId) {
+        return Response.json({ error: 'Could not parse a task ID from the provided URL' }, { status: 400 });
+      }
+    }
+
+    if (!taskUrlTaskId && (!settings || !settings.clickup_workspace_id)) {
       return Response.json({ error: 'ClickUp workspace ID is required in Settings to pull attachments.' }, { status: 400 });
     }
 
-    const posts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth }, 'scheduled_date', 200);
+    const posts = campaignMonth
+      ? await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth }, 'scheduled_date', 200)
+      : await base44.asServiceRole.entities.SocialPost.list('scheduled_date', 200);
 
-    // Group by ClickUp task ID
+    // Group by ClickUp task ID (filtered to just the URL task if provided)
     const taskGroups = {};
     for (const post of posts) {
       if (post.clickup_task_id) {
+        if (taskUrlTaskId && post.clickup_task_id !== taskUrlTaskId) continue;
         if (!taskGroups[post.clickup_task_id]) taskGroups[post.clickup_task_id] = [];
         taskGroups[post.clickup_task_id].push(post);
       }
+    }
+
+    // If a task URL was given but no posts are linked to it yet, still fetch attachments
+    if (taskUrlTaskId && !taskGroups[taskUrlTaskId]) {
+      taskGroups[taskUrlTaskId] = [];
     }
 
     let matched = 0;
@@ -70,7 +100,6 @@ export default async function (req) {
           if (imageUrl) {
             await base44.asServiceRole.entities.SocialPost.update(match.id, {
               final_image_url: imageUrl,
-              status: 'ready_to_publish',
             });
             matched++;
           }

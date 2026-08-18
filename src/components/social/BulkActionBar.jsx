@@ -24,6 +24,7 @@ function parseCampaignMonth(cm) {
 
 export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, filteredPendingIds, runAction }) {
   const [busyAction, setBusyAction] = useState(null);
+  const [taskUrl, setTaskUrl] = useState("");
   const { toast } = useToast();
   const { month, year } = parseCampaignMonth(campaignMonth);
 
@@ -120,19 +121,28 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           {isBusy("Approve All") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <CheckCheck className="w-4 h-4 mr-1" />}
           Approve All ({filteredPendingIds.length})
         </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          disabled={anyBusy}
-          onClick={() => runBulk(
-            "Pull from ClickUp",
-            () => base44.functions.invoke("pullFinalImagesFromClickUp", { campaignMonth }),
-            { title: "Final images pulled", desc: (d) => `${d.matched} matched, ${d.unmatched} unmatched.` }
-          )}
-        >
-          {isBusy("Pull from ClickUp") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Download className="w-4 h-4 mr-1" />}
-          Pull from ClickUp
-        </Button>
+        <div className="flex items-center gap-2">
+          <input
+            type="url"
+            placeholder="Paste ClickUp task URL…"
+            value={taskUrl}
+            onChange={(e) => setTaskUrl(e.target.value)}
+            className="h-9 min-w-64 max-w-xs rounded-md border border-input bg-background px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          />
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={anyBusy}
+            onClick={() => runBulk(
+              "Pull from ClickUp",
+              () => base44.functions.invoke("pullFinalImagesFromClickUp", { campaignMonth, taskUrl: taskUrl.trim() || undefined }),
+              { title: "Final images pulled", desc: (d) => taskUrl.trim() ? `${d.matched} matched from task URL, ${d.unmatched} unmatched.` : `${d.matched} matched, ${d.unmatched} unmatched.` }
+            )}
+          >
+            {isBusy("Pull from ClickUp") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Download className="w-4 h-4 mr-1" />}
+            Pull from ClickUp
+          </Button>
+        </div>
         <Button
           size="sm"
           variant="secondary"

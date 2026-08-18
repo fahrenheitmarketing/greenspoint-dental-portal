@@ -28,7 +28,10 @@ export default async function (req) {
       return Response.json({ error: 'Configure Social Media Settings first.' }, { status: 400 });
     }
 
-    const posts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth, status: 'ready_to_publish' }, 'scheduled_date', 200);
+    const allCampaignPosts = await base44.asServiceRole.entities.SocialPost.filter({ campaign_month: campaignMonth }, 'scheduled_date', 200);
+    const posts = allCampaignPosts.filter(
+      (p) => p.status === 'ready_to_publish' || (p.status === 'approved' && p.final_image_url)
+    );
 
     const now = new Date();
     let scheduled = 0;
