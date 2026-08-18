@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
 import { ImageIcon } from "lucide-react";
 import PlatformBadge from "./PlatformBadge";
@@ -13,13 +14,34 @@ export default function PostCard({ post, onAction }) {
   const [showDetail, setShowDetail] = useState(false);
   const [showFixDate, setShowFixDate] = useState(false);
   const fileInputRef = useRef(null);
+  const { toast } = useToast();
 
   const runAction = async (label, fn) => {
     setBusy(true);
     try {
-      await onAction(label, fn);
+      return await onAction(label, fn);
     } finally {
       setBusy(false);
+    }
+  };
+
+  // Shows the right toast for a scheduleToPostiz response.
+  const notifyScheduleResult = (res) => {
+    if (!res) return;
+    if (res.needs_review > 0) {
+      toast({
+        title: "Date is in the past",
+        description: "The date you picked is still in the past. Please pick a future date.",
+        variant: "destructive",
+      });
+    } else if (res.scheduled > 0) {
+      toast({ title: "Scheduled to Postiz", description: `${res.scheduled} post(s) scheduled.` });
+    } else if (res.skipped > 0) {
+      toast({
+        title: "Nothing scheduled",
+        description: res.errors?.[0]?.error || "Post was skipped. Check it has a final image.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -54,19 +76,29 @@ export default function PostCard({ post, onAction }) {
     runAction("Prepare for Publish", () => base44.functions.invoke("resizeImageForPlatform", { postId: post.id }));
 
   const handleScheduleToPostiz = () =>
-    runAction("Schedule to Postiz", () => base44.functions.invoke("scheduleToPostiz", { postId: post.id }));
+    runAction("Schedule to Postiz", async () => {
+      const res = await base44.functions.invoke("scheduleToPostiz", { postId: post.id });
+      notifyScheduleResult(res);
+      return res;
+    });
 
   const handleFixDate = () => setShowFixDate(true);
 
   const handleFixDateConfirm = (newDate) =>
     runAction("Fix Date & Reschedule", async () => {
-      await base44.functions.invoke("scheduleToPostiz", { postId: post.id, newDate });
-      setShowFixDate(false);
+      const res = await base44.functions.invoke("scheduleToPostiz", { postId: post.id, newDate });
+      notifyScheduleResult(res);
+      if (res && res.needs_review === 0) setShowFixDate(false);
+      return res;
     });
 
   const handlePostNow = () => {
     if (!window.confirm("Publish this post to Postiz immediately?")) return;
-    runAction("Post Now", () => base44.functions.invoke("scheduleToPostiz", { postId: post.id, postNow: true }));
+    runAction("Post Now", async () => {
+      const res = await base44.functions.invoke("scheduleToPostiz", { postId: post.id, postNow: true });
+      notifyScheduleResult(res);
+      return res;
+    });
   };
 
   const handleDelete = async () => {

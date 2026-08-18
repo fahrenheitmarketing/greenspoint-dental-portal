@@ -29,6 +29,7 @@ export default function FixDateDialog({ post, open, onOpenChange, onConfirm }) {
         <div className="space-y-2 py-2">
           <Label htmlFor="fix-date">New scheduled date</Label>
           <Input id="fix-date" type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
+          <p className="text-xs text-muted-foreground">Times are in your local timezone.</p>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>

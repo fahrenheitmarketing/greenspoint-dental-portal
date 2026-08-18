@@ -45,7 +45,7 @@ export async function schedulePostToPostizWithSettings({ integrationId, date, co
   if (!settings) throw new Error(`No Postiz settings for platform: ${platform}`);
   const body = {
     type: postNow ? 'now' : 'schedule',
-    ...(postNow ? {} : { date }),
+    date,
     shortLink: false,
     tags: [],
     posts: [
