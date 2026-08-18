@@ -122,7 +122,7 @@ export default function PostCard({ post, onChanged }) {
           onRestore={handleRestore}
         />
       </div>
-      <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} />
+      <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onChanged={onChanged} />
     </div>
   );
 }
