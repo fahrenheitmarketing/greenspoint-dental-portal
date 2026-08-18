@@ -49,6 +49,20 @@ export const CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT make a
 
 STYLE RULES: Use the em dash ("—") sparingly — at most once per post, and prefer regular punctuation (commas, periods, colons) instead. Do NOT use the sparkles emoji ("✨") at all. Limit emojis in general to one or two per post maximum, and only use common, natural ones (a smile, a tooth, a coffee cup) when they fit the tone — never force them.`;
 
+export const HASHTAG_RULES = {
+  instagram: "Use 3 to 5 relevant hashtags. Instagram allows up to 30, but a smaller, targeted group keeps captions clean and performs well.",
+  twitter: "Use 1 to 2 core keyword hashtags. Space is tight, so only use core keywords.",
+  facebook: "Use 1 to 2 hashtags. Overusing hashtags on Facebook can lower post interaction.",
+  google_business: "Use 1 relevant hashtag if it fits naturally.",
+};
+
+export function buildHashtagInstruction(platform) {
+  const rule = HASHTAG_RULES[platform];
+  return rule
+    ? `HASHTAG RULE (${platform}): ${rule} Place all hashtags on the final line of the post, separated by spaces.`
+    : '';
+}
+
 export function getPlatformsForDate(dayOfWeek) {
   const platforms = [];
   if (dayOfWeek === 2 || dayOfWeek === 4) { platforms.push('twitter'); platforms.push('facebook'); platforms.push('instagram'); }

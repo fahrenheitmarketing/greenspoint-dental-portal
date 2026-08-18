@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction, buildHashtagInstruction } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -40,6 +40,7 @@ ${sourceTopic ? `The user wants a new, DIFFERENT take on this theme (do NOT reus
 
 Generate ONE new post for ${platform}${scheduledDate ? ` scheduled for ${scheduledDate}` : ''}. It must be patient-friendly and match the platform's tone and length norms.
 ${CONTENT_RULES}
+${buildHashtagInstruction(platform)}
 ${ctaInstruction}
 
 Return: topic (short theme), content (the actual post copy), image_prompt (${IMAGE_PROMPT_INSTRUCTION}).`,
