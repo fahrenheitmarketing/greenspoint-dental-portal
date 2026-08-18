@@ -53,7 +53,7 @@ export const HASHTAG_RULES = {
   instagram: "Use 3 to 5 relevant hashtags. Instagram allows up to 30, but a smaller, targeted group keeps captions clean and performs well.",
   twitter: "Use 1 to 2 core keyword hashtags. Space is tight, so only use core keywords.",
   facebook: "Use 1 to 2 hashtags. Overusing hashtags on Facebook can lower post interaction.",
-  google_business: "Use 1 relevant hashtag if it fits naturally.",
+  google_business: "Do not include any hashtags. GBP posts must never contain hashtags.",
 };
 
 export function buildHashtagInstruction(platform) {
