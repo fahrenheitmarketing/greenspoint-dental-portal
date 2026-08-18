@@ -5,7 +5,7 @@ import InlineEditableField from "./InlineEditableField";
 import PlatformBadge from "./PlatformBadge";
 import StatusBadge from "./StatusBadge";
 
-export default function PostDetailDialog({ post, open, onOpenChange, onChanged }) {
+export default function PostDetailDialog({ post, open, onOpenChange, onSaveField }) {
   if (!post) return null;
 
   return (
@@ -33,7 +33,7 @@ export default function PostDetailDialog({ post, open, onOpenChange, onChanged }
             value={post.content}
             label="Post Copy"
             rows={8}
-            onChange={onChanged}
+            onSave={onSaveField}
           />
           {(post.image_url || post.final_image_url) && (
             <div>
@@ -48,7 +48,7 @@ export default function PostDetailDialog({ post, open, onOpenChange, onChanged }
             label="Image Direction"
             rows={5}
             placeholder="Describe the visual direction for this post's image..."
-            onChange={onChanged}
+            onSave={onSaveField}
           />
         </div>
       </DialogContent>

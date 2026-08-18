@@ -7,26 +7,25 @@ import StatusBadge from "./StatusBadge";
 import PostCardActions from "./PostCardActions";
 import PostDetailDialog from "./PostDetailDialog";
 
-export default function PostCard({ post, onChanged }) {
+export default function PostCard({ post, onAction }) {
   const [busy, setBusy] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const fileInputRef = useRef(null);
 
-  const runAction = async (fn) => {
+  const runAction = async (label, fn) => {
     setBusy(true);
     try {
-      await fn();
-      onChanged();
+      await onAction(label, fn);
     } finally {
       setBusy(false);
     }
   };
 
   const handleRegenerateImage = () =>
-    runAction(() => base44.functions.invoke("regeneratePostImage", { postId: post.id }));
+    runAction("Regenerate Image", () => base44.functions.invoke("regeneratePostImage", { postId: post.id }));
 
   const handleCreateNew = () =>
-    runAction(() =>
+    runAction("Create New Post", () =>
       base44.functions.invoke("generateSinglePost", {
         platform: post.platform,
         campaignMonth: post.campaign_month,
@@ -35,19 +34,11 @@ export default function PostCard({ post, onChanged }) {
       })
     );
 
-  const setStatus = (status, note) =>
-    runAction(async () => {
-      await base44.entities.SocialPost.update(post.id, { status });
-      if (post.clickup_task_id) {
-        await base44.functions.invoke("syncPostToClickUp", { postId: post.id, note });
-      }
-    });
-
   const handleApprove = () =>
-    runAction(() => base44.functions.invoke("approveAndSendImageToClickUp", { postId: post.id }));
+    runAction("Approve Post", () => base44.functions.invoke("approveAndSendImageToClickUp", { postId: post.id }));
 
   const handleReject = () =>
-    runAction(async () => {
+    runAction("Reject Post", async () => {
       await base44.entities.SocialPost.update(post.id, { status: "rejected" });
       await base44.functions.invoke("generateSinglePost", {
         platform: post.platform,
@@ -56,25 +47,33 @@ export default function PostCard({ post, onChanged }) {
         sourceTopic: post.topic,
       });
     });
-  const handlePrepare = () => runAction(() => base44.functions.invoke("resizeImageForPlatform", { postId: post.id }));
+
+  const handlePrepare = () =>
+    runAction("Prepare for Publish", () => base44.functions.invoke("resizeImageForPlatform", { postId: post.id }));
 
   const handleDelete = async () => {
     if (!window.confirm("Move this post to trash? You can restore it from the Deleted filter.")) return;
-    runAction(() => base44.entities.SocialPost.update(post.id, { status: "deleted" }));
+    runAction("Delete Post", () => base44.entities.SocialPost.update(post.id, { status: "deleted" }));
   };
 
   const handleRestore = () =>
-    runAction(() => base44.entities.SocialPost.update(post.id, { status: "pending" }));
+    runAction("Restore Post", () => base44.entities.SocialPost.update(post.id, { status: "pending" }));
 
   const handleUploadFinalImage = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    runAction(async () => {
+    runAction("Upload Final Image", async () => {
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
       await base44.entities.SocialPost.update(post.id, { final_image_url: file_url, status: "ready_to_publish" });
     });
     e.target.value = "";
   };
+
+  const onSaveField = (field, value) =>
+    onAction(
+      `Edit ${field === "content" ? "Post Copy" : "Image Direction"}`,
+      () => base44.entities.SocialPost.update(post.id, { [field]: value })
+    );
 
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex flex-col">
@@ -122,7 +121,7 @@ export default function PostCard({ post, onChanged }) {
           onRestore={handleRestore}
         />
       </div>
-      <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onChanged={onChanged} />
+      <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onSaveField={onSaveField} />
     </div>
   );
 }

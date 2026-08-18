@@ -7,7 +7,7 @@ import { Loader2, Wand2 } from "lucide-react";
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: new Date(2000, i, 1).toLocaleString("en-US", { month: "long" }) }));
 
-export default function GenerateContentDialog({ open, onOpenChange, onGenerated }) {
+export default function GenerateContentDialog({ open, onOpenChange, onGenerated, runAction }) {
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
@@ -18,7 +18,9 @@ export default function GenerateContentDialog({ open, onOpenChange, onGenerated 
     setLoading(true);
     setError("");
     try {
-      const res = await base44.functions.invoke("generateSocialMediaContent", { month, year });
+      const res = await runAction("Generate Monthly Content", () =>
+        base44.functions.invoke("generateSocialMediaContent", { month, year })
+      );
       onGenerated(res.data);
       onOpenChange(false);
     } catch (e) {

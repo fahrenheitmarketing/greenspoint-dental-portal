@@ -7,6 +7,7 @@ import BulkActionBar from "@/components/social/BulkActionBar";
 import PostCard from "@/components/social/PostCard";
 import GenerateContentDialog from "@/components/social/GenerateContentDialog";
 import SettingsDialog from "@/components/social/SettingsDialog";
+import { usePostHistory, snapshotPosts } from "@/hooks/usePostHistory";
 import { Loader2 } from "lucide-react";
 
 const MONTHS = [
@@ -29,10 +30,14 @@ export default function SocialMediaStudio() {
   const [campaignMonth, setCampaignMonth] = useState(`${MONTHS[now.getMonth()]} ${now.getFullYear()}`);
   const monthInitialized = useRef(false);
 
+  const postsRef = useRef(posts);
+  useEffect(() => { postsRef.current = posts; }, [posts]);
+
   const loadPosts = useCallback(async () => {
     const data = await base44.entities.SocialPost.list("-scheduled_date", 200);
     setPosts(data);
     setLoading(false);
+    return data;
   }, []);
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
@@ -44,6 +49,23 @@ export default function SocialMediaStudio() {
       monthInitialized.current = true;
     }
   }, [posts]);
+
+  const { pushHistory, undo, redo, busy: historyBusy, canUndo, canRedo, undoLabel, redoLabel } =
+    usePostHistory({ postsRef, reload: loadPosts });
+
+  // Wraps any mutating action with before/after snapshots for undo/redo.
+  const runWithHistory = useCallback(async (label, fn) => {
+    const before = snapshotPosts(postsRef.current);
+    try {
+      const res = await fn();
+      const data = await loadPosts();
+      pushHistory(before, snapshotPosts(data), label);
+      return res;
+    } catch (e) {
+      await loadPosts();
+      throw e;
+    }
+  }, [loadPosts, pushHistory]);
 
   const uniqueMonths = [...new Set(posts.map((p) => p.campaign_month).filter(Boolean))].sort().reverse();
 
@@ -60,9 +82,10 @@ export default function SocialMediaStudio() {
   const handleProcessFeedback = async () => {
     setProcessingFeedback(true);
     try {
-      const res = await base44.functions.invoke("processClickUpFeedback", {});
+      const res = await runWithHistory("Process Feedback", () =>
+        base44.functions.invoke("processClickUpFeedback", {})
+      );
       toast({ title: "Feedback processed", description: `${res.data.posts_updated} post(s) updated.` });
-      await loadPosts();
     } catch (e) {
       toast({ title: "Error processing feedback", description: e?.response?.data?.error || e.message, variant: "destructive" });
     } finally {
@@ -78,12 +101,19 @@ export default function SocialMediaStudio() {
         onProcessFeedback={handleProcessFeedback}
         onSettings={() => setShowSettings(true)}
         processing={processingFeedback}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onUndo={undo}
+        onRedo={redo}
+        undoLabel={undoLabel}
+        redoLabel={redoLabel}
+        historyBusy={historyBusy}
       />
       <BulkActionBar
         campaignMonth={campaignMonth}
         onCampaignMonthChange={setCampaignMonth}
         filteredPendingIds={filteredPendingIds}
-        onRefresh={loadPosts}
+        runAction={runWithHistory}
       />
       <div className="mb-6">
         <StudioFilterBar platform={platform} setPlatform={setPlatform} status={status} setStatus={setStatus} campaignMonthFilter={campaignMonthFilter} setCampaignMonthFilter={setCampaignMonthFilter} campaignMonths={uniqueMonths} />
@@ -98,7 +128,7 @@ export default function SocialMediaStudio() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filtered.map((post) => (
-            <PostCard key={post.id} post={post} onChanged={loadPosts} />
+            <PostCard key={post.id} post={post} onAction={runWithHistory} />
           ))}
         </div>
       )}
@@ -106,9 +136,9 @@ export default function SocialMediaStudio() {
       <GenerateContentDialog
         open={showGenerate}
         onOpenChange={setShowGenerate}
+        runAction={runWithHistory}
         onGenerated={(res) => {
           toast({ title: "Content generated", description: `${res.posts_created} posts created for ${res.campaign_month}.` });
-          loadPosts();
         }}
       />
       <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />

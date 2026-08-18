@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Save, Check } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 
-export default function InlineEditableField({ postId, field, value, label, rows = 6, placeholder = "", onChange }) {
+export default function InlineEditableField({ postId, field, value, label, rows = 6, placeholder = "", onSave }) {
   const [text, setText] = useState(value || "");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -19,9 +18,8 @@ export default function InlineEditableField({ postId, field, value, label, rows 
   const handleSave = async () => {
     setSaving(true);
     try {
-      await base44.entities.SocialPost.update(postId, { [field]: text });
+      await onSave(field, text);
       setSaved(true);
-      if (onChange) onChange();
     } finally {
       setSaving(false);
     }

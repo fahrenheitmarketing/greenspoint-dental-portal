@@ -22,7 +22,7 @@ function parseCampaignMonth(cm) {
   return { month: month || 1, year: year || new Date().getFullYear() };
 }
 
-export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, filteredPendingIds, onRefresh }) {
+export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, filteredPendingIds, runAction }) {
   const [busyAction, setBusyAction] = useState(null);
   const { toast } = useToast();
   const { month, year } = parseCampaignMonth(campaignMonth);
@@ -33,10 +33,9 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
   const runBulk = async (actionName, fn, successMsg) => {
     setBusyAction(actionName);
     try {
-      const res = await fn();
+      const res = await runAction(actionName, fn);
       const d = res.data || res;
       toast({ title: successMsg.title, description: successMsg.desc(d) });
-      onRefresh();
     } catch (e) {
       toast({ title: "Error", description: e?.response?.data?.error || e.message, variant: "destructive" });
     } finally {
@@ -74,12 +73,12 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           size="sm"
           disabled={anyBusy}
           onClick={() => runBulk(
-            "generateFullMonth",
+            "Generate Full Month",
             () => base44.functions.invoke("generateFullMonth", { month, year }),
             { title: "Full month generated", desc: (d) => `${d.posts_created} posts, ${d.images_generated} images, ${d.attachments_uploaded} attached to ClickUp.` }
           )}
         >
-          {isBusy("generateFullMonth") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Zap className="w-4 h-4 mr-1" />}
+          {isBusy("Generate Full Month") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Zap className="w-4 h-4 mr-1" />}
           Generate Full Month
         </Button>
         <Button
@@ -87,12 +86,12 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           variant="outline"
           disabled={anyBusy}
           onClick={() => runBulk(
-            "regenerateMonth",
+            "Regenerate Month",
             () => base44.functions.invoke("regenerateMonthPosts", { campaignMonth }),
             { title: "Month regenerated", desc: (d) => `${d.regenerated} posts regenerated, ${d.images_generated} images created, ${d.images_failed} failed.` }
           )}
         >
-          {isBusy("regenerateMonth") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-1" />}
+          {isBusy("Regenerate Month") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-1" />}
           Regenerate Month
         </Button>
         <Button
@@ -100,12 +99,12 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           variant="outline"
           disabled={anyBusy}
           onClick={() => runBulk(
-            "generateImages",
+            "Generate All Images",
             () => base44.functions.invoke("bulkGenerateImages", { campaignMonth }),
             { title: "Images generated", desc: (d) => `${d.generated} generated, ${d.attached} attached, ${d.failed} failed.` }
           )}
         >
-          {isBusy("generateImages") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <ImagePlus className="w-4 h-4 mr-1" />}
+          {isBusy("Generate All Images") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <ImagePlus className="w-4 h-4 mr-1" />}
           Generate All Images
         </Button>
         <Button
@@ -113,12 +112,12 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           variant="outline"
           disabled={anyBusy || filteredPendingIds.length === 0}
           onClick={() => runBulk(
-            "approveAll",
+            "Approve All",
             () => base44.functions.invoke("bulkApprovePosts", { postIds: filteredPendingIds }),
             { title: "Posts approved", desc: (d) => `${d.approved} approved, ${d.attached} sent to ClickUp, ${d.skipped} skipped.` }
           )}
         >
-          {isBusy("approveAll") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <CheckCheck className="w-4 h-4 mr-1" />}
+          {isBusy("Approve All") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <CheckCheck className="w-4 h-4 mr-1" />}
           Approve All ({filteredPendingIds.length})
         </Button>
         <Button
@@ -126,12 +125,12 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           variant="outline"
           disabled={anyBusy}
           onClick={() => runBulk(
-            "pullClickUp",
+            "Pull from ClickUp",
             () => base44.functions.invoke("pullFinalImagesFromClickUp", { campaignMonth }),
             { title: "Final images pulled", desc: (d) => `${d.matched} matched, ${d.unmatched} unmatched.` }
           )}
         >
-          {isBusy("pullClickUp") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Download className="w-4 h-4 mr-1" />}
+          {isBusy("Pull from ClickUp") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Download className="w-4 h-4 mr-1" />}
           Pull from ClickUp
         </Button>
         <Button
@@ -139,12 +138,12 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
           variant="secondary"
           disabled={anyBusy}
           onClick={() => runBulk(
-            "schedulePostiz",
+            "Schedule to Postiz",
             () => base44.functions.invoke("scheduleToPostiz", { campaignMonth }),
             { title: "Scheduled to Postiz", desc: (d) => `${d.scheduled} scheduled, ${d.needs_review} need date review, ${d.skipped} skipped.` }
           )}
         >
-          {isBusy("schedulePostiz") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
+          {isBusy("Schedule to Postiz") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
           Schedule to Postiz
         </Button>
       </div>
