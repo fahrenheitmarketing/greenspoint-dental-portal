@@ -22,19 +22,41 @@ export default async function (req) {
       return Response.json({ error: 'Admin access required' }, { status: 403 });
     }
 
+    const { taskUrl } = await req.json();
+    if (!taskUrl) {
+      return Response.json({ error: 'A ClickUp task URL is required' }, { status: 400 });
+    }
+
+    // Parse task ID from the ClickUp task URL
+    let taskId = null;
+    try {
+      const u = new URL(taskUrl);
+      const parts = u.pathname.split("/").filter(Boolean);
+      const taskIdx = parts.indexOf("t");
+      if (taskIdx >= 0 && parts[taskIdx + 1]) {
+        taskId = parts[taskIdx + 1];
+      }
+      if (!taskId) {
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i] === "task" && parts[i + 1]) { taskId = parts[i + 1]; break; }
+        }
+      }
+    } catch {}
+    if (!taskId) {
+      return Response.json({ error: 'Could not parse a task ID from the provided URL' }, { status: 400 });
+    }
+
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const brandGuide = settingsList[0] ? await getBrandGuideText(base44, settingsList[0]) : '';
 
     const allPosts = await base44.asServiceRole.entities.SocialPost.filter({});
-    const relevant = allPosts.filter((p) => p.clickup_task_id && !['published', 'scheduled'].includes(p.status));
+    const relevant = allPosts.filter(
+      (p) => p.clickup_task_id === taskId && !['published', 'scheduled'].includes(p.status)
+    );
 
-    // Group posts by their shared ClickUp task ID
+    // Single task group — only the task ID from the URL
     const taskGroups = {};
-    for (const post of relevant) {
-      const tid = post.clickup_task_id;
-      if (!taskGroups[tid]) taskGroups[tid] = [];
-      taskGroups[tid].push(post);
-    }
+    taskGroups[taskId] = relevant;
 
     let processedCount = 0;
     const summaries = [];

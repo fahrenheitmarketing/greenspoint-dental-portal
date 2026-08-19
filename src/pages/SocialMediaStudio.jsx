@@ -7,6 +7,7 @@ import BulkActionBar from "@/components/social/BulkActionBar";
 import PostCard from "@/components/social/PostCard";
 import GenerateContentDialog from "@/components/social/GenerateContentDialog";
 import SettingsDialog from "@/components/social/SettingsDialog";
+import ProcessFeedbackDialog from "@/components/social/ProcessFeedbackDialog";
 import { usePostHistory, snapshotPosts } from "@/hooks/usePostHistory";
 import { Loader2 } from "lucide-react";
 
@@ -24,6 +25,7 @@ export default function SocialMediaStudio() {
   const [dateFilter, setDateFilter] = useState({ day: "all", month: "all", year: "all" });
   const [showGenerate, setShowGenerate] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showProcessFeedback, setShowProcessFeedback] = useState(false);
   const [processingFeedback, setProcessingFeedback] = useState(false);
   const { toast } = useToast();
 
@@ -95,18 +97,22 @@ export default function SocialMediaStudio() {
   const filteredPendingIds = filtered.filter((p) => p.status === "pending").map((p) => p.id);
   const pendingCount = posts.filter((p) => p.status === "pending").length;
 
-  const handleProcessFeedback = async () => {
+  const handleProcessFeedback = (taskUrl) => {
     setProcessingFeedback(true);
-    try {
-      const res = await runWithHistory("Process Feedback", () =>
-        base44.functions.invoke("processClickUpFeedback", {})
-      );
-      toast({ title: "Feedback processed", description: `${res.data.posts_updated} post(s) updated.` });
-    } catch (e) {
-      toast({ title: "Error processing feedback", description: e?.response?.data?.error || e.message, variant: "destructive" });
-    } finally {
-      setProcessingFeedback(false);
-    }
+    (async () => {
+      try {
+        const res = await runWithHistory("Process Feedback", () =>
+          base44.functions.invoke("processClickUpFeedback", { taskUrl })
+        );
+        const data = res?.data || res;
+        toast({ title: "Feedback processed", description: `${data.tasks_processed} task(s) processed.` });
+        setShowProcessFeedback(false);
+      } catch (e) {
+        toast({ title: "Error processing feedback", description: e?.response?.data?.error || e.message, variant: "destructive" });
+      } finally {
+        setProcessingFeedback(false);
+      }
+    })();
   };
 
   return (
@@ -114,7 +120,7 @@ export default function SocialMediaStudio() {
       <StudioHeader
         pendingFeedbackCount={pendingCount}
         onGenerate={() => setShowGenerate(true)}
-        onProcessFeedback={handleProcessFeedback}
+        onProcessFeedback={() => setShowProcessFeedback(true)}
         onSettings={() => setShowSettings(true)}
         processing={processingFeedback}
         canUndo={canUndo}
@@ -158,6 +164,12 @@ export default function SocialMediaStudio() {
         }}
       />
       <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
+      <ProcessFeedbackDialog
+        open={showProcessFeedback}
+        onOpenChange={setShowProcessFeedback}
+        onProcess={handleProcessFeedback}
+        processing={processingFeedback}
+      />
     </div>
   );
 }
