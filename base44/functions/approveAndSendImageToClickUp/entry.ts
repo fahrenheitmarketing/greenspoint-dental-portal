@@ -19,6 +19,11 @@ export default async function (req) {
       return Response.json({ error: 'Post not found' }, { status: 404 });
     }
 
+    // Guard: if this post is already approved and already pushed to ClickUp, don't re-upload
+    if (post.status === 'approved' && post.clickup_task_id) {
+      return Response.json({ success: true, clickup_task_id: post.clickup_task_id, attached_to_clickup: false, skipped: true });
+    }
+
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const settings = settingsList[0];
     const listId = post.clickup_list_id || (settings && settings.clickup_list_id);
