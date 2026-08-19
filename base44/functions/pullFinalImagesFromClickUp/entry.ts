@@ -34,8 +34,9 @@ export default async function (req) {
         const u = new URL(taskUrl);
         const parts = u.pathname.split("/").filter(Boolean);
         const taskIdx = parts.indexOf("t");
-        if (taskIdx >= 0 && parts[taskIdx + 1]) {
-          taskUrlTaskId = parts[taskIdx + 1];
+        if (taskIdx >= 0 && parts.length > taskIdx + 1) {
+          // URL format: t/{teamId}/{taskId} — task ID is the LAST segment
+          taskUrlTaskId = parts[parts.length - 1];
         }
         if (!taskUrlTaskId) {
           for (let i = 0; i < parts.length; i++) {
