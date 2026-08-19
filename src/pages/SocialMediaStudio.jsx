@@ -105,7 +105,11 @@ export default function SocialMediaStudio() {
           base44.functions.invoke("processClickUpFeedback", { taskUrl })
         );
         const data = res?.data || res;
-        toast({ title: "Feedback processed", description: `${data.tasks_processed} task(s) processed.` });
+        const pendingImagePosts = (data.summaries || []).flatMap((s) => s.pending_image_posts || []);
+        const description = pendingImagePosts.length > 0
+          ? `${data.tasks_processed} task(s) processed. ${pendingImagePosts.length} post(s) have pending image edits — use Regenerate Image to apply them.`
+          : `${data.tasks_processed} task(s) processed.`;
+        toast({ title: "Feedback processed", description });
         setShowProcessFeedback(false);
       } catch (e) {
         toast({ title: "Error processing feedback", description: e?.response?.data?.error || e.message, variant: "destructive" });

@@ -1,17 +1,25 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getClickUpComments, addClickUpComment, getBrandGuideText } from '../../shared/clickup.ts';
-import { buildImagePrompt } from '../../shared/imageRules.ts';
 
 const ROUTE_SCHEMA = {
   type: 'object',
   properties: {
-    post_indices: { type: 'array', items: { type: 'number' } },
-    action: { type: 'string', enum: ['approve_publish', 'approve_schedule', 'edit_copy', 'edit_image', 'no_action'] },
-    notes: { type: 'string' },
-    revised_copy: { type: 'string' },
-    image_instruction: { type: 'string' },
+    decisions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          comment_index: { type: 'number', description: 'Index of the comment in the provided comments array' },
+          post_indices: { type: 'array', items: { type: 'number' }, description: 'Post indices this comment refers to. Use [-1] if it applies to ALL posts.' },
+          action: { type: 'string', enum: ['approve_publish', 'approve_schedule', 'edit_copy', 'edit_image', 'no_action'] },
+          revised_copy: { type: 'string', description: 'Full revised post copy if action is edit_copy' },
+          image_instruction: { type: 'string', description: 'What to change about the image if action is edit_image' },
+        },
+        required: ['comment_index', 'post_indices', 'action'],
+      },
+    },
   },
-  required: ['post_indices', 'action', 'notes'],
+  required: ['decisions'],
 };
 
 export default async function (req) {
@@ -76,57 +84,62 @@ export default async function (req) {
 
       // Build a manifest so the LLM can route each comment to the right post
       const manifest = taskPosts.map((p, i) => `${i}: ${p.platform} - ${p.scheduled_date || 'undated'} - ${p.topic}`).join('\n');
+      const commentsBlock = newComments.map((c, i) => `Comment ${i}:\n"${c.comment_text}"`).join('\n\n');
 
       // Track per-post updates to batch at the end
-      const updates = {}; // postId -> { content?, status?, image_url?, newProcessedIds: [] }
+      const updates = {}; // postId -> { content?, status?, image_instruction?, newProcessedIds: [] }
+      const pendingImagePosts = []; // post IDs that need image regeneration
       const taskChanges = []; // per-comment change descriptions for the reply comment
 
       for (const post of taskPosts) {
         updates[post.id] = { newProcessedIds: [...(post.processed_comment_ids || [])] };
       }
 
-      for (const comment of newComments) {
-        const routing = await base44.asServiceRole.integrations.Core.InvokeLLM({
-          prompt: `A reviewer left this comment on a ClickUp task containing multiple social media posts:
+      // Single batched LLM call routes ALL new comments at once
+      const batchRouting = await base44.asServiceRole.integrations.Core.InvokeLLM({
+        prompt: `A reviewer left the following comments on a ClickUp task containing multiple social media posts:
 
-"${comment.comment_text}"
+${commentsBlock}
 
 Available posts in this task (index - platform - date - topic):
 ${manifest}
 
-Determine:
-1. post_indices: which post(s) this comment refers to, using the index numbers above. Use [-1] if it applies to ALL posts generally.
-2. action: classify the intent —
+For EACH comment, determine:
+1. comment_index: the index of the comment (from the numbering above).
+2. post_indices: which post(s) that comment refers to, using the index numbers above. Use [-1] if it applies to ALL posts generally.
+3. action: classify the intent —
    - "approve_publish" (comment says approved for publishing)
    - "approve_schedule" (comment says approved for scheduling)
    - "edit_copy" (comment asks to change wording — provide the full revised_copy)
    - "edit_image" (comment asks for a different/new image — provide image_instruction)
    - "no_action" (just a question/note with nothing actionable)
-3. If edit_copy: revised_copy = the full revised post copy.
-4. If edit_image: image_instruction = what to change about the image.
+4. If edit_copy: revised_copy = the full revised post copy.
+5. If edit_image: image_instruction = what to change about the image.
+
+Return one decision object per comment in the "decisions" array.
 
 Brand guide for reference: ${brandGuide}`,
-          response_json_schema: ROUTE_SCHEMA,
-        });
+        response_json_schema: ROUTE_SCHEMA,
+      });
 
-        const indices = routing.post_indices || [];
+      const decisions = batchRouting.decisions || [];
+
+      for (const decision of decisions) {
+        const comment = newComments[decision.comment_index];
+        if (!comment) continue;
+
+        const indices = decision.post_indices || [];
         const targets = indices.includes(-1) ? taskPosts : taskPosts.filter((_, i) => indices.includes(i));
 
         for (const post of targets) {
           const u = updates[post.id];
-          if (routing.action === 'approve_publish' || routing.action === 'approve_schedule') {
+          if (decision.action === 'approve_publish' || decision.action === 'approve_schedule') {
             u.status = 'approved';
-          } else if (routing.action === 'edit_copy' && routing.revised_copy) {
-            u.content = routing.revised_copy;
-          } else if (routing.action === 'edit_image' && routing.image_instruction) {
-            try {
-              const imgRes = await base44.asServiceRole.integrations.Core.GenerateImage({
-                prompt: `${buildImagePrompt(post, brandGuide)} Adjust per: ${routing.image_instruction}`,
-              });
-              u.image_url = imgRes.url;
-            } catch (imgErr) {
-              console.error('Image regen failed for post', post.id, imgErr.message);
-            }
+          } else if (decision.action === 'edit_copy' && decision.revised_copy) {
+            u.content = decision.revised_copy;
+          } else if (decision.action === 'edit_image' && decision.image_instruction) {
+            // Defer image generation — store the instruction on the post for a later step
+            u.image_instruction = decision.image_instruction;
           }
         }
 
@@ -137,21 +150,20 @@ Brand guide for reference: ${brandGuide}`,
 
         summaries.push({
           comment_id: comment.id,
-          action: routing.action,
-          notes: routing.notes,
+          action: decision.action,
           targets: targets.map((t) => t.id),
         });
 
         // Build a human-readable change description for the reply comment
         const targetLabels = targets.map((t) => `${t.platform} - ${t.scheduled_date || 'undated'}`);
-        if (routing.action === 'approve_publish') {
+        if (decision.action === 'approve_publish') {
           taskChanges.push(`Approved for publish: ${targetLabels.join(', ')}`);
-        } else if (routing.action === 'approve_schedule') {
+        } else if (decision.action === 'approve_schedule') {
           taskChanges.push(`Approved for schedule: ${targetLabels.join(', ')}`);
-        } else if (routing.action === 'edit_copy') {
+        } else if (decision.action === 'edit_copy') {
           taskChanges.push(`Updated copy for: ${targetLabels.join(', ')}`);
-        } else if (routing.action === 'edit_image') {
-          taskChanges.push(`Regenerated image for: ${targetLabels.join(', ')}${routing.image_instruction ? ` (${routing.image_instruction})` : ''}`);
+        } else if (decision.action === 'edit_image') {
+          taskChanges.push(`Image edit queued for: ${targetLabels.join(', ')}${decision.image_instruction ? ` (${decision.image_instruction})` : ''}`);
         } else {
           taskChanges.push(`No action needed: "${comment.comment_text.slice(0, 80)}"`);
         }
@@ -163,7 +175,10 @@ Brand guide for reference: ${brandGuide}`,
         const patch = { processed_comment_ids: u.newProcessedIds };
         if (u.status) patch.status = u.status;
         if (u.content) patch.content = u.content;
-        if (u.image_url) patch.image_url = u.image_url;
+        if (u.image_instruction) {
+          patch.brand_compliance_notes = u.image_instruction;
+          pendingImagePosts.push(post.id);
+        }
         await base44.asServiceRole.entities.SocialPost.update(post.id, patch);
       }
 
@@ -173,6 +188,10 @@ Brand guide for reference: ${brandGuide}`,
       }
 
       processedCount++;
+
+      if (pendingImagePosts.length > 0) {
+        summaries.push({ pending_image_posts: pendingImagePosts });
+      }
     }
 
     return Response.json({ success: true, tasks_processed: processedCount, summaries });
