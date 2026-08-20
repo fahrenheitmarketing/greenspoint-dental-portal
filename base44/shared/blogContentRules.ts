@@ -35,7 +35,7 @@ export const BLOG_IMAGE_FORBIDDEN_SUFFIX = `CRITICAL BRAND RULES — ABSOLUTELY 
 export function buildBlogImagePrompt(post, brandGuide) {
   const brief = post.image_prompt || "";
   const imageDirection = brief ? `Visual direction: ${brief}. ` : "";
-  return `${imageDirection}A welcoming, bright, lifestyle featured image for a dental practice blog post about "${post.title}". The blog content covers: ${(post.excerpt || post.meta_description || "").slice(0, 200)}. Create a high-quality editorial photograph that VISUALLY REPRESENTS this topic — the image must directly reflect the article's message. The image will be displayed as a wide featured image (16:9 landscape, 1200x630px). ${BLOG_IMAGE_FORBIDDEN_SUFFIX} ${brandGuide || ""}`;
+  return `${imageDirection}A welcoming, bright, lifestyle featured image for a dental practice blog post about "${post.title}". The blog content covers: ${(post.excerpt || post.meta_description || "").slice(0, 200)}. Create a high-quality editorial photograph that VISUALLY REPRESENTS this topic — the image must directly reflect the article's message. The image will be displayed as a wide featured image (1200x628px landscape, roughly 1.91:1). ${BLOG_IMAGE_FORBIDDEN_SUFFIX} ${brandGuide || ""}`;
 }
 
 // Build the LLM prompt for blog post generation.
