@@ -17,6 +17,30 @@ export default async function (req) {
     const postCount = Math.min(Math.max(parseInt(count, 10) || 1, 1), 8);
     const topicList = Array.isArray(topics) ? topics.filter(Boolean) : [];
 
+    // All assignable blog categories — used to spread posts across distinct
+    // categories when "mixed" is requested.
+    const ALL_CATEGORIES = [
+      'general-dentistry', 'cosmetic-dentistry', 'restorative-dentistry',
+      'orthodontics', 'family-dental', 'insurance-financing',
+      'dental-health', 'smile-confidence', 'affordable-dentistry', 'community',
+    ];
+
+    // Build a per-post category list. "mixed" (or omitted) rotates through all
+    // categories in a shuffled order so a batch covers varied topics.
+    const buildCategorySequence = (cat, n) => {
+      if (cat && cat !== 'mixed') {
+        return Array.from({ length: n }, () => cat);
+      }
+      // Fisher-Yates shuffle for variety
+      const pool = [...ALL_CATEGORIES];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return Array.from({ length: n }, (_, i) => pool[i % pool.length]);
+    };
+    const categorySequence = buildCategorySequence(category, postCount);
+
     // Parse campaignMonth ("August 2026") into year and month index
     const [monthName, yearStr] = campaignMonth.split(' ');
     const year = parseInt(yearStr, 10);
@@ -49,7 +73,7 @@ export default async function (req) {
       try {
         const post = await generateOneBlogPost(base44, {
           topic: topicList[i] || undefined,
-          category,
+          category: categorySequence[i],
           campaignMonth,
           existingTitles,
         });

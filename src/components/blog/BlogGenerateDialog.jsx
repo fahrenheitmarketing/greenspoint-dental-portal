@@ -9,6 +9,7 @@ import { Loader2, Wand2 } from "lucide-react";
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: new Date(2000, i, 1).toLocaleString("en-US", { month: "long" }) }));
 const CATEGORIES = [
+  { value: "mixed", label: "Mixed (varied categories)" },
   { value: "dental-health", label: "Dental Health" },
   { value: "general-dentistry", label: "General Dentistry" },
   { value: "cosmetic-dentistry", label: "Cosmetic Dentistry" },
@@ -25,7 +26,7 @@ export default function BlogGenerateDialog({ open, onOpenChange, onGenerated, ru
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
-  const [category, setCategory] = useState("dental-health");
+  const [category, setCategory] = useState("mixed");
   const [topic, setTopic] = useState("");
   const [postCount, setPostCount] = useState(4);
   const [loading, setLoading] = useState(false);
