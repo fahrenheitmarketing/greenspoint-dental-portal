@@ -65,6 +65,67 @@ CTAs: End the post with 1-2 hyperlinked call-to-action buttons linking to the mo
 Return ALL fields: title, title_es, slug, excerpt, excerpt_es, content (HTML), content_es (HTML), category, meta_title, meta_title_es, meta_description, meta_description_es, internal_links (array of {anchor_text, page_path}), external_links (array of {anchor_text, url}), ctas (array of {label, page_path}), image_prompt (a short specific description for the featured image), read_time (integer minutes), seo_score (0-100 integer).`;
 }
 
+// Generate a single blog post record via LLM and persist it.
+// Shared by generateBlogPost (single) and generateBulkBlogPosts (bulk).
+export async function generateOneBlogPost(base44, { topic, category, campaignMonth, existingTitles }) {
+  const { getBrandGuideText } = await import('./clickup.ts');
+  const settingsList = await base44.asServiceRole.entities.BlogStudioSettings.list();
+  const settings = settingsList[0];
+  const brandGuide = settings ? await getBrandGuideText(base44, settings) : '';
+
+  const usedTopics = [...new Set(existingTitles || [])].slice(0, 50);
+  const prompt = buildBlogGenerationPrompt({ topic, category, brandGuide, usedTopics, campaignMonth });
+
+  const genRes = await base44.asServiceRole.integrations.Core.InvokeLLM({
+    prompt,
+    model: 'gemini_3_flash',
+    response_json_schema: BLOG_GENERATION_SCHEMA,
+  });
+
+  const record = {
+    title: genRes.title,
+    title_es: genRes.title_es,
+    slug: genRes.slug,
+    excerpt: genRes.excerpt,
+    excerpt_es: genRes.excerpt_es,
+    content: genRes.content,
+    content_es: genRes.content_es,
+    category: genRes.category || category || 'dental-health',
+    meta_title: genRes.meta_title,
+    meta_title_es: genRes.meta_title_es,
+    meta_description: genRes.meta_description,
+    meta_description_es: genRes.meta_description_es,
+    internal_links: genRes.internal_links || [],
+    external_links: genRes.external_links || [],
+    ctas: genRes.ctas || [],
+    image_prompt: genRes.image_prompt,
+    read_time: genRes.read_time || Math.ceil((genRes.content || '').split(/\s+/).length / 200),
+    seo_score: genRes.seo_score || 0,
+    status: 'draft',
+    campaign_month: campaignMonth,
+    author: 'Greenspoint Dental Team',
+  };
+
+  return await base44.asServiceRole.entities.BlogStudioPost.create(record);
+}
+
+// Compute all Thursdays in a given month/year as ISO date strings.
+// Returns up to `count` Thursdays.
+export function getThursdaysInMonth(year, monthIndex, count) {
+  const thursdays = [];
+  const date = new Date(year, monthIndex, 1);
+  // Find the first Thursday
+  while (date.getDay() !== 4) {
+    date.setDate(date.getDate() + 1);
+  }
+  // Collect all Thursdays in the month
+  while (date.getMonth() === monthIndex) {
+    thursdays.push(new Date(date));
+    date.setDate(date.getDate() + 7);
+  }
+  return thursdays.slice(0, count).map((d) => d.toISOString());
+}
+
 export const BLOG_GENERATION_SCHEMA = {
   type: 'object',
   properties: {

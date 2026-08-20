@@ -27,6 +27,7 @@ export default function BlogGenerateDialog({ open, onOpenChange, onGenerated, ru
   const [year, setYear] = useState(now.getFullYear());
   const [category, setCategory] = useState("dental-health");
   const [topic, setTopic] = useState("");
+  const [postCount, setPostCount] = useState(4);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -36,14 +37,27 @@ export default function BlogGenerateDialog({ open, onOpenChange, onGenerated, ru
     setLoading(true);
     setError("");
     try {
-      const res = await runAction("Generate Blog Post", () =>
-        base44.functions.invoke("generateBlogPost", { topic: topic.trim() || undefined, category, campaignMonth })
+      const topicList = topic.trim()
+        ? topic.split(/[,\n]/).map((t) => t.trim()).filter(Boolean)
+        : [];
+
+      const res = await runAction("Generate Blog Posts", () =>
+        base44.functions.invoke("generateBulkBlogPosts", {
+          category,
+          campaignMonth,
+          count: postCount,
+          topics: topicList.length > 0 ? topicList : undefined,
+        })
       );
-      onGenerated(res.data || res);
+      const data = res.data || res;
+      onGenerated({
+        post: { title: `${data.created?.length || postCount} blog post(s) created` },
+        ...data,
+      });
       onOpenChange(false);
       setTopic("");
     } catch (e) {
-      setError(e?.response?.data?.error || e.message || "Failed to generate blog post");
+      setError(e?.response?.data?.error || e.message || "Failed to generate blog posts");
     } finally {
       setLoading(false);
     }
@@ -80,16 +94,39 @@ export default function BlogGenerateDialog({ open, onOpenChange, onGenerated, ru
             </Select>
           </div>
           <div>
-            <Label>Topic (optional)</Label>
-            <Input className="mt-1" placeholder="e.g. 5 foods that support healthy teeth" value={topic} onChange={(e) => setTopic(e.target.value)} />
-            <p className="text-xs text-muted-foreground mt-1">Leave blank to let the AI pick a fresh topic based on the category.</p>
+            <Label>Number of Posts</Label>
+            <div className="flex items-center gap-2 mt-1">
+              <Button type="button" variant="outline" size="icon" className="h-9 w-9" onClick={() => setPostCount((c) => Math.max(1, c - 1))} disabled={loading}>
+                −
+              </Button>
+              <Input
+                type="number"
+                min="1"
+                max="8"
+                value={postCount}
+                onChange={(e) => setPostCount(Math.min(Math.max(parseInt(e.target.value) || 1, 1), 8))}
+                className="w-20 text-center"
+                disabled={loading}
+              />
+              <Button type="button" variant="outline" size="icon" className="h-9 w-9" onClick={() => setPostCount((c) => Math.min(8, c + 1))} disabled={loading}>
+                +
+              </Button>
+              <span className="text-xs text-muted-foreground ml-1">
+                Each post is auto-scheduled to a Thursday in {campaignMonth}
+              </span>
+            </div>
+          </div>
+          <div>
+            <Label>Topic Hints (optional)</Label>
+            <Input className="mt-1" placeholder="e.g. back-to-school tips, whitening myths" value={topic} onChange={(e) => setTopic(e.target.value)} />
+            <p className="text-xs text-muted-foreground mt-1">Comma-separated list. Leave blank to let the AI pick fresh topics. One topic per post if provided.</p>
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
         <DialogFooter>
-          <Button onClick={handleGenerate} disabled={loading}>
+          <Button onClick={handleGenerate} disabled={loading} className="w-full">
             {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Wand2 className="w-4 h-4 mr-2" />}
-            Generate
+            {loading ? `Generating ${postCount} post(s)...` : `Generate ${postCount} Blog Post${postCount > 1 ? "s" : ""}`}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -145,7 +145,12 @@ export default function BlogStudio() {
         onOpenChange={setShowGenerate}
         runAction={runWithHistory}
         onGenerated={(res) => {
-          toast({ title: "Blog post generated", description: `"${res?.post?.title || "New post"}" created and ready for review.` });
+          const count = res?.count || 1;
+          if (count > 1) {
+            toast({ title: `${count} blog posts generated`, description: `Each post is scheduled to a Thursday in the selected month.` });
+          } else {
+            toast({ title: "Blog post generated", description: `"${res?.created?.[0]?.title || "New post"}" created and ready for review.` });
+          }
         }}
       />
       <BlogSettingsDialog open={showSettings} onOpenChange={setShowSettings} />

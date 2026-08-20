@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useToast } from "@/components/ui/use-toast";
-import { ImageIcon, Globe, Search } from "lucide-react";
+import { ImageIcon, Globe, Search, Calendar } from "lucide-react";
+import { format } from "date-fns";
 import BlogStatusBadge from "./BlogStatusBadge";
 import BlogCardActions from "./BlogCardActions";
 import BlogDetailDialog from "./BlogDetailDialog";
@@ -82,6 +83,12 @@ export default function BlogCard({ post, onAction }) {
           <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
             {CATEGORY_LABELS[post.category] || post.category}
           </span>
+          {post.published_date && (
+            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Calendar className="w-3 h-3" />
+              {format(new Date(post.published_date), "EEE MMM d")}
+            </span>
+          )}
           <BlogStatusBadge status={post.status} />
         </div>
         <h3 className="text-sm font-heading font-semibold text-foreground line-clamp-2 mb-1 cursor-pointer hover:text-primary transition-colors" onClick={() => setShowDetail(true)} title="Click to view full post">
