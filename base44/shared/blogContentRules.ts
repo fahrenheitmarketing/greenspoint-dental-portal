@@ -23,7 +23,14 @@ ANSWER-FIRST / INVERTED PYRAMID (CRITICAL): Within the first 100-200 words, prov
 
 KEYWORD PLACEMENT: Place the primary keyword naturally in the slug, title tag, first paragraph, and at least one H2. Forget outdated keyword density — write naturally using semantic synonyms and related entities for the remainder of the article. Never stuff keywords.
 
-HTML FORMAT: Return all blog content as clean, semantic HTML using <h1> (only once, for the title), <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>, <a href="...">, and <blockquote> tags. Internal links should use the full domain path (e.g. <a href="/services/cosmetic">cosmetic dentistry</a>). External links should use full URLs with target="_blank" and rel="noopener noreferrer". CTAs should be styled links at the end of the post: <p><a href="/contact" style="...">Book Your Appointment Today</a></p>.`;
+HTML FORMAT: Return all blog content as clean, semantic HTML using <h1> (only once, for the title), <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>, <a href="...">, and <blockquote> tags. Internal links should use the full domain path (e.g. <a href="/services/cosmetic">cosmetic dentistry</a>). External links should use full URLs with target="_blank" and rel="noopener noreferrer". CTAs should be styled links at the end of the post: <p><a href="/contact" style="...">Book Your Appointment Today</a></p>.
+
+FACTUALITY & RELEVANCE RULES (strict — follow every point):
+- Every factual statement must be accurate and evidence-based, drawn from authoritative dental health organizations (American Dental Association, CDC, NIH, or equivalent recognized bodies). If a claim is not universally accepted, soften it with "may," "can," or "some studies suggest."
+- Do NOT present opinions, personal anecdotes, or marketing language as established facts.
+- Do NOT make unsubstantiated claims about treatments, products, procedures, or outcomes. If you cannot attribute a claim to an authoritative source, reframe it as general educational information rather than a definitive statement.
+- Ensure the topic and content are directly relevant to the Greenspoint/Houston community — reference local context (seasonal events, community life, family needs) where natural, and avoid generic advice that could apply to any practice anywhere.
+- When citing statistics or specific health data, keep numbers general and well-established (e.g. "the ADA recommends brushing twice a day") rather than inventing precise figures.`;
 
 export const SEO_RULES = `SEO REQUIREMENTS (strict — follow every point):
 - meta_title: 50-60 characters. Front-load the primary keyword. Treat the title as a "query contract" that accurately promises what the page delivers — not just a catchy slogan. It must be highly correlated with or identical to the H1 (the post title); if they differ wildly, search engines ignore the meta title and display the H1 instead.
@@ -71,6 +78,36 @@ CTAs: End the post with 1-2 hyperlinked call-to-action buttons linking to the mo
 Return ALL fields: title, title_es, slug, excerpt, excerpt_es, content (HTML), content_es (HTML), category, meta_title, meta_title_es, meta_description, meta_description_es, internal_links (array of {anchor_text, page_path}), external_links (array of {anchor_text, url}), ctas (array of {label, page_path}), image_prompt (a short specific description for the featured image), read_time (integer minutes), seo_score (0-100 integer).`;
 }
 
+// Fetch published post titles from the live WordPress site via its public REST API.
+// Published posts are publicly readable without authentication. Returns an array
+// of title strings. On any fetch failure (network error, timeout, invalid URL),
+// returns an empty array so generation never blocks.
+export async function fetchPublishedWpTitles(wpSiteUrl) {
+  try {
+    if (!wpSiteUrl) return [];
+    const base = wpSiteUrl.replace(/\/+$/, '');
+    const url = `${base}/wp-json/wp/v2/posts?status=publish&per_page=100&_fields=title.rendered,slug`;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeout);
+      if (!res.ok) return [];
+      const posts = await res.json();
+      if (!Array.isArray(posts)) return [];
+      return posts
+        .map((p) => p?.title?.rendered || p?.slug || '')
+        .map((t) => t.trim())
+        .filter(Boolean);
+    } catch (err) {
+      clearTimeout(timeout);
+      return [];
+    }
+  } catch {
+    return [];
+  }
+}
+
 // Generate a single blog post record via LLM and persist it.
 // Shared by generateBlogPost (single) and generateBulkBlogPosts (bulk).
 export async function generateOneBlogPost(base44, { topic, category, campaignMonth, existingTitles }) {
@@ -79,7 +116,10 @@ export async function generateOneBlogPost(base44, { topic, category, campaignMon
   const settings = settingsList[0];
   const brandGuide = settings ? await getBrandGuideText(base44, settings) : '';
 
-  const usedTopics = [...new Set(existingTitles || [])].slice(0, 50);
+  // Merge internal BlogStudioPost titles with live WordPress published titles
+  // so the LLM avoids duplicating topics already covered on the public site.
+  const wpTitles = settings?.wp_site_url ? await fetchPublishedWpTitles(settings.wp_site_url) : [];
+  const usedTopics = [...new Set([...(existingTitles || []), ...wpTitles])].slice(0, 100);
   const prompt = buildBlogGenerationPrompt({ topic, category, brandGuide, usedTopics, campaignMonth });
 
   const genRes = await base44.asServiceRole.integrations.Core.InvokeLLM({
