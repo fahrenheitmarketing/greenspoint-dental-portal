@@ -15,17 +15,23 @@ export const INTERNAL_PAGES = [
 
 export const BLOG_CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT make any medical claims, health claims, guarantees of results, or promises about outcomes. Frame everything as general educational information and friendly suggestions using soft language like "can help support," "may contribute to," "consider," "try," or "many people find." Never state that a treatment or habit will definitively achieve a specific result. Keep content informational, conversational, and patient-friendly.
 
-STYLE RULES: Write in a warm, professional, accessible tone at an 8th-grade reading level. Use the em dash ("—") sparingly — at most once per post. Do NOT use the sparkles emoji ("✨"). Limit emojis to one or two per post. Use clear headings (H2, H3), short paragraphs, and bullet lists where appropriate. Write for SEO: use the target keyword naturally in the title, first paragraph, at least one H2, and the conclusion — but never stuff keywords.
+STYLE RULES: Write in a warm, professional, accessible tone at an 8th-grade reading level. Use the em dash ("—") sparingly — at most once per post. Do NOT use the sparkles emoji ("✨"). Limit emojis to one or two per post. Use clear headings, short paragraphs, and bullet lists where appropriate.
 
-HTML FORMAT: Return all blog content as clean, semantic HTML using <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>, <a href="...">, and <blockquote> tags. Internal links should use the full domain path (e.g. <a href="/services/cosmetic">cosmetic dentistry</a>). External links should use full URLs with target="_blank" and rel="noopener noreferrer". CTAs should be styled links at the end of the post: <p><a href="/contact" style="...">Book Your Appointment Today</a></p>.`;
+HEADING HIERARCHY (STRICT): Use exactly ONE <h1> per post, and it must be the post title — identical to or highly correlated with the meta_title. Use <h2> for major sections (frame them as user questions where natural) and <h3> for sub-points only. NEVER skip heading levels for visual styling (no jumping from H2 to H4); a logical hierarchy is essential for screen readers and AI parsing. Do NOT use <h1> anywhere else in the content.
 
-export const SEO_RULES = `SEO REQUIREMENTS:
-- meta_title: 50-60 characters, includes the primary keyword near the start, compelling for click-through.
-- meta_description: 150-160 characters, includes the keyword naturally, ends with a soft call-to-action.
-- slug: short, lowercase, hyphenated, keyword-rich, no stop words, no more than 5 words.
-- title: compelling, includes keyword, 50-70 characters.
+ANSWER-FIRST / INVERTED PYRAMID (CRITICAL): Within the first 100-200 words, provide a direct, complete answer to the post's core question. Search engines and LLMs use this lead block to build AI Overviews and featured snippets — getting to the point first is mandatory, not optional. Spend the rest of the post expanding on nuances, examples, and supporting details.
+
+KEYWORD PLACEMENT: Place the primary keyword naturally in the slug, title tag, first paragraph, and at least one H2. Forget outdated keyword density — write naturally using semantic synonyms and related entities for the remainder of the article. Never stuff keywords.
+
+HTML FORMAT: Return all blog content as clean, semantic HTML using <h1> (only once, for the title), <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>, <a href="...">, and <blockquote> tags. Internal links should use the full domain path (e.g. <a href="/services/cosmetic">cosmetic dentistry</a>). External links should use full URLs with target="_blank" and rel="noopener noreferrer". CTAs should be styled links at the end of the post: <p><a href="/contact" style="...">Book Your Appointment Today</a></p>.`;
+
+export const SEO_RULES = `SEO REQUIREMENTS (strict — follow every point):
+- meta_title: 50-60 characters. Front-load the primary keyword. Treat the title as a "query contract" that accurately promises what the page delivers — not just a catchy slogan. It must be highly correlated with or identical to the H1 (the post title); if they differ wildly, search engines ignore the meta title and display the H1 instead.
+- meta_description: 120-160 characters (aim for the lower end on mobile, which truncates near 120). Include the target keyword naturally (Google bolds it in results) and end with a clear benefit or soft call-to-action. This is your click-earning elevator pitch, not a ranking factor.
+- slug: short, lowercase, hyphenated, keyword-rich, no stop words (a, the, and), max ~5 words. The primary keyword MUST appear in the slug. NEVER include the year, month, or any date in the slug — URLs must stay evergreen so updates never require redirects.
+- title (H1): compelling, includes the primary keyword, 50-70 characters. This is the single H1 of the page and must align with the meta_title.
 - excerpt: 1-2 sentence summary, 100-160 characters, used for blog listing previews.
-- Include 2-4 internal links to relevant Greenspoint Dental service pages.
+- Include 2-4 internal links to relevant Greenspoint Dental service pages. Use descriptive anchor text so users and crawlers know what the linked page is about — avoid generic text like "click here." Do NOT force exact-match keyword anchor text every time; vary it naturally to avoid over-optimization.
 - Include 1-2 external links to authoritative sources (ADA, CDC, health organizations) with target="_blank".
 - Include 1-2 hyperlinked CTAs linking to relevant service pages (/contact, /new-patients, /services/...).
 - Estimate read_time in minutes based on word count (~200 words per minute).`;
