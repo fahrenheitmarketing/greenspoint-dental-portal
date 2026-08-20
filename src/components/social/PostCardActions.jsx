@@ -1,20 +1,26 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Check, X, Send, Upload, Trash2, RotateCcw, CalendarClock, Zap } from "lucide-react";
+import { Sparkles, Check, X, Send, Upload, Trash2, RotateCcw, CalendarClock, Zap, Undo2 } from "lucide-react";
 
-export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage, onScheduleToPostiz, onFixDate, onPostNow, onDelete, onRestore }) {
+export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage, onScheduleToPostiz, onFixDate, onPostNow, onDelete, onRestore, onUnapprove }) {
   return (
     <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
-      {post.status !== "ready_to_publish" && post.status !== "needs_date_review" && (
+      {!["approved", "ready_to_publish", "needs_date_review"].includes(post.status) && (
         <Button size="sm" variant="outline" disabled={busy} onClick={onRegenerateImage}>
           <Sparkles className="w-3.5 h-3.5 mr-1" />
           {post.image_url ? "Regenerate Image" : "Generate Image"}
         </Button>
       )}
-      {post.status !== "ready_to_publish" && post.status !== "needs_date_review" && (
+      {!["approved", "ready_to_publish", "needs_date_review"].includes(post.status) && (
         <Button size="sm" variant="outline" disabled={busy} onClick={onClone}>
           <Sparkles className="w-3.5 h-3.5 mr-1" />
           Create New Post
+        </Button>
+      )}
+      {post.status === "approved" && (
+        <Button size="sm" variant="outline" disabled={busy} onClick={onUnapprove}>
+          <Undo2 className="w-3.5 h-3.5 mr-1" />
+          Un-approve
         </Button>
       )}
       {post.status === "ready_to_publish" && (

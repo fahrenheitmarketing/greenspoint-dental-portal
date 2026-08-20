@@ -109,6 +109,9 @@ export default function PostCard({ post, onAction }) {
   const handleRestore = () =>
     runAction("Restore Post", () => base44.entities.SocialPost.update(post.id, { status: "pending" }));
 
+  const handleUnapprove = () =>
+    runAction("Un-approve Post", () => base44.entities.SocialPost.update(post.id, { status: "pending" }));
+
   const handleUploadFinalImage = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -172,6 +175,7 @@ export default function PostCard({ post, onAction }) {
           onUploadFinalImage={() => fileInputRef.current?.click()}
           onDelete={handleDelete}
           onRestore={handleRestore}
+          onUnapprove={handleUnapprove}
         />
       </div>
       <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onSaveField={onSaveField} />
