@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
+import { Jimp } from 'npm:jimp@1.6.0';
 import { getBrandGuideText } from '../../shared/clickup.ts';
 import { buildImagePrompt, resizeAndUploadImage } from '../../shared/imageRules.ts';
 
@@ -29,7 +30,7 @@ export default async function (req) {
 
     // Resize to the platform's exact dimensions so the designer receives a correctly-sized creative.
     const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
-    const resizedUrl = await resizeAndUploadImage(base44, post.platform, url, `${postId}-${post.platform}-${safeTopic}`);
+    const resizedUrl = await resizeAndUploadImage(base44, Jimp, post.platform, url, `${postId}-${post.platform}-${safeTopic}`);
 
     await base44.asServiceRole.entities.SocialPost.update(postId, { image_url: resizedUrl });
 

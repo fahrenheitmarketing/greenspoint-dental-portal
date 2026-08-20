@@ -18,12 +18,22 @@ export const PLATFORM_DIMENSIONS = {
 export async function resizeAndUploadImage(base44, Jimp, platform, imageUrl, filenameBase) {
   const dims = PLATFORM_DIMENSIONS[platform];
   if (!dims) throw new Error(`Unknown platform: ${platform}`);
-  const image = await Jimp.read(imageUrl);
-  image.cover(dims.width, dims.height);
-  const buffer = await image.getBufferAsync(Jimp.MIME_JPEG || 'image/jpeg');
-  const file = new File([buffer], `${filenameBase}.jpg`, { type: 'image/jpeg' });
-  const { file_url } = await base44.asServiceRole.integrations.Core.UploadFile({ file });
-  return file_url;
+  let image;
+  try {
+    image = await Jimp.read(imageUrl);
+  } catch (e) { throw new Error(`Jimp.read failed: ${e.message}`); }
+  try {
+    image.cover(dims.width, dims.height);
+  } catch (e) { throw new Error(`Jimp.cover failed: ${e.message}`); }
+  let buffer;
+  try {
+    buffer = await image.getBuffer('image/jpeg');
+  } catch (e) { throw new Error(`Jimp.getBuffer failed: ${e.message} | buffer type: ${typeof buffer}`); }
+  try {
+    const file = new File([buffer], `${filenameBase}.jpg`, { type: 'image/jpeg' });
+    const result = await base44.asServiceRole.integrations.Core.UploadFile({ file });
+    return result.file_url;
+  } catch (e) { throw new Error(`UploadFile failed: ${e.message}`); }
 }
 
 export const IMAGE_FORBIDDEN_SUFFIX = `CRITICAL BRAND RULES — ABSOLUTELY FORBIDDEN IN THE IMAGE: No dental office buildings, no dental clinic exteriors, no reception areas, no dentist offices, no dentist chairs, no exam rooms, no dental staff (dentists, hygienists, assistants), no scrubs or lab coats, no scary dental tools, no clinical or surgical shots, no X-ray machines, no text overlaid on the image. If the post copy references the office, staff, or "behind the scenes", you MUST NOT depict any of those — instead use a relevant visual metaphor (a welcoming front door with morning sunlight, a tidy desk with coffee, a sunrise over the neighborhood, fresh flowers, or a "we're here for you" community scene). Ensure the image is anatomically correct and logically coherent — no extra limbs, no distorted faces, no physically impossible objects. Prefer simple, clean compositions with at most one or two people to avoid AI artifacts. When people are shown, feature Hispanic/Latino individuals reflecting the local Greenspoint community.`;

@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
+import { Jimp } from 'npm:jimp@1.6.0';
 import { PLATFORM_DIMENSIONS, resizeAndUploadImage } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -31,7 +32,7 @@ export default async function (req) {
     }
 
     const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
-    const resizedUrl = await resizeAndUploadImage(base44, post.platform, sourceUrl, `${postId}-final-${post.platform}-${safeTopic}`);
+    const resizedUrl = await resizeAndUploadImage(base44, Jimp, post.platform, sourceUrl, `${postId}-final-${post.platform}-${safeTopic}`);
 
     await base44.asServiceRole.entities.SocialPost.update(postId, {
       resized_image_url: resizedUrl,
