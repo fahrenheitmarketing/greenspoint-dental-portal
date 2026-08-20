@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText, uploadAttachmentToClickUpTask } from '../../shared/clickup.ts';
-import { buildImagePrompt } from '../../shared/imageRules.ts';
+import { buildImagePrompt, resizeAndUploadImage } from '../../shared/imageRules.ts';
 
 async function runConcurrent(items, fn, concurrency = 4) {
   let index = 0;
@@ -46,13 +46,15 @@ export default async function (req) {
       try {
         const prompt = buildImagePrompt(post, brandGuide);
         const { url } = await base44.asServiceRole.integrations.Core.GenerateImage({ prompt });
-        await base44.asServiceRole.entities.SocialPost.update(post.id, { image_url: url });
+        // Resize to the platform's exact dimensions so the designer receives a correctly-sized creative.
+        const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
+        const resizedUrl = await resizeAndUploadImage(base44, post.platform, url, `${post.id}-${post.platform}-${safeTopic}`);
+        await base44.asServiceRole.entities.SocialPost.update(post.id, { image_url: resizedUrl });
         generated++;
         if (post.clickup_task_id) {
           try {
-            const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
             const filename = `${post.platform}-${post.scheduled_date || 'undated'}-${safeTopic}.jpg`;
-            await uploadAttachmentToClickUpTask(base44, post.clickup_task_id, url, filename);
+            await uploadAttachmentToClickUpTask(base44, post.clickup_task_id, resizedUrl, filename);
             attached++;
           } catch (e) { console.error('attach failed', e.message); }
         }

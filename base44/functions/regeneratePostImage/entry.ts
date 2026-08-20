@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { buildImagePrompt } from '../../shared/imageRules.ts';
+import { buildImagePrompt, resizeAndUploadImage } from '../../shared/imageRules.ts';
 
 export default async function (req) {
   try {
@@ -27,9 +27,13 @@ export default async function (req) {
 
     const { url } = await base44.asServiceRole.integrations.Core.GenerateImage({ prompt });
 
-    await base44.asServiceRole.entities.SocialPost.update(postId, { image_url: url });
+    // Resize to the platform's exact dimensions so the designer receives a correctly-sized creative.
+    const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
+    const resizedUrl = await resizeAndUploadImage(base44, post.platform, url, `${postId}-${post.platform}-${safeTopic}`);
 
-    return Response.json({ success: true, image_url: url });
+    await base44.asServiceRole.entities.SocialPost.update(postId, { image_url: resizedUrl });
+
+    return Response.json({ success: true, image_url: resizedUrl });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

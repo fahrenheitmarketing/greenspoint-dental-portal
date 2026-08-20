@@ -1,12 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import Jimp from 'npm:jimp@0.22.12';
-
-const PLATFORM_DIMENSIONS = {
-  facebook: { width: 1080, height: 1350 },
-  instagram: { width: 1080, height: 1350 },
-  twitter: { width: 1600, height: 900 },
-  google_business: { width: 1200, height: 900 },
-};
+import { PLATFORM_DIMENSIONS, resizeAndUploadImage } from '../../shared/imageRules.ts';
 
 export default async function (req) {
   try {
@@ -22,7 +15,13 @@ export default async function (req) {
     }
 
     const post = await base44.asServiceRole.entities.SocialPost.get(postId);
-    if (!post || !post.image_url) {
+    if (!post) {
+      return Response.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    // Safety net: prefer the designer's returned final branded image; fall back to the AI image.
+    const sourceUrl = post.final_image_url || post.image_url;
+    if (!sourceUrl) {
       return Response.json({ error: 'Post has no image to resize' }, { status: 400 });
     }
 
@@ -31,19 +30,15 @@ export default async function (req) {
       return Response.json({ error: 'Unknown platform' }, { status: 400 });
     }
 
-    const image = await Jimp.read(post.image_url);
-    image.cover(dims.width, dims.height);
-    const buffer = await image.getBufferAsync(Jimp.MIME_JPEG);
-
-    const file = new File([buffer], `${postId}-${post.platform}.jpg`, { type: 'image/jpeg' });
-    const { file_url } = await base44.asServiceRole.integrations.Core.UploadFile({ file });
+    const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
+    const resizedUrl = await resizeAndUploadImage(base44, post.platform, sourceUrl, `${postId}-final-${post.platform}-${safeTopic}`);
 
     await base44.asServiceRole.entities.SocialPost.update(postId, {
-      resized_image_url: file_url,
+      resized_image_url: resizedUrl,
       status: 'ready_to_publish',
     });
 
-    return Response.json({ success: true, resized_image_url: file_url });
+    return Response.json({ success: true, resized_image_url: resizedUrl });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
