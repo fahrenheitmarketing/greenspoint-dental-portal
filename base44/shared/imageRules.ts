@@ -23,7 +23,7 @@ export async function resizeAndUploadImage(base44, Jimp, platform, imageUrl, fil
     image = await Jimp.read(imageUrl);
   } catch (e) { throw new Error(`Jimp.read failed: ${e.message}`); }
   try {
-    image.cover(dims.width, dims.height);
+    image.cover({ w: dims.width, h: dims.height });
   } catch (e) { throw new Error(`Jimp.cover failed: ${e.message}`); }
   let buffer;
   try {
