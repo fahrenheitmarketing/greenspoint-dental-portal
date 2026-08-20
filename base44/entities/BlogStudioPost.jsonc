@@ -1,0 +1,213 @@
+{
+  "name": "BlogStudioPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog post title (English)"
+    },
+    "title_es": {
+      "type": "string",
+      "description": "Blog post title (Spanish)"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug (shared between EN and ES)"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short summary for previews (English)"
+    },
+    "excerpt_es": {
+      "type": "string",
+      "description": "Short summary for previews (Spanish)"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full blog post content in HTML (English)"
+    },
+    "content_es": {
+      "type": "string",
+      "description": "Full blog post content in HTML (Spanish)"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "general-dentistry",
+        "cosmetic-dentistry",
+        "restorative-dentistry",
+        "orthodontics",
+        "family-dental",
+        "insurance-financing",
+        "dental-health",
+        "smile-confidence",
+        "affordable-dentistry",
+        "community"
+      ],
+      "description": "Blog category aligned with service pages"
+    },
+    "meta_title": {
+      "type": "string",
+      "description": "SEO meta title (English, max 60 chars)"
+    },
+    "meta_title_es": {
+      "type": "string",
+      "description": "SEO meta title (Spanish, max 60 chars)"
+    },
+    "meta_description": {
+      "type": "string",
+      "description": "SEO meta description (English, max 160 chars)"
+    },
+    "meta_description_es": {
+      "type": "string",
+      "description": "SEO meta description (Spanish, max 160 chars)"
+    },
+    "internal_links": {
+      "type": "array",
+      "description": "Internal links to Greenspoint service pages embedded in the post",
+      "items": {
+        "type": "object",
+        "properties": {
+          "anchor_text": {
+            "type": "string"
+          },
+          "page_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "anchor_text",
+          "page_path"
+        ]
+      },
+      "default": []
+    },
+    "external_links": {
+      "type": "array",
+      "description": "External links to authoritative sources embedded in the post",
+      "items": {
+        "type": "object",
+        "properties": {
+          "anchor_text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "anchor_text",
+          "url"
+        ]
+      },
+      "default": []
+    },
+    "ctas": {
+      "type": "array",
+      "description": "Hyperlinked call-to-action buttons embedded in the post",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "page_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "page_path"
+        ]
+      },
+      "default": []
+    },
+    "image_url": {
+      "type": "string",
+      "description": "AI-generated featured image URL"
+    },
+    "image_prompt": {
+      "type": "string",
+      "description": "Prompt used to generate the featured image"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending",
+        "approved",
+        "rejected",
+        "needs_revision",
+        "published",
+        "scheduled"
+      ],
+      "default": "draft",
+      "description": "Approval/publish status"
+    },
+    "campaign_month": {
+      "type": "string",
+      "description": "Label for the campaign month, e.g. 'August 2026'"
+    },
+    "clickup_task_id": {
+      "type": "string",
+      "description": "Synced ClickUp task ID"
+    },
+    "clickup_list_id": {
+      "type": "string",
+      "description": "ClickUp list ID this task lives in"
+    },
+    "wp_post_id_en": {
+      "type": "string",
+      "description": "WordPress post ID for the English version"
+    },
+    "wp_post_id_es": {
+      "type": "string",
+      "description": "WordPress post ID for the Spanish version"
+    },
+    "wp_url_en": {
+      "type": "string",
+      "description": "WordPress URL for the English version"
+    },
+    "wp_url_es": {
+      "type": "string",
+      "description": "WordPress URL for the Spanish version"
+    },
+    "published_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Publication date on WordPress"
+    },
+    "author": {
+      "type": "string",
+      "default": "Greenspoint Dental Team",
+      "description": "Post author"
+    },
+    "read_time": {
+      "type": "number",
+      "description": "Estimated read time in minutes"
+    },
+    "seo_score": {
+      "type": "number",
+      "description": "SEO quality score (0-100)"
+    },
+    "brand_compliance_notes": {
+      "type": "string",
+      "description": "Notes on brand guide adherence for this post"
+    },
+    "processed_comment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "ClickUp comment IDs already processed by feedback automation"
+    }
+  },
+  "required": [
+    "title",
+    "slug",
+    "content",
+    "category",
+    "status"
+  ]
+}

@@ -22,6 +22,7 @@ import NewPatients from './pages/NewPatients';
 import Contact from './pages/Contact';
 import ServiceAreas from './pages/ServiceAreas';
 import SocialMediaStudio from './pages/SocialMediaStudio';
+import BlogStudio from './pages/BlogStudio';
 import ImperialValley from './pages/service-areas/ImperialValley';
 import Southbrook from './pages/service-areas/Southbrook';
 import ColonialHills from './pages/service-areas/ColonialHills';
@@ -83,6 +84,7 @@ const AuthenticatedApp = () => {
         <Route path="/service-areas/colonial-hills" element={<ColonialHills />} />
         <Route path="/service-areas/green-ridge-north" element={<GreenRidgeNorth />} />
         <Route path="/social-media-studio" element={<SocialMediaStudio />} />
+        <Route path="/blog-studio" element={<BlogStudio />} />
 
         {/* Spanish routes */}
         <Route path="/es" element={<HomeES />} />

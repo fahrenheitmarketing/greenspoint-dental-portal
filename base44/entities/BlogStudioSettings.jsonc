@@ -1,0 +1,38 @@
+{
+  "name": "BlogStudioSettings",
+  "type": "object",
+  "properties": {
+    "clickup_list_id": {
+      "type": "string",
+      "description": "ClickUp list ID where blog post review tasks are created"
+    },
+    "clickup_workspace_id": {
+      "type": "string",
+      "description": "Optional ClickUp workspace (team) ID"
+    },
+    "clickup_brand_doc_url": {
+      "type": "string",
+      "description": "Full ClickUp Doc URL for the Brand Reference Guide"
+    },
+    "brand_guide_text": {
+      "type": "string",
+      "description": "Fallback/manual Brand Reference Guide text"
+    },
+    "wp_site_url": {
+      "type": "string",
+      "description": "WordPress site base URL (e.g. https://greenspointdental.com)"
+    },
+    "wp_author_id": {
+      "type": "string",
+      "description": "WordPress author user ID to assign blog posts to"
+    },
+    "default_category_slug": {
+      "type": "string",
+      "default": "dental-health",
+      "description": "Default WordPress category slug for blog posts"
+    }
+  },
+  "required": [
+    "clickup_list_id"
+  ]
+}
