@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw } from "lucide-react";
+import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw, RotateCcw } from "lucide-react";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -143,6 +143,19 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
             Pull from ClickUp
           </Button>
         </div>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={anyBusy}
+          onClick={() => runBulk(
+            "Restore from ClickUp",
+            () => base44.functions.invoke("restorePostContentFromClickUp", { campaignMonth, taskUrl: taskUrl.trim() || undefined }),
+            { title: "Content restored", desc: (d) => `${d.restored} posts restored from ClickUp, ${d.skipped} already correct, ${d.unmatched} unmatched.` }
+          )}
+        >
+          {isBusy("Restore from ClickUp") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <RotateCcw className="w-4 h-4 mr-1" />}
+          Restore from ClickUp
+        </Button>
         <Button
           size="sm"
           variant="secondary"
