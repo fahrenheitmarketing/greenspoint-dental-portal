@@ -70,21 +70,63 @@ export function getPlatformsForDate(dayOfWeek) {
   return platforms;
 }
 
+// Assign each post on a given day a random time within the 8:00am–11:59am
+// Central Time (fixed UTC-5) window, spread at least 15 minutes apart.
+// Returns an array of minute-of-day values (in CT local time) sorted ascending.
+function spreadTimesForDay(count) {
+  const START = 8 * 60;       // 8:00am = 480
+  const END = 11 * 60 + 59;   // 11:59am = 719
+  const MIN_GAP = 15;
+  if (count <= 0) return [];
+  if (count === 1) {
+    return [Math.floor(START + Math.random() * (END - START))];
+  }
+  // Try to find a set of `count` random times that are all ≥ MIN_GAP apart.
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const times = [];
+    for (let i = 0; i < count; i++) {
+      times.push(Math.floor(START + Math.random() * (END - START)));
+    }
+    times.sort((a, b) => a - b);
+    let ok = true;
+    for (let i = 1; i < times.length; i++) {
+      if (times[i] - times[i - 1] < MIN_GAP) { ok = false; break; }
+    }
+    if (ok) return times;
+  }
+  // Fallback: evenly spaced across the window.
+  const step = (END - START) / (count - 1 || 1);
+  return Array.from({ length: count }, (_, i) => Math.round(START + i * step));
+}
+
+// Convert a CT minute-of-day on a given UTC date into a full ISO datetime.
+// Central Time is treated as fixed UTC-5 (no DST), so we add 5 hours.
+function ctMinutesToISO(year, monthIndex, day, ctMinutes) {
+  const utcMinutes = ctMinutes + 5 * 60;
+  const utcHours = Math.floor(utcMinutes / 60);
+  const utcMins = utcMinutes % 60;
+  const d = new Date(Date.UTC(year, monthIndex, day, utcHours, utcMins, 0, 0));
+  return d.toISOString();
+}
+
 export function buildSchedule(month, year) {
   const schedule = [];
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(Date.UTC(year, month - 1, day));
     const platforms = getPlatformsForDate(date.getUTCDay());
-    for (const platform of platforms) {
-      schedule.push({ date: date.toISOString().slice(0, 10), platform });
+    if (platforms.length === 0) continue;
+    const times = spreadTimesForDay(platforms.length);
+    for (let i = 0; i < platforms.length; i++) {
+      schedule.push({ date: ctMinutesToISO(year, month - 1, day, times[i]), platform: platforms[i] });
     }
   }
   return schedule;
 }
 
 export function formatDateLabel(dateStr) {
-  const d = new Date(dateStr + 'T00:00:00Z');
+  // Handles both date-only ("2026-08-25") and full ISO ("2026-08-25T13:23:00.000Z")
+  const d = new Date(dateStr);
   return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 }
 

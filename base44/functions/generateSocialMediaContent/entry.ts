@@ -103,12 +103,14 @@ For each slot return: date, platform, topic (short theme), content (the actual p
 
     // Save SocialPost records as pending. They are NOT sent to ClickUp yet —
     // content is only added to the ClickUp task when approved in the Studio dashboard.
-    const records = posts.map((post) => ({
+    // Prefer the exact datetime from our computed schedule (by index) so the
+    // random spread times are preserved even if the LLM truncates the time.
+    const records = posts.map((post, i) => ({
       platform: post.platform,
       topic: post.topic,
       content: post.content,
       status: 'pending',
-      scheduled_date: post.date,
+      scheduled_date: (schedule[i] && schedule[i].date) || post.date,
       campaign_month: campaignMonth,
       clickup_list_id: settings.clickup_list_id,
       brand_compliance_notes: post.image_prompt,

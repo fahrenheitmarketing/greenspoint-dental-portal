@@ -54,7 +54,7 @@ export default async function (req) {
     await base44.asServiceRole.entities.SocialPost.update(postId, { clickup_task_id: taskId, clickup_list_id: listId });
 
     const dateLabel = post.scheduled_date
-      ? new Date(post.scheduled_date + 'T00:00:00Z').toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+      ? new Date(post.scheduled_date).toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
       : 'undated';
 
     // Attach the current image to the task for the design team
@@ -62,7 +62,8 @@ export default async function (req) {
     if (post.image_url) {
       try {
         const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
-        const filename = `${post.platform}-${post.scheduled_date || 'undated'}-${safeTopic}.jpg`;
+        const datePart = post.scheduled_date ? new Date(post.scheduled_date).toISOString().slice(0, 10) : 'undated';
+        const filename = `${post.platform}-${datePart}-${safeTopic}.jpg`;
         await uploadAttachmentToClickUpTask(base44, taskId, post.image_url, filename);
         attached = true;
       } catch (attachErr) {

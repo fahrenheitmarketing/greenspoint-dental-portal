@@ -23,7 +23,7 @@ export default async function (req) {
     }
 
     const dateLabel = post.scheduled_date
-      ? new Date(post.scheduled_date + 'T00:00:00Z').toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+      ? new Date(post.scheduled_date).toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
       : 'undated';
     const commentWithContext = `[${post.platform.toUpperCase()} - ${dateLabel}]\n${note}`;
     await addClickUpComment(base44, post.clickup_task_id, commentWithContext);
