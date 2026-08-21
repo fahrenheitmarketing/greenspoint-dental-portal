@@ -49,6 +49,28 @@ export default function BlogCard({ post, onAction }) {
   const handleReject = () =>
     runAction("Reject Post", async () => {
       await base44.entities.BlogStudioPost.update(post.id, { status: "rejected" });
+      toast({ title: "Post rejected", description: "Generating a replacement article…" });
+      try {
+        const existing = await base44.entities.BlogStudioPost.list("-created_date", 100);
+        const res = await base44.functions.invoke("generateBlogPost", {
+          campaignMonth: post.campaign_month || undefined,
+          category: post.category,
+          existingTitles: existing.map((p) => p.title).filter(Boolean),
+        });
+        if (res?.post?.id && post.published_date) {
+          await base44.entities.BlogStudioPost.update(res.post.id, {
+            published_date: post.published_date,
+            campaign_month: post.campaign_month || res.post.campaign_month,
+          });
+        }
+        toast({ title: "Replacement generated", description: "A new draft with a different topic is ready." });
+      } catch (err) {
+        toast({
+          title: "Replacement generation failed",
+          description: "The post was rejected, but the replacement could not be generated. Try generating manually.",
+          variant: "destructive",
+        });
+      }
     });
 
   const handlePublishToWordPress = () =>
