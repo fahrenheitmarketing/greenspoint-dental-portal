@@ -93,9 +93,12 @@ export default async function (req) {
           continue;
         }
         // Find the matching post by platform + date
-        const match = taskPosts.find(
-          (p) => p.platform === parsed.platform && p.scheduled_date && p.scheduled_date.startsWith(parsed.date)
-        );
+        // Normalize scheduled_date to YYYY-MM-DD in case the SDK returns a Date object
+        const match = taskPosts.find((p) => {
+          if (p.platform !== parsed.platform || !p.scheduled_date) return false;
+          const dateStr = new Date(p.scheduled_date).toISOString().slice(0, 10);
+          return dateStr.startsWith(parsed.date);
+        });
         if (match) {
           const imageUrl = att.url || att.url_w_query || att.path;
           if (imageUrl) {
