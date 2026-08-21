@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES, buildGbpCtaInstruction } from '../../shared/scheduleBuilder.ts';
 import { buildImagePrompt, IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 // Run async tasks with a concurrency cap to avoid overwhelming the image API.
@@ -86,6 +86,7 @@ Hashtag rules (append hashtags on the final line of each post):
 
 Generate one post for EACH of the following (date, platform) slots, in the same order. Every post must be patient-friendly and match its platform's tone and include the right number of hashtags for its platform.
 ${CONTENT_RULES}
+${buildGbpCtaInstruction()}
 Slots:
 ${schedule.map((s, i) => `${i + 1}. ${s.date} - ${s.platform}`).join('\n')}
 
@@ -104,6 +105,8 @@ For each slot return: date, platform, topic (short theme), content (the actual p
                 topic: { type: 'string' },
                 content: { type: 'string' },
                 image_prompt: { type: 'string' },
+                cta_page_path: { type: 'string' },
+                cta_button_type: { type: 'string' },
               },
               required: ['date', 'platform', 'topic', 'content', 'image_prompt'],
             },
@@ -128,6 +131,8 @@ For each slot return: date, platform, topic (short theme), content (the actual p
       campaign_month: campaignMonth,
       clickup_list_id: settings.clickup_list_id,
       brand_compliance_notes: post.image_prompt,
+      cta_page_path: post.platform === 'google_business' ? post.cta_page_path : undefined,
+      cta_button_type: post.platform === 'google_business' ? post.cta_button_type : undefined,
     }));
     const created = await base44.asServiceRole.entities.SocialPost.bulkCreate(records);
 

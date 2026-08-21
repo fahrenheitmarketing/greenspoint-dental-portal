@@ -69,6 +69,21 @@
       "type": "string",
       "description": "Notes on brand guide adherence for this post"
     },
+    "cta_page_path": {
+      "type": "string",
+      "description": "GBP only: landing page path for the Learn More button (e.g. '/services/specials')"
+    },
+    "cta_button_type": {
+      "type": "string",
+      "enum": [
+        "LEARN_MORE",
+        "BOOK",
+        "GET_OFFER",
+        "CALL",
+        "SIGN_UP"
+      ],
+      "description": "GBP only: GMB call-to-action button type"
+    },
     "postiz_post_id": {
       "type": "string",
       "description": "Postiz post ID once scheduled/published"

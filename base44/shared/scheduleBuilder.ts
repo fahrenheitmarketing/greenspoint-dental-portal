@@ -31,6 +31,7 @@ const SHORT_LINK_PAGE_LABELS = {
 // Build a per-platform short-link CTA instruction for the LLM.
 // Returns '' if no short links are configured for the platform.
 export function buildShortLinkCtaInstruction(settings, platform) {
+  if (platform === 'google_business') return '';
   const links = (settings && Array.isArray(settings.short_links)) ? settings.short_links : [];
   const platformLinks = links.filter((l) => l.platform === platform || l.platform === 'all');
   if (platformLinks.length === 0) return '';
@@ -43,6 +44,28 @@ export function buildShortLinkCtaInstruction(settings, platform) {
   return `SHORT LINK CTA RULE: End the post with a concise, natural call-to-action linking to the single most relevant landing page for the post's topic. Choose ONE short link from this list (pick the best topical match):
 ${list}
 Paste the short link URL as-is at the end of the post. Do not add UTM params, do not repeat the URL, and only include a link if one is topically relevant.`;
+}
+
+export const GBP_CTA_PAGES = [
+  { path: '/', label: 'Home page' },
+  { path: '/services/general', label: 'General Dentistry' },
+  { path: '/services/restorative', label: 'Restorative Dentistry' },
+  { path: '/services/cosmetic', label: 'Cosmetic Dentistry' },
+  { path: '/services/orthodontics', label: 'Orthodontics' },
+  { path: '/services/specials', label: 'Specials & Offers' },
+  { path: '/new-patients', label: 'New Patients' },
+  { path: '/contact', label: 'Contact Us' },
+];
+
+export const GBP_BUTTON_TYPES = ['LEARN_MORE', 'BOOK', 'GET_OFFER', 'CALL', 'SIGN_UP'];
+
+export function buildGbpCtaInstruction() {
+  const pageList = GBP_CTA_PAGES.map((p) => `- ${p.path} (${p.label})`).join('\n');
+  return `GBP CTA RULE (google_business): Do NOT include any URL in the post copy. Instead, choose the single most relevant landing page and the best GMB button type for the post's topic.
+Landing pages:
+${pageList}
+Button types: LEARN_MORE (educational/general info), GET_OFFER (specials/discounts), BOOK (appointment-focused), CALL (contact/phone-focused), SIGN_UP (newsletter/new patient sign-up).
+Return cta_page_path (one of the paths above) and cta_button_type (one of the button types above) as separate fields. The copy itself must never contain a URL.`;
 }
 
 export const CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT make any claims of any kind. No medical claims, no health claims, no guarantees of results, no promises about outcomes. Do NOT say something "prevents cavities," "whitens teeth," "cures bad breath," "strengthens enamel," "guarantees a straighter smile," or any similar definitive statement. Frame everything as general educational tips and friendly suggestions using soft language like "can help support," "may contribute to," "consider," "try," or "many people find." Never state that a product, service, or habit will definitively achieve a specific result. Keep content informational and conversational only.

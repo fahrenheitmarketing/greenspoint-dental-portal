@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction, buildHashtagInstruction } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction, buildHashtagInstruction, buildGbpCtaInstruction } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -19,7 +19,7 @@ export default async function (req) {
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const settings = settingsList[0];
     const brandGuide = settings ? await getBrandGuideText(base44, settings) : '';
-    const ctaInstruction = settings ? buildShortLinkCtaInstruction(settings, platform) : '';
+    const ctaInstruction = settings ? (platform === 'google_business' ? buildGbpCtaInstruction() : buildShortLinkCtaInstruction(settings, platform)) : '';
 
     // Fetch topics already used to avoid repetition
     const existingPosts = await base44.asServiceRole.entities.SocialPost.filter({}, 'scheduled_date', 500);
@@ -51,6 +51,8 @@ Return: topic (short theme), content (the actual post copy), image_prompt (${IMA
           topic: { type: 'string' },
           content: { type: 'string' },
           image_prompt: { type: 'string' },
+          cta_page_path: { type: 'string' },
+          cta_button_type: { type: 'string' },
         },
         required: ['topic', 'content', 'image_prompt'],
       },
@@ -64,6 +66,8 @@ Return: topic (short theme), content (the actual post copy), image_prompt (${IMA
       scheduled_date: scheduledDate || null,
       campaign_month: campaignMonth,
       brand_compliance_notes: genRes.image_prompt,
+      cta_page_path: platform === 'google_business' ? genRes.cta_page_path : undefined,
+      cta_button_type: platform === 'google_business' ? genRes.cta_button_type : undefined,
     };
 
     const created = await base44.asServiceRole.entities.SocialPost.create(record);

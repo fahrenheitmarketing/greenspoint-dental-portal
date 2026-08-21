@@ -80,6 +80,14 @@ export default async function (req) {
       try {
         // Upload the final branded image to Postiz
         const imageData = await uploadImageToPostiz(post.final_image_url);
+        // For GBP posts, build the call-to-action URL with UTM tracking
+        let callToActionType;
+        let callToActionUrl;
+        if (post.platform === 'google_business' && post.cta_page_path) {
+          callToActionType = post.cta_button_type || 'LEARN_MORE';
+          const base = (settings.site_url || '').replace(/\/+$/, '');
+          callToActionUrl = `${base}${post.cta_page_path}?utm_source=gbp&utm_medium=organic`;
+        }
         // Schedule the post
         const result = await schedulePostToPostizWithSettings({
           integrationId,
@@ -88,6 +96,8 @@ export default async function (req) {
           imageData,
           platform: post.platform,
           postNow,
+          callToActionType,
+          callToActionUrl,
         });
         const postizPostId = result && result[0] ? result[0].postId : '';
         await base44.asServiceRole.entities.SocialPost.update(post.id, {

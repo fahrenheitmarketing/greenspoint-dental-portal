@@ -18,6 +18,10 @@
       "type": "string",
       "description": "Fallback/manual Brand Reference Guide text used if the ClickUp doc URL isn't set or can't be fetched"
     },
+    "site_url": {
+      "type": "string",
+      "description": "Base site URL used to build GBP Learn More button URLs with UTM tracking (e.g. 'https://greenspointdental.com')"
+    },
     "postiz_facebook_id": {
       "type": "string",
       "description": "Postiz integration ID for the client's Facebook account"

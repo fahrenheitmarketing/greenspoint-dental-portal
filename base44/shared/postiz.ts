@@ -39,10 +39,15 @@ export async function uploadImageToPostiz(imageUrl) {
 }
 
 // Schedule a single post to a single integration. Returns the Postiz response array [{ postId, integration }].
-export async function schedulePostToPostizWithSettings({ integrationId, date, content, imageData, platform, postNow }) {
+export async function schedulePostToPostizWithSettings({ integrationId, date, content, imageData, platform, postNow, callToActionType, callToActionUrl }) {
   const key = getApiKey();
-  const settings = PLATFORM_SETTINGS[platform];
-  if (!settings) throw new Error(`No Postiz settings for platform: ${platform}`);
+  const baseSettings = PLATFORM_SETTINGS[platform];
+  if (!baseSettings) throw new Error(`No Postiz settings for platform: ${platform}`);
+  const settings = { ...baseSettings };
+  if (platform === 'google_business') {
+    settings.callToActionType = callToActionType || 'LEARN_MORE';
+    if (callToActionUrl) settings.callToActionUrl = callToActionUrl;
+  }
   const body = {
     type: postNow ? 'now' : 'schedule',
     date,

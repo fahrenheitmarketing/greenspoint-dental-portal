@@ -15,7 +15,7 @@ export default function SettingsDialog({ open, onOpenChange }) {
   useEffect(() => {
     if (open) {
       base44.entities.SocialMediaSettings.list().then((list) => {
-        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_brand_doc_url: "", brand_guide_text: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "", short_links: [] });
+        setSettings(list[0] || { clickup_list_id: "", clickup_workspace_id: "", clickup_brand_doc_url: "", brand_guide_text: "", site_url: "", postiz_facebook_id: "", postiz_instagram_id: "", postiz_x_id: "", postiz_gmb_id: "", short_links: [] });
       });
     }
   }, [open]);
@@ -41,6 +41,11 @@ export default function SettingsDialog({ open, onOpenChange }) {
       <DialogContent className="max-w-lg">
         <DialogHeader><DialogTitle>Social Media Studio Settings</DialogTitle></DialogHeader>
         <div className="space-y-4 py-2 max-h-[70vh] overflow-y-auto pr-1">
+          <div>
+            <Label>Site URL</Label>
+            <Input value={settings.site_url || ""} onChange={(e) => setSettings({ ...settings, site_url: e.target.value })} placeholder="https://greenspointdental.com" />
+            <p className="text-[11px] text-muted-foreground mt-1">Used to build GBP "Learn more" button URLs with UTM tracking.</p>
+          </div>
           <div>
             <Label>ClickUp List ID *</Label>
             <Input value={settings.clickup_list_id} onChange={(e) => setSettings({ ...settings, clickup_list_id: e.target.value })} placeholder="e.g. 901234567" />
