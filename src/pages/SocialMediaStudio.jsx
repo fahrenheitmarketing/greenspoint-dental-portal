@@ -7,6 +7,7 @@ import BulkActionBar from "@/components/social/BulkActionBar";
 import PostCard from "@/components/social/PostCard";
 import GenerateContentDialog from "@/components/social/GenerateContentDialog";
 import SettingsDialog from "@/components/social/SettingsDialog";
+import BrandSetupDialog from "@/components/social/BrandSetupDialog";
 import ProcessFeedbackDialog from "@/components/social/ProcessFeedbackDialog";
 import { usePostHistory, snapshotPosts } from "@/hooks/usePostHistory";
 import { Loader2 } from "lucide-react";
@@ -25,6 +26,7 @@ export default function SocialMediaStudio() {
   const [dateFilter, setDateFilter] = useState({ day: "all", month: "all", year: "all" });
   const [showGenerate, setShowGenerate] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showBrandSetup, setShowBrandSetup] = useState(false);
   const [showProcessFeedback, setShowProcessFeedback] = useState(false);
   const [processingFeedback, setProcessingFeedback] = useState(false);
   const { toast } = useToast();
@@ -126,6 +128,7 @@ export default function SocialMediaStudio() {
         onGenerate={() => setShowGenerate(true)}
         onProcessFeedback={() => setShowProcessFeedback(true)}
         onSettings={() => setShowSettings(true)}
+        onBrandSetup={() => setShowBrandSetup(true)}
         processing={processingFeedback}
         canUndo={canUndo}
         canRedo={canRedo}
@@ -168,6 +171,7 @@ export default function SocialMediaStudio() {
         }}
       />
       <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
+      <BrandSetupDialog open={showBrandSetup} onOpenChange={setShowBrandSetup} />
       <ProcessFeedbackDialog
         open={showProcessFeedback}
         onOpenChange={setShowProcessFeedback}

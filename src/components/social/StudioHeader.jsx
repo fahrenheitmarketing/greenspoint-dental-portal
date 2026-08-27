@@ -1,12 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Wand2, RefreshCw, Settings, Undo2, Redo2, Loader2 } from "lucide-react";
+import { Wand2, RefreshCw, Settings, Undo2, Redo2, Loader2, BookOpen } from "lucide-react";
 
 export default function StudioHeader({
   pendingFeedbackCount,
   onGenerate,
   onProcessFeedback,
   onSettings,
+  onBrandSetup,
   processing,
   canUndo,
   canRedo,
@@ -45,6 +46,10 @@ export default function StudioHeader({
             Redo
           </Button>
         </div>
+        <Button variant="outline" size="sm" onClick={onBrandSetup}>
+          <BookOpen className="w-4 h-4 mr-2" />
+          Brand Setup
+        </Button>
         <Button variant="outline" size="sm" onClick={onSettings}>
           <Settings className="w-4 h-4 mr-2" />
           Settings

@@ -1,0 +1,41 @@
+{
+  "name": "BrandProfile",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "description": "Company or practice name"
+    },
+    "product_description": {
+      "type": "string",
+      "description": "What the business does / sells, in plain language"
+    },
+    "target_audience": {
+      "type": "string",
+      "description": "Who the content is aimed at (demographics, location, needs)"
+    },
+    "voice_guidelines": {
+      "type": "string",
+      "description": "Tone, personality, and style rules for the brand voice"
+    },
+    "product_facts": {
+      "type": "string",
+      "description": "Key facts, features, pricing, and differentiators to reference"
+    },
+    "banned_claims": {
+      "type": "string",
+      "description": "Claims, phrases, or promises that must never appear in content"
+    },
+    "internal_links": {
+      "type": "string",
+      "description": "Site pages and anchor text to use for internal linking"
+    },
+    "style_examples": {
+      "type": "string",
+      "description": "Sample copy or reference posts that capture the desired style"
+    }
+  },
+  "required": [
+    "company_name"
+  ]
+}
