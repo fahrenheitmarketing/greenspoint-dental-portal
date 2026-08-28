@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES, buildGbpCtaInstruction } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES, buildGbpCtaInstruction, GBP_LENGTH_RULE } from '../../shared/scheduleBuilder.ts';
 import { buildImagePrompt, IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 // Run async tasks with a concurrency cap to avoid overwhelming the image API.
@@ -83,6 +83,7 @@ Hashtag rules (append hashtags on the final line of each post):
 - instagram: ${HASHTAG_RULES.instagram}
 - twitter: ${HASHTAG_RULES.twitter}
 - google_business: ${HASHTAG_RULES.google_business}
+${GBP_LENGTH_RULE}
 
 Generate one post for EACH of the following (date, platform) slots, in the same order. Every post must be patient-friendly and match its platform's tone and include the right number of hashtags for its platform.
 ${CONTENT_RULES}

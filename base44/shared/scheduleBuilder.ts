@@ -72,6 +72,8 @@ export const CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT make a
 
 STYLE RULES: Use the em dash ("—") sparingly — at most once per post, and prefer regular punctuation (commas, periods, colons) instead. Do NOT use the sparkles emoji ("✨") at all. Limit emojis in general to one or two per post maximum, and only use common, natural ones (a smile, a tooth, a coffee cup) when they fit the tone — never force them.`;
 
+export const GBP_LENGTH_RULE = "GBP (google_business) length: Aim for 150 to 300 words. Google allows up to 1,500 characters, but shorter text is easier to read. Write a substantive local practice update with a few useful details for the reader, and keep the relevant CTA chosen via the GBP CTA rule (never put a URL in the copy).";
+
 export const HASHTAG_RULES = {
   instagram: "Use 3 to 5 highly relevant hashtags. Instagram allows up to 30, but a smaller, targeted group keeps captions clean and performs well.",
   twitter: "Use 1 to 2 focused hashtags. Space is tight, so only use core keywords.",
