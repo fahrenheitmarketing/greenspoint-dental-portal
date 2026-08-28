@@ -74,6 +74,26 @@ STYLE RULES: Use the em dash ("—") sparingly — at most once per post, and pr
 
 export const GBP_LENGTH_RULE = "GBP (google_business) length: Aim for 150 to 300 words. Google allows up to 1,500 characters, but shorter text is easier to read. Write a substantive local practice update with a few useful details for the reader, and keep the relevant CTA chosen via the GBP CTA rule (never put a URL in the copy).";
 
+// Mandatory AI disclosure appended to the bottom of every social post (all platforms).
+// Exactly one of these two lines — never both — must appear at the end of the copy.
+export const AI_DISCLAIMERS = [
+  'AI tools were used in the creation of this content',
+  'This content was created with AI support',
+];
+
+// Append one AI disclaimer to the bottom of a post's content. Idempotent: if either
+// disclaimer is already present, the content is returned unchanged. `seed` picks which
+// of the two disclaimers is used (use an index for variety across a batch).
+export function appendAiDisclaimer(content, seed = 0) {
+  if (!content) return content;
+  const trimmed = String(content).trim();
+  if (trimmed.includes(AI_DISCLAIMERS[0]) || trimmed.includes(AI_DISCLAIMERS[1])) {
+    return trimmed;
+  }
+  const choice = AI_DISCLAIMERS[Math.abs(seed) % AI_DISCLAIMERS.length];
+  return `${trimmed}\n${choice}`;
+}
+
 export const HASHTAG_RULES = {
   instagram: "Use 3 to 5 highly relevant hashtags. Instagram allows up to 30, but a smaller, targeted group keeps captions clean and performs well.",
   twitter: "Use 1 to 2 focused hashtags. Space is tight, so only use core keywords.",

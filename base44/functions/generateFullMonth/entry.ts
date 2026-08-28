@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES, buildGbpCtaInstruction, GBP_LENGTH_RULE } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES, buildGbpCtaInstruction, GBP_LENGTH_RULE, appendAiDisclaimer } from '../../shared/scheduleBuilder.ts';
 import { buildImagePrompt, IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 // Run async tasks with a concurrency cap to avoid overwhelming the image API.
@@ -126,7 +126,7 @@ For each slot return: date, platform, topic (short theme), content (the actual p
     const records = posts.map((post, i) => ({
       platform: post.platform,
       topic: post.topic,
-      content: post.content,
+      content: appendAiDisclaimer(post.content, i),
       status: 'pending',
       scheduled_date: (schedule[i] && schedule[i].date) || post.date,
       campaign_month: campaignMonth,

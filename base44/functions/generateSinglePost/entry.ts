@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
-import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction, buildHashtagInstruction, buildGbpCtaInstruction, GBP_LENGTH_RULE } from '../../shared/scheduleBuilder.ts';
+import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction, buildHashtagInstruction, buildGbpCtaInstruction, GBP_LENGTH_RULE, appendAiDisclaimer } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
 
 export default async function (req) {
@@ -62,7 +62,7 @@ Return: topic (short theme), content (the actual post copy), image_prompt (${IMA
     const record = {
       platform,
       topic: genRes.topic,
-      content: genRes.content,
+      content: appendAiDisclaimer(genRes.content, (genRes.topic || '').length),
       status: 'draft',
       scheduled_date: scheduledDate || null,
       campaign_month: campaignMonth,
