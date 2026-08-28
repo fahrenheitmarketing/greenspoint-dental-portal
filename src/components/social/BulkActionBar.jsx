@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw, RotateCcw } from "lucide-react";
+import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw, RotateCcw, Hash } from "lucide-react";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -155,6 +155,19 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
         >
           {isBusy("Restore from ClickUp") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <RotateCcw className="w-4 h-4 mr-1" />}
           Restore from ClickUp
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={anyBusy}
+          onClick={() => runBulk(
+            "Add Hashtags",
+            () => base44.functions.invoke("appendHashtagsToPosts", { campaignMonth }),
+            { title: "Hashtags added", desc: (d) => `${d.updated} posts updated, ${d.total} needed hashtags.` }
+          )}
+        >
+          {isBusy("Add Hashtags") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Hash className="w-4 h-4 mr-1" />}
+          Add Hashtags
         </Button>
         <Button
           size="sm"

@@ -73,10 +73,20 @@ export const CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT make a
 STYLE RULES: Use the em dash ("—") sparingly — at most once per post, and prefer regular punctuation (commas, periods, colons) instead. Do NOT use the sparkles emoji ("✨") at all. Limit emojis in general to one or two per post maximum, and only use common, natural ones (a smile, a tooth, a coffee cup) when they fit the tone — never force them.`;
 
 export const HASHTAG_RULES = {
-  instagram: "Use 3 to 5 relevant hashtags. Instagram allows up to 30, but a smaller, targeted group keeps captions clean and performs well.",
-  twitter: "Use 1 to 2 core keyword hashtags. Space is tight, so only use core keywords.",
-  facebook: "Use 1 to 2 hashtags. Overusing hashtags on Facebook can lower post interaction.",
+  instagram: "Use 3 to 5 highly relevant hashtags. Instagram allows up to 30, but a smaller, targeted group keeps captions clean and performs well.",
+  twitter: "Use 1 to 2 focused hashtags. Space is tight, so only use core keywords.",
+  facebook: "Use 0 to 2 organic hashtags. Many Facebook posts perform best with zero hashtags; never exceed two.",
+  linkedin: "Use 3 to 5 industry-specific hashtags relevant to dentistry and the post topic.",
   google_business: "Do not include any hashtags. GBP posts must never contain hashtags.",
+};
+
+// Enforced hashtag count ranges per platform (used by generation + backfill).
+export const HASHTAG_COUNTS = {
+  instagram: { min: 3, max: 5 },
+  linkedin: { min: 3, max: 5 },
+  twitter: { min: 1, max: 2 },
+  facebook: { min: 0, max: 2 },
+  google_business: { min: 0, max: 0 },
 };
 
 export function buildHashtagInstruction(platform) {
