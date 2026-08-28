@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,27 @@ import BlogStatusBadge from "./BlogStatusBadge";
 export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField }) {
   const [editing, setEditing] = useState(null);
   const [draft, setDraft] = useState("");
+  const promptRef = useRef(null);
+  const [promptSaving, setPromptSaving] = useState(false);
+
+  // Keep the image prompt textarea in sync with the post value when it changes
+  useEffect(() => {
+    if (promptRef.current && post) {
+      promptRef.current.value = post.image_prompt || "";
+    }
+  }, [post?.id, post?.image_prompt, open]);
+
+  const handleSavePrompt = async () => {
+    const value = promptRef.current?.value ?? "";
+    if (value !== (post.image_prompt || "")) {
+      setPromptSaving(true);
+      try {
+        await onSaveField("image_prompt", value);
+      } finally {
+        setPromptSaving(false);
+      }
+    }
+  };
 
   if (!post) return null;
 
@@ -172,12 +193,13 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
                 )}
               </div>
             </div>
-            {post.image_prompt && (
-              <div>
-                <Label className="text-xs text-muted-foreground">Image Prompt</Label>
-                <p className="text-xs text-muted-foreground mt-1">{post.image_prompt}</p>
-              </div>
-            )}
+            <div>
+              <Label className="text-xs text-muted-foreground" htmlFor="blog-image-prompt">Image Prompt</Label>
+              <Textarea id="blog-image-prompt" ref={promptRef} defaultValue={post.image_prompt || ""} rows={5} className="font-mono text-xs mt-1" placeholder="Describe the image to generate — edit and save to update" />
+              <button className="text-xs text-primary hover:underline mt-1" onClick={handleSavePrompt} disabled={promptSaving}>
+                {promptSaving ? "Saving…" : "Save Image Prompt"}
+              </button>
+            </div>
           </TabsContent>
         </Tabs>
 
