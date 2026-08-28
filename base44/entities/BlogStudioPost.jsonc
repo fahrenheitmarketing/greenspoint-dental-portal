@@ -130,6 +130,38 @@
       "type": "string",
       "description": "Prompt used to generate the featured image"
     },
+    "qa_report": {
+      "type": "object",
+      "description": "Latest QA report for this post",
+      "properties": {
+        "allPassed": {
+          "type": "boolean"
+        },
+        "runAt": {
+          "type": "string"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "passed": {
+                "type": "boolean"
+              },
+              "detail": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
     "status": {
       "type": "string",
       "enum": [

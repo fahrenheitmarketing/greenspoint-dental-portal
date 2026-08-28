@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useToast } from "@/components/ui/use-toast";
-import { ImageIcon, Globe, Search, Calendar } from "lucide-react";
+import { ImageIcon, Globe, Search, Calendar, ShieldCheck } from "lucide-react";
 import { format } from "date-fns";
 import BlogStatusBadge from "./BlogStatusBadge";
 import BlogCardActions from "./BlogCardActions";
 import BlogDetailDialog from "./BlogDetailDialog";
+import BlogQAReportDialog from "./BlogQAReportDialog";
 
 const CATEGORY_LABELS = {
   "general-dentistry": "General Dentistry",
@@ -23,7 +24,14 @@ const CATEGORY_LABELS = {
 export default function BlogCard({ post, onAction }) {
   const [busy, setBusy] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+  const [showQA, setShowQA] = useState(false);
+  const [qaBusy, setQaBusy] = useState(false);
+  const [qaReport, setQaReport] = useState(post.qa_report || null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setQaReport(post.qa_report || null);
+  }, [post.id, post.qa_report]);
 
   const runAction = async (label, fn) => {
     setBusy(true);
@@ -31,6 +39,62 @@ export default function BlogCard({ post, onAction }) {
       return await onAction(label, fn);
     } finally {
       setBusy(false);
+    }
+  };
+
+  const handleViewQA = async () => {
+    setShowQA(true);
+    if (!qaReport) {
+      setQaBusy(true);
+      try {
+        const res = await base44.functions.invoke("runBlogQA", { postId: post.id });
+        if (res?.report) setQaReport(res.report);
+      } catch (e) {
+        toast({ title: "QA check failed", description: e?.response?.data?.error || e.message, variant: "destructive" });
+      } finally {
+        setQaBusy(false);
+      }
+    }
+  };
+
+  const handleRecheckQA = async () => {
+    setQaBusy(true);
+    try {
+      const res = await runAction("Run QA", () => base44.functions.invoke("runBlogQA", { postId: post.id }));
+      if (res?.report) setQaReport(res.report);
+    } catch (e) {
+      toast({ title: "QA check failed", description: e?.response?.data?.error || e.message, variant: "destructive" });
+    } finally {
+      setQaBusy(false);
+    }
+  };
+
+  const handleAutoFixQA = async () => {
+    setQaBusy(true);
+    let attempts = 0;
+    const MAX_ATTEMPTS = 3;
+    let lastRes = null;
+    try {
+      while (attempts < MAX_ATTEMPTS) {
+        attempts++;
+        const res = await runAction(`Auto-Fix QA (${attempts}/${MAX_ATTEMPTS})`, () =>
+          base44.functions.invoke("autoFixBlogQA", { postId: post.id })
+        );
+        lastRes = res;
+        if (res?.report) setQaReport(res.report);
+        if (res?.allPassed) break;
+      }
+      toast({
+        title: lastRes?.allPassed ? "All QA checks passed" : "Some checks still failing",
+        description: lastRes?.allPassed
+          ? "The post now passes all QA checks and can be approved."
+          : `Auto-fix ran ${attempts} time(s). Review the remaining failures manually.`,
+        variant: lastRes?.allPassed ? "default" : "destructive",
+      });
+    } catch (e) {
+      toast({ title: "Auto-fix failed", description: e?.response?.data?.error || e.message, variant: "destructive" });
+    } finally {
+      setQaBusy(false);
     }
   };
 
@@ -133,17 +197,27 @@ export default function BlogCard({ post, onAction }) {
         </p>
         <BlogCardActions
           post={post}
-          busy={busy}
+          busy={busy || qaBusy}
           onGenerateImage={handleGenerateImage}
           onSendToClickUp={handleSendToClickUp}
           onApprove={handleApprove}
           onReject={handleReject}
           onPublishToWordPress={handlePublishToWordPress}
           onViewDetail={() => setShowDetail(true)}
+          onViewQA={handleViewQA}
           onDelete={handleDelete}
         />
       </div>
       <BlogDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onSaveField={onSaveField} />
+      <BlogQAReportDialog
+        post={post}
+        open={showQA}
+        onOpenChange={setShowQA}
+        report={qaReport}
+        busy={qaBusy}
+        onAutoFix={handleAutoFixQA}
+        onRecheck={handleRecheckQA}
+      />
     </div>
   );
 }

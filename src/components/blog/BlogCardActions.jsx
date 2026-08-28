@@ -1,13 +1,19 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Check, X, Send, Upload, Trash2, FileText, Globe, Eye } from "lucide-react";
+import { Sparkles, Check, X, Send, Upload, Trash2, FileText, Globe, Eye, ShieldCheck } from "lucide-react";
 
-export default function BlogCardActions({ post, busy, onGenerateImage, onSendToClickUp, onApprove, onReject, onPublishToWordPress, onViewDetail, onDelete }) {
+export default function BlogCardActions({ post, busy, onGenerateImage, onSendToClickUp, onApprove, onReject, onPublishToWordPress, onViewDetail, onViewQA, onDelete }) {
+  const qaPassed = post.qa_report?.allPassed === true;
+  const qaRun = !!post.qa_report;
   return (
     <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
       <Button size="sm" variant="outline" disabled={busy} onClick={onViewDetail}>
         <Eye className="w-3.5 h-3.5 mr-1" />
         View
+      </Button>
+      <Button size="sm" variant="outline" disabled={busy} onClick={onViewQA}>
+        <ShieldCheck className={`w-3.5 h-3.5 mr-1 ${qaRun ? (qaPassed ? "text-green-600" : "text-red-600") : ""}`} />
+        View QA
       </Button>
       {!["approved", "ready_to_publish", "published", "scheduled"].includes(post.status) && (
         <Button size="sm" variant="outline" disabled={busy} onClick={onGenerateImage}>
@@ -22,9 +28,9 @@ export default function BlogCardActions({ post, busy, onGenerateImage, onSendToC
         </Button>
       )}
       {!["approved", "ready_to_publish", "published", "scheduled"].includes(post.status) && (
-        <Button size="sm" variant="default" disabled={busy} onClick={onApprove}>
+        <Button size="sm" variant="default" disabled={busy || !qaPassed} onClick={onApprove} title={qaPassed ? "Approve this post" : "Post must pass all QA checks before it can be approved"}>
           <Check className="w-3.5 h-3.5 mr-1" />
-          Approve
+          Approve{!qaPassed && " (QA required)"}
         </Button>
       )}
       {!["rejected", "published", "scheduled"].includes(post.status) && (
