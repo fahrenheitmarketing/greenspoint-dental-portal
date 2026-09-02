@@ -9,6 +9,7 @@ import GenerateContentDialog from "@/components/social/GenerateContentDialog";
 import SettingsDialog from "@/components/social/SettingsDialog";
 import BrandSetupDialog from "@/components/social/BrandSetupDialog";
 import ProcessFeedbackDialog from "@/components/social/ProcessFeedbackDialog";
+import SetupWizard from "@/components/social/SetupWizard";
 import { usePostHistory, snapshotPosts } from "@/hooks/usePostHistory";
 import { Loader2 } from "lucide-react";
 
@@ -29,6 +30,9 @@ export default function SocialMediaStudio() {
   const [showBrandSetup, setShowBrandSetup] = useState(false);
   const [showProcessFeedback, setShowProcessFeedback] = useState(false);
   const [processingFeedback, setProcessingFeedback] = useState(false);
+  const [setupCheck, setSetupCheck] = useState(null);
+  const [setupChecking, setSetupChecking] = useState(false);
+  const [showSetupWizard, setShowSetupWizard] = useState(false);
   const { toast } = useToast();
 
   const now = new Date();
@@ -46,6 +50,23 @@ export default function SocialMediaStudio() {
   }, []);
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
+
+  // First-run setup: verify the studio is fully configured on load
+  const runSetupCheck = useCallback(async () => {
+    setSetupChecking(true);
+    try {
+      const res = await base44.functions.invoke("checkSocialStudioSetup", {});
+      const data = res?.data || res;
+      setSetupCheck(data);
+      if (data && data.ready === false) setShowSetupWizard(true);
+    } catch (e) {
+      // Check can't run (e.g. non-admin) — keep the wizard hidden
+    } finally {
+      setSetupChecking(false);
+    }
+  }, []);
+
+  useEffect(() => { runSetupCheck(); }, [runSetupCheck]);
 
   // Auto-set the campaign month from the most recent post, but only once
   useEffect(() => {
@@ -170,8 +191,17 @@ export default function SocialMediaStudio() {
           toast({ title: "Content generated", description: `${res.posts_created} posts created for ${res.campaign_month}.` });
         }}
       />
-      <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
-      <BrandSetupDialog open={showBrandSetup} onOpenChange={setShowBrandSetup} />
+      <SettingsDialog open={showSettings} onOpenChange={(v) => { setShowSettings(v); if (!v) runSetupCheck(); }} />
+      <BrandSetupDialog open={showBrandSetup} onOpenChange={(v) => { setShowBrandSetup(v); if (!v) runSetupCheck(); }} />
+      <SetupWizard
+        open={showSetupWizard}
+        onOpenChange={setShowSetupWizard}
+        check={setupCheck}
+        rechecking={setupChecking}
+        onRecheck={runSetupCheck}
+        onOpenBrandSetup={() => setShowBrandSetup(true)}
+        onOpenSettings={() => setShowSettings(true)}
+      />
       <ProcessFeedbackDialog
         open={showProcessFeedback}
         onOpenChange={setShowProcessFeedback}
