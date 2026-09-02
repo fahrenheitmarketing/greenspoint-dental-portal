@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
+import BrandAssetsEditor from "./BrandAssetsEditor";
 
 const FIELDS = [
   { key: "product_description", label: "Product / Service Description", rows: 4, placeholder: "What your practice offers, in plain language" },
@@ -47,7 +48,7 @@ export default function BrandSetupDialog({ open, onOpenChange }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-2xl">
         <DialogHeader><DialogTitle>Brand Setup</DialogTitle></DialogHeader>
         <div className="space-y-4 py-2 max-h-[70vh] overflow-y-auto pr-1">
           <div>
@@ -60,6 +61,17 @@ export default function BrandSetupDialog({ open, onOpenChange }) {
               <Textarea id={`brand-${f.key}`} rows={f.rows} value={profile[f.key] || ""} onChange={(e) => setProfile({ ...profile, [f.key]: e.target.value })} placeholder={f.placeholder} />
             </div>
           ))}
+
+          <div className="pt-4 border-t mt-4">
+            <h3 className="text-sm font-semibold mb-1">Brand Images &amp; Overlays</h3>
+            <p className="text-xs text-muted-foreground mb-3">
+              Upload logos, badges, or overlay images and describe how each should be used. These are applied as overlays when a post reaches the approved step.
+            </p>
+            <BrandAssetsEditor
+              assets={profile.brand_assets || []}
+              onChange={(brand_assets) => setProfile({ ...profile, brand_assets })}
+            />
+          </div>
         </div>
         <DialogFooter>
           <Button onClick={handleSave} disabled={saving || !profile.company_name}>

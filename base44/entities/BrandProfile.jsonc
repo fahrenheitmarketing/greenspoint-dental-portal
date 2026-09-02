@@ -33,6 +33,31 @@
     "style_examples": {
       "type": "string",
       "description": "Sample copy or reference posts that capture the desired style"
+    },
+    "brand_assets": {
+      "type": "array",
+      "description": "Uploaded brand images (logos, badges, overlays) with usage instructions, applied as overlays when a post reaches the approved step",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file_url": {
+            "type": "string",
+            "description": "Uploaded image URL"
+          },
+          "label": {
+            "type": "string",
+            "description": "What this image is (e.g. 'Primary logo', 'Corner badge')"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "How this image should be used as an overlay (placement, size, opacity, when to apply)"
+          }
+        },
+        "required": [
+          "file_url"
+        ]
+      },
+      "default": []
     }
   },
   "required": [
