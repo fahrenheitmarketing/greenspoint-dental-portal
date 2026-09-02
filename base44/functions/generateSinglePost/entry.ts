@@ -2,6 +2,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
 import { PLATFORM_TONE, CONTENT_RULES, buildShortLinkCtaInstruction, buildHashtagInstruction, buildGbpCtaInstruction, GBP_LENGTH_RULE, appendAiDisclaimer } from '../../shared/scheduleBuilder.ts';
 import { IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
+import { getBrandProfile, buildBrandIntro, buildAudienceRef } from '../../shared/brandContext.ts';
 
 export default async function (req) {
   try {
@@ -19,6 +20,8 @@ export default async function (req) {
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const settings = settingsList[0];
     const brandGuide = settings ? await getBrandGuideText(base44, settings) : '';
+    const brandProfile = await getBrandProfile(base44);
+    const audienceRef = buildAudienceRef(brandProfile);
     const ctaInstruction = settings ? (platform === 'google_business' ? buildGbpCtaInstruction() : buildShortLinkCtaInstruction(settings, platform)) : '';
 
     // Fetch topics already used to avoid repetition
@@ -26,7 +29,7 @@ export default async function (req) {
     const usedTopics = [...new Set(existingPosts.map((p) => p.topic).filter(Boolean))].slice(0, 80);
 
     const genRes = await base44.asServiceRole.integrations.Core.InvokeLLM({
-      prompt: `You are the social media manager for Greenspoint Dental, a friendly, patient-focused dental practice.
+      prompt: `${buildBrandIntro(brandProfile)}
 
 Brand Reference Guide (must strictly follow):
 ${brandGuide}
@@ -44,7 +47,7 @@ ${CONTENT_RULES}
 ${buildHashtagInstruction(platform)}
 ${ctaInstruction}
 
-Return: topic (short theme), content (the actual post copy), image_prompt (${IMAGE_PROMPT_INSTRUCTION}).`,
+Return: topic (short theme), content (the actual post copy), image_prompt (${IMAGE_PROMPT_INSTRUCTION}${audienceRef ? ' ' + audienceRef : ''}).`,
       model: 'gemini_3_flash',
       response_json_schema: {
         type: 'object',

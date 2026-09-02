@@ -2,6 +2,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { Jimp } from 'npm:jimp@1.6.0';
 import { getBrandGuideText } from '../../shared/clickup.ts';
 import { buildImagePrompt, resizeAndUploadImage } from '../../shared/imageRules.ts';
+import { getBrandProfile, buildAudienceRef } from '../../shared/brandContext.ts';
 
 export default async function (req) {
   try {
@@ -23,8 +24,10 @@ export default async function (req) {
 
     const settingsList = await base44.asServiceRole.entities.SocialMediaSettings.list();
     const brandGuide = settingsList[0] ? await getBrandGuideText(base44, settingsList[0]) : '';
+    const brandProfile = await getBrandProfile(base44);
+    const audienceRef = buildAudienceRef(brandProfile);
 
-    const prompt = `${buildImagePrompt(post, brandGuide)}${instruction ? ` Additional instruction: ${instruction}` : ''}`;
+    const prompt = `${buildImagePrompt(post, brandGuide, audienceRef)}${instruction ? ` Additional instruction: ${instruction}` : ''}`;
 
     const { url } = await base44.asServiceRole.integrations.Core.GenerateImage({ prompt });
 

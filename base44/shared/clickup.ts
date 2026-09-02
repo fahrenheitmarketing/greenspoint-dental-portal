@@ -78,6 +78,25 @@ export async function uploadAttachmentToClickUpTask(base44, taskId, imageUrl, fi
   return data;
 }
 
+// Upload an in-memory image buffer (e.g. a composited/branded image) as a task attachment.
+export async function uploadAttachmentBufferToClickUpTask(base44, taskId, buffer, filename) {
+  const token = await getClickUpToken(base44);
+  const blob = new Blob([buffer], { type: 'image/jpeg' });
+  const formData = new FormData();
+  formData.append("filename", filename);
+  formData.append("attachment", blob, filename);
+  const res = await fetch(`https://api.clickup.com/api/v2/task/${taskId}/attachment`, {
+    method: "POST",
+    headers: { Authorization: token },
+    body: formData,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(`ClickUp attachment error (${res.status}): ${JSON.stringify(data)}`);
+  }
+  return data;
+}
+
 const DEFAULT_BRAND_GUIDE =
   "No scary dental tools or invasive-surgery imagery. No overly clinical shots. No text embedded in photos. No unverified medical claims. All imagery must be welcoming, bright, patient-focused, and topic-relevant.";
 

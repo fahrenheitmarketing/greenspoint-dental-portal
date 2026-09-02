@@ -1,5 +1,8 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import { createClickUpTask, uploadAttachmentToClickUpTask, addClickUpComment } from '../../shared/clickup.ts';
+import { createClickUpTask, uploadAttachmentToClickUpTask, uploadAttachmentBufferToClickUpTask, addClickUpComment } from '../../shared/clickup.ts';
+import { Jimp } from 'npm:jimp@1.6.0';
+import { compositeOverlays } from '../../shared/overlay.ts';
+import { getBrandProfile } from '../../shared/brandContext.ts';
 
 export default async function (req) {
   try {
@@ -57,14 +60,31 @@ export default async function (req) {
       ? new Date(post.scheduled_date).toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
       : 'undated';
 
-    // Attach the current image to the task for the design team
+    // Attach the branded image to the task for the design team. If the client has
+    // brand assets (logos/badges) configured, composite them onto the AI image
+    // first so the design team receives an already-branded creative.
     let attached = false;
     if (post.image_url) {
       try {
         const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
         const datePart = post.scheduled_date ? new Date(post.scheduled_date).toISOString().slice(0, 10) : 'undated';
         const filename = `${post.platform}-${datePart}-${safeTopic}.jpg`;
-        await uploadAttachmentToClickUpTask(base44, taskId, post.image_url, filename);
+
+        let brandedBuffer = null;
+        try {
+          const brandProfile = await getBrandProfile(base44);
+          if (brandProfile && Array.isArray(brandProfile.brand_assets) && brandProfile.brand_assets.length > 0) {
+            brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets);
+          }
+        } catch (overlayErr) {
+          console.error('Overlay compositing failed, uploading raw image:', overlayErr.message);
+        }
+
+        if (brandedBuffer) {
+          await uploadAttachmentBufferToClickUpTask(base44, taskId, brandedBuffer, filename);
+        } else {
+          await uploadAttachmentToClickUpTask(base44, taskId, post.image_url, filename);
+        }
         attached = true;
       } catch (attachErr) {
         console.error('ClickUp attachment upload failed:', attachErr.message);
