@@ -112,6 +112,9 @@ export default function PostCard({ post, onAction }) {
   const handleUnapprove = () =>
     runAction("Un-approve Post", () => base44.entities.SocialPost.update(post.id, { status: "pending" }));
 
+  const handleApplyOverlay = () =>
+    runAction("Apply Brand Overlay", () => base44.functions.invoke("applyBrandOverlay", { postId: post.id }));
+
   const handleUploadFinalImage = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -176,6 +179,7 @@ export default function PostCard({ post, onAction }) {
           onDelete={handleDelete}
           onRestore={handleRestore}
           onUnapprove={handleUnapprove}
+          onApplyOverlay={handleApplyOverlay}
         />
       </div>
       <PostDetailDialog post={post} open={showDetail} onOpenChange={setShowDetail} onSaveField={onSaveField} />

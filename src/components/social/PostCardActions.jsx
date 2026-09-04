@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Check, X, Send, Upload, Trash2, RotateCcw, CalendarClock, Zap, Undo2 } from "lucide-react";
+import { Sparkles, Check, X, Send, Upload, Trash2, RotateCcw, CalendarClock, Zap, Undo2, Layers } from "lucide-react";
 
-export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage, onScheduleToPostiz, onFixDate, onPostNow, onDelete, onRestore, onUnapprove }) {
+export default function PostCardActions({ post, busy, onRegenerateImage, onClone, onApprove, onReject, onPrepare, onUploadFinalImage, onScheduleToPostiz, onFixDate, onPostNow, onDelete, onRestore, onUnapprove, onApplyOverlay }) {
   return (
     <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
       {!["approved", "ready_to_publish", "needs_date_review"].includes(post.status) && (
@@ -15,6 +15,12 @@ export default function PostCardActions({ post, busy, onRegenerateImage, onClone
         <Button size="sm" variant="outline" disabled={busy} onClick={onClone}>
           <Sparkles className="w-3.5 h-3.5 mr-1" />
           Create New Post
+        </Button>
+      )}
+      {post.status === "approved" && post.image_url && (
+        <Button size="sm" variant="outline" disabled={busy} onClick={onApplyOverlay}>
+          <Layers className="w-3.5 h-3.5 mr-1" />
+          Apply Brand Overlay
         </Button>
       )}
       {post.status === "approved" && (
