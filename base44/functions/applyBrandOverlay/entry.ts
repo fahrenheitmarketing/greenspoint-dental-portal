@@ -34,7 +34,7 @@ export default async function (req) {
       return Response.json({ error: 'No brand assets configured. Add overlay images in Brand Setup first.' }, { status: 400 });
     }
 
-    const brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets);
+    const brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets, post.platform);
     if (!brandedBuffer) {
       return Response.json({ error: 'No usable brand assets found (each asset needs a file_url)' }, { status: 400 });
     }

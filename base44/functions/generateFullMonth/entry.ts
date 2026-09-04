@@ -1,7 +1,8 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getBrandGuideText } from '../../shared/clickup.ts';
 import { PLATFORM_TONE, buildSchedule, CONTENT_RULES, HASHTAG_RULES, buildGbpCtaInstruction, GBP_LENGTH_RULE, appendAiDisclaimer } from '../../shared/scheduleBuilder.ts';
-import { buildImagePrompt, IMAGE_PROMPT_INSTRUCTION } from '../../shared/imageRules.ts';
+import { Jimp } from 'npm:jimp@1.6.0';
+import { buildImagePrompt, IMAGE_PROMPT_INSTRUCTION, resizeAndUploadImage } from '../../shared/imageRules.ts';
 import { getBrandProfile, buildBrandIntro, buildAudienceRef } from '../../shared/brandContext.ts';
 
 // Run async tasks with a concurrency cap to avoid overwhelming the image API.
@@ -148,7 +149,10 @@ For each slot return: date, platform, topic (short theme), content (the actual p
       try {
         const prompt = buildImagePrompt(post, brandGuide, audienceRef);
         const { url } = await base44.asServiceRole.integrations.Core.GenerateImage({ prompt });
-        await base44.asServiceRole.entities.SocialPost.update(post.id, { image_url: url });
+        // Cover-crop to the platform's exact dimensions so every stored creative is correctly sized.
+        const safeTopic = (post.topic || 'creative').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().slice(0, 40);
+        const resizedUrl = await resizeAndUploadImage(base44, Jimp, post.platform, url, `${post.id}-${post.platform}-${safeTopic}`);
+        await base44.asServiceRole.entities.SocialPost.update(post.id, { image_url: resizedUrl });
         imagesGenerated++;
       } catch (imgErr) {
         console.error('Image generation failed for post', post.id, imgErr.message);

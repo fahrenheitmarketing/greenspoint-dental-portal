@@ -74,7 +74,7 @@ export default async function (req) {
         try {
           const brandProfile = await getBrandProfile(base44);
           if (brandProfile && Array.isArray(brandProfile.brand_assets) && brandProfile.brand_assets.length > 0) {
-            brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets);
+            brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets, post.platform);
           }
         } catch (overlayErr) {
           console.error('Overlay compositing failed, uploading raw image:', overlayErr.message);
