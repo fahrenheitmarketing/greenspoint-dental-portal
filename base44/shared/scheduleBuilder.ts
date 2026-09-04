@@ -125,43 +125,15 @@ export function getPlatformsForDate(dayOfWeek) {
   return platforms;
 }
 
-// Assign each post on a given day a random time within the 8:00am–11:59am
-// Central Time (fixed UTC-5) window, spread at least 15 minutes apart.
-// Returns an array of minute-of-day values (in CT local time) sorted ascending.
-function spreadTimesForDay(count) {
-  const START = 8 * 60;       // 8:00am = 480
-  const END = 11 * 60 + 59;   // 11:59am = 719
-  const MIN_GAP = 15;
-  if (count <= 0) return [];
-  if (count === 1) {
-    return [Math.floor(START + Math.random() * (END - START))];
-  }
-  // Try to find a set of `count` random times that are all ≥ MIN_GAP apart.
-  for (let attempt = 0; attempt < 50; attempt++) {
-    const times = [];
-    for (let i = 0; i < count; i++) {
-      times.push(Math.floor(START + Math.random() * (END - START)));
-    }
-    times.sort((a, b) => a - b);
-    let ok = true;
-    for (let i = 1; i < times.length; i++) {
-      if (times[i] - times[i - 1] < MIN_GAP) { ok = false; break; }
-    }
-    if (ok) return times;
-  }
-  // Fallback: evenly spaced across the window.
-  const step = (END - START) / (count - 1 || 1);
-  return Array.from({ length: count }, (_, i) => Math.round(START + i * step));
-}
+// Posting times: one post per hour in the 2PM–5PM Johannesburg (SAST) window.
+// Tuesdays carry 3 posts (2, 3, 4PM); Thursdays carry 4 (2, 3, 4, 5PM — GBP last).
+// Johannesburg has no daylight saving, so SAST is a fixed UTC+2.
+export const SAST_OFFSET_HOURS = 2;
+export const AFTERNOON_SLOTS_SAST = [14, 15, 16, 17];
 
-// Convert a CT minute-of-day on a given UTC date into a full ISO datetime.
-// Central Time is treated as fixed UTC-5 (no DST), so we add 5 hours.
-function ctMinutesToISO(year, monthIndex, day, ctMinutes) {
-  const utcMinutes = ctMinutes + 5 * 60;
-  const utcHours = Math.floor(utcMinutes / 60);
-  const utcMins = utcMinutes % 60;
-  const d = new Date(Date.UTC(year, monthIndex, day, utcHours, utcMins, 0, 0));
-  return d.toISOString();
+// Convert a SAST hour slot on a given UTC calendar date into a full UTC ISO datetime.
+export function sastSlotToISO(year, monthIndex, day, sastHour) {
+  return new Date(Date.UTC(year, monthIndex, day, sastHour - SAST_OFFSET_HOURS, 0, 0, 0)).toISOString();
 }
 
 export function buildSchedule(month, year) {
@@ -171,9 +143,8 @@ export function buildSchedule(month, year) {
     const date = new Date(Date.UTC(year, month - 1, day));
     const platforms = getPlatformsForDate(date.getUTCDay());
     if (platforms.length === 0) continue;
-    const times = spreadTimesForDay(platforms.length);
     for (let i = 0; i < platforms.length; i++) {
-      schedule.push({ date: ctMinutesToISO(year, month - 1, day, times[i]), platform: platforms[i] });
+      schedule.push({ date: sastSlotToISO(year, month - 1, day, AFTERNOON_SLOTS_SAST[i]), platform: platforms[i] });
     }
   }
   return schedule;

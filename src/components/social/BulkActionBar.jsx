@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw, RotateCcw, Hash } from "lucide-react";
+import { Zap, ImagePlus, CheckCheck, Download, Send, Loader2, RefreshCw, RotateCcw, Hash, Clock } from "lucide-react";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -168,6 +168,19 @@ export default function BulkActionBar({ campaignMonth, onCampaignMonthChange, fi
         >
           {isBusy("Add Hashtags") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Hash className="w-4 h-4 mr-1" />}
           Add Hashtags
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={anyBusy}
+          onClick={() => runBulk(
+            "Re-time Posts",
+            () => base44.functions.invoke("retimePostsToAfternoon", { campaignMonth }),
+            { title: "Post times updated", desc: (d) => `${d.retimed} posts moved to hourly 2-5PM (Johannesburg) slots.` }
+          )}
+        >
+          {isBusy("Re-time Posts") ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Clock className="w-4 h-4 mr-1" />}
+          Re-time Posts
         </Button>
         <Button
           size="sm"
