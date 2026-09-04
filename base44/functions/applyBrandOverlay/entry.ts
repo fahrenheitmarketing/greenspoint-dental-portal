@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { Jimp } from 'npm:jimp@1.6.0';
-import { compositeOverlays } from '../../shared/overlay.ts';
+import { compositeOverlays, resolveOverlayVariant } from '../../shared/overlay.ts';
 import { getBrandProfile } from '../../shared/brandContext.ts';
 
 // Composites the client's brand assets (from Brand Setup) onto a post's AI image
@@ -34,7 +34,8 @@ export default async function (req) {
       return Response.json({ error: 'No brand assets configured. Add overlay images in Brand Setup first.' }, { status: 400 });
     }
 
-    const brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets, post.platform);
+    const variant = await resolveOverlayVariant(base44, post);
+    const brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets, post.platform, variant);
     if (!brandedBuffer) {
       return Response.json({ error: 'No usable brand assets found (each asset needs a file_url)' }, { status: 400 });
     }
@@ -46,9 +47,9 @@ export default async function (req) {
       throw new Error('Branded image upload failed');
     }
 
-    await base44.asServiceRole.entities.SocialPost.update(postId, { image_url: result.file_url });
+    await base44.asServiceRole.entities.SocialPost.update(postId, { image_url: result.file_url, overlay_variant: variant });
 
-    return Response.json({ success: true, image_url: result.file_url });
+    return Response.json({ success: true, image_url: result.file_url, overlay_variant: variant });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

@@ -69,6 +69,14 @@
       "type": "string",
       "description": "Notes on brand guide adherence for this post"
     },
+    "overlay_variant": {
+      "type": "string",
+      "enum": [
+        "tagline",
+        "url"
+      ],
+      "description": "Which full-frame brand overlay variant was applied to this image; alternates from post to post per platform"
+    },
     "cta_page_path": {
       "type": "string",
       "description": "GBP only: landing page path for the Learn More button (e.g. '/services/specials')"

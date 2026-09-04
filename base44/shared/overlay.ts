@@ -105,9 +105,40 @@ function averageBrightness(image) {
   }
 }
 
+// Which named variant ('tagline' or 'url') a full-frame asset is, based on its
+// label/instructions text.
+function assetVariantName(asset) {
+  const text = `${asset.label || ''} ${asset.instructions || ''}`.toLowerCase();
+  if (text.includes('tagline')) return 'tagline';
+  if (text.includes('url')) return 'url';
+  return null;
+}
+
+function assetMatchesVariant(asset, variant) {
+  return Boolean(variant) && assetVariantName(asset) === variant;
+}
+
+// Decide which full-frame variant to use for a post: keep an already-recorded
+// variant (so re-applying an overlay is idempotent), otherwise alternate per
+// platform — the opposite of whatever the most recently branded post on that
+// platform used. Callers persist the returned value on the post.
+export async function resolveOverlayVariant(base44, post) {
+  if (post.overlay_variant) return post.overlay_variant;
+  try {
+    const recent = await base44.asServiceRole.entities.SocialPost.filter({ platform: post.platform }, '-updated_date', 20);
+    const last = recent.find((p) => p.id !== post.id && (p.overlay_variant === 'tagline' || p.overlay_variant === 'url'));
+    if (!last) return 'tagline';
+    return last.overlay_variant === 'tagline' ? 'url' : 'tagline';
+  } catch (e) {
+    console.error(`Overlay variant lookup failed: ${e.message}`);
+    return 'tagline';
+  }
+}
+
 // Composite brand assets onto a base image. Returns a JPEG Buffer, or null
 // when there are no usable assets (caller should fall back to the raw image).
-export async function compositeOverlays(Jimp, baseImageUrl, brandAssets, platform) {
+// preferredVariant ('tagline' | 'url', optional) narrows the full-frame pick.
+export async function compositeOverlays(Jimp, baseImageUrl, brandAssets, platform, preferredVariant) {
   if (!brandAssets || !Array.isArray(brandAssets) || brandAssets.length === 0) return null;
   const assets = brandAssets.filter((a) => a && a.file_url);
   if (assets.length === 0) return null;
@@ -131,13 +162,15 @@ export async function compositeOverlays(Jimp, baseImageUrl, brandAssets, platfor
   if (fullAssets.length > 0) {
     const bright = averageBrightness(base);
     const want = bright > 127 ? 'dark' : 'light';
-    let chosen = fullAssets.find((a) => `${a.label || ''} ${a.instructions || ''}`.toLowerCase().includes(want));
-    if (!chosen) chosen = fullAssets[0];
+    let candidates = fullAssets.filter((a) => `${a.label || ''} ${a.instructions || ''}`.toLowerCase().includes(want));
+    if (candidates.length === 0) candidates = fullAssets;
+    let chosen = candidates.find((a) => assetMatchesVariant(a, preferredVariant));
+    if (!chosen) chosen = candidates[0];
     try {
       let overlay = await Jimp.read(chosen.file_url);
       overlay = overlay.resize({ w: bw, h: bh });
       base = base.composite(overlay, 0, 0);
-      console.log(`Full-frame overlay applied (${chosen.label || 'unlabeled'}, brightness ${Math.round(bright)} -> ${want} variant)`);
+      console.log(`Full-frame overlay applied (${chosen.label || 'unlabeled'}, brightness ${Math.round(bright)} -> ${want} variant, frame variant: ${assetVariantName(chosen) || 'unnamed'})`);
     } catch (e) {
       console.error(`Full-frame overlay failed (${chosen.label}): ${e.message}`);
     }

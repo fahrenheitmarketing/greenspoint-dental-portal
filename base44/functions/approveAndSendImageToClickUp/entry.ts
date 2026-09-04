@@ -1,7 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { createClickUpTask, uploadAttachmentToClickUpTask, uploadAttachmentBufferToClickUpTask, addClickUpComment } from '../../shared/clickup.ts';
 import { Jimp } from 'npm:jimp@1.6.0';
-import { compositeOverlays } from '../../shared/overlay.ts';
+import { compositeOverlays, resolveOverlayVariant } from '../../shared/overlay.ts';
 import { getBrandProfile } from '../../shared/brandContext.ts';
 
 export default async function (req) {
@@ -74,7 +74,9 @@ export default async function (req) {
         try {
           const brandProfile = await getBrandProfile(base44);
           if (brandProfile && Array.isArray(brandProfile.brand_assets) && brandProfile.brand_assets.length > 0) {
-            brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets, post.platform);
+            const variant = await resolveOverlayVariant(base44, post);
+            brandedBuffer = await compositeOverlays(Jimp, post.image_url, brandProfile.brand_assets, post.platform, variant);
+            await base44.asServiceRole.entities.SocialPost.update(postId, { overlay_variant: variant });
           }
         } catch (overlayErr) {
           console.error('Overlay compositing failed, uploading raw image:', overlayErr.message);
