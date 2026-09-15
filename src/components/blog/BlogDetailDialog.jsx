@@ -12,6 +12,12 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
   const [draft, setDraft] = useState("");
   const promptRef = useRef(null);
   const [promptSaving, setPromptSaving] = useState(false);
+  const [previewFields, setPreviewFields] = useState({});
+
+  // Reset the HTML/Preview toggles when a different post is opened
+  useEffect(() => {
+    setPreviewFields({});
+  }, [post?.id]);
 
   // Keep the image prompt textarea in sync with the post value when it changes
   useEffect(() => {
@@ -46,7 +52,7 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
     setEditing(null);
   };
 
-  const renderField = (field, label, multiline = false) => {
+  const renderField = (field, label, multiline = false, htmlPreview = false) => {
     const value = post[field];
     if (editing === field) {
       return (
@@ -60,6 +66,34 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
             <button className="text-xs text-primary hover:underline" onClick={saveEdit}>Save</button>
             <button className="text-xs text-muted-foreground hover:underline" onClick={() => setEditing(null)}>Cancel</button>
           </div>
+        </div>
+      );
+    }
+    if (htmlPreview) {
+      const isPreview = !!previewFields[field];
+      return (
+        <div className="space-y-2">
+          <div className="inline-flex rounded-md border border-border overflow-hidden">
+            <button
+              className={`px-2.5 py-1 text-xs ${!isPreview ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}
+              onClick={() => setPreviewFields((prev) => ({ ...prev, [field]: false }))}
+            >HTML</button>
+            <button
+              className={`px-2.5 py-1 text-xs ${isPreview ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}
+              onClick={() => setPreviewFields((prev) => ({ ...prev, [field]: true }))}
+            >Preview</button>
+          </div>
+          {isPreview ? (
+            <article
+              className="max-h-64 overflow-y-auto rounded-md border border-border p-4 cursor-pointer"
+              dangerouslySetInnerHTML={{ __html: value || "<p>Not set — toggle to HTML and click to edit</p>" }}
+              onClick={() => startEdit(field, value)}
+            />
+          ) : (
+            <div onClick={() => startEdit(field, value)} className="cursor-pointer hover:bg-muted/50 rounded p-2 -m-2 transition-colors">
+              <div className="text-xs text-foreground/80 whitespace-pre-wrap font-mono max-h-64 overflow-y-auto">{value || "Not set — click to edit"}</div>
+            </div>
+          )}
         </div>
       );
     }
@@ -107,8 +141,8 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
               {renderField("excerpt", "Excerpt")}
             </div>
             <div>
-              <Label className="text-xs text-muted-foreground">Content (EN) — HTML</Label>
-              {renderField("content", "Content", true)}
+              <Label className="text-xs text-muted-foreground">Content (EN)</Label>
+              {renderField("content", "Content", true, true)}
             </div>
           </TabsContent>
 
@@ -122,8 +156,8 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
               {renderField("excerpt_es", "Excerpt ES")}
             </div>
             <div>
-              <Label className="text-xs text-muted-foreground">Content (ES) — HTML</Label>
-              {renderField("content_es", "Content ES", true)}
+              <Label className="text-xs text-muted-foreground">Content (ES)</Label>
+              {renderField("content_es", "Content ES", true, true)}
             </div>
           </TabsContent>
 
