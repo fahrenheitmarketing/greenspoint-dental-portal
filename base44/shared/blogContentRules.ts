@@ -17,6 +17,8 @@ export const BLOG_CONTENT_RULES = `CONTENT RULES — strictly enforced: Do NOT m
 
 STYLE RULES: Write in a warm, professional, accessible tone at an 8th-grade reading level. Use the em dash ("—") sparingly — at most once per post. Do NOT use the sparkles emoji ("✨"). Limit emojis to one or two per post. Use clear headings, short paragraphs, and bullet lists where appropriate.
 
+LENGTH: Aim for 900-1000 words of body copy per post (never under 800). Prefer depth over padding — every section should add practical, educational value.
+
 HEADING HIERARCHY (STRICT): Use exactly ONE <h1> per post, and it must be the post title — identical to or highly correlated with the meta_title. Use <h2> for major sections (frame them as user questions where natural) and <h3> for sub-points only. NEVER skip heading levels for visual styling (no jumping from H2 to H4); a logical hierarchy is essential for screen readers and AI parsing. Do NOT use <h1> anywhere else in the content.
 
 ANSWER-FIRST / INVERTED PYRAMID (CRITICAL): Within the first 100-200 words, provide a direct, complete answer to the post's core question. Search engines and LLMs use this lead block to build AI Overviews and featured snippets — getting to the point first is mandatory, not optional. Spend the rest of the post expanding on nuances, examples, and supporting details.
