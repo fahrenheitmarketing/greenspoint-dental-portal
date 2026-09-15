@@ -77,7 +77,7 @@ ${INTERNAL_PAGES.map((p) => `- <a href="${p.path}">${p.label}</a>`).join('\n')}
 
 CTAs: End the post with 1-2 hyperlinked call-to-action buttons linking to the most relevant page(s) — typically /contact, /new-patients, or a service page.
 
-Return ALL fields: title, title_es, slug, excerpt, excerpt_es, content (HTML), content_es (HTML), category, meta_title, meta_title_es, meta_description, meta_description_es, internal_links (array of {anchor_text, page_path}), external_links (array of {anchor_text, url}), ctas (array of {label, page_path}), image_prompt (a short specific description for the featured image), read_time (integer minutes), seo_score (0-100 integer).`;
+Return ALL fields: title, title_es, slug, excerpt, excerpt_es, content (HTML), content_es (HTML), category, meta_title, meta_title_es, meta_description, meta_description_es, internal_links (array of {anchor_text, page_path}), external_links (array of {anchor_text, url}), ctas (array of {label, page_path}), image_prompt (a short specific description for the featured image — a positive, community-based lifestyle visual metaphor that directly represents the article's specific topic; NEVER dental offices, clinics, dental staff, chairs, tools, or clinical shots), read_time (integer minutes), seo_score (0-100 integer).`;
 }
 
 // Fetch published post titles from the live WordPress site via its public REST API.
