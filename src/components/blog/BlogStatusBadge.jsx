@@ -8,6 +8,7 @@ const CONFIG = {
   rejected: { label: "Rejected", variant: "destructive" },
   needs_revision: { label: "Needs Revision", variant: "default", className: "bg-amber-500 hover:bg-amber-600" },
   ready_to_publish: { label: "Ready to Publish", variant: "default", className: "bg-primary" },
+  staged: { label: "Staged", variant: "secondary", className: "bg-blue-600 hover:bg-blue-700" },
   scheduled: { label: "Scheduled", variant: "secondary" },
   published: { label: "Published", variant: "default", className: "bg-green-600 hover:bg-green-700" },
 };

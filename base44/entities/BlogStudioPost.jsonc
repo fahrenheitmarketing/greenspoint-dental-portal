@@ -170,8 +170,9 @@
         "approved",
         "rejected",
         "needs_revision",
-        "published",
-        "scheduled"
+        "staged",
+        "scheduled",
+        "published"
       ],
       "default": "draft",
       "description": "Approval/publish status"
@@ -190,24 +191,53 @@
     },
     "wp_post_id_en": {
       "type": "string",
-      "description": "WordPress post ID for the English version"
+      "description": "Production WordPress post ID for the English version"
     },
     "wp_post_id_es": {
       "type": "string",
-      "description": "WordPress post ID for the Spanish version"
+      "description": "Production WordPress post ID for the Spanish version"
     },
     "wp_url_en": {
       "type": "string",
-      "description": "WordPress URL for the English version"
+      "description": "Production WordPress URL for the English version"
     },
     "wp_url_es": {
       "type": "string",
-      "description": "WordPress URL for the Spanish version"
+      "description": "Production WordPress URL for the Spanish version"
+    },
+    "staging_wp_post_id_en": {
+      "type": "string",
+      "description": "Staging WordPress post ID for the English version"
+    },
+    "staging_wp_post_id_es": {
+      "type": "string",
+      "description": "Staging WordPress post ID for the Spanish version"
+    },
+    "staging_wp_url_en": {
+      "type": "string",
+      "description": "Staging WordPress URL for the English version"
+    },
+    "staging_wp_url_es": {
+      "type": "string",
+      "description": "Staging WordPress URL for the Spanish version"
+    },
+    "staged_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the article was published to the staging site"
+    },
+    "publish_request": {
+      "type": "string",
+      "enum": [
+        "staging",
+        "production"
+      ],
+      "description": "Publish request flag set by the studio buttons; cleared by Base44 once the publish completes"
     },
     "published_date": {
       "type": "string",
       "format": "date-time",
-      "description": "Publication date on WordPress"
+      "description": "Scheduled publication date on production WordPress"
     },
     "author": {
       "type": "string",

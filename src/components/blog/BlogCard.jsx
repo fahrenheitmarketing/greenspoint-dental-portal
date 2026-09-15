@@ -107,7 +107,7 @@ export default function BlogCard({ post, onAction }) {
   const handleApprove = () =>
     runAction("Approve Post", async () => {
       await base44.entities.BlogStudioPost.update(post.id, { status: "approved" });
-      toast({ title: "Post approved", description: "Ready to publish to WordPress." });
+      toast({ title: "Post approved", description: "Ready for the staging site." });
     });
 
   const handleReject = () =>
@@ -137,15 +137,32 @@ export default function BlogCard({ post, onAction }) {
       }
     });
 
-  const handlePublishToWordPress = () =>
-    runAction("Prepare for WordPress", async () => {
-      const res = await base44.functions.invoke("publishBlogToWordPress", { postId: post.id });
+  const handlePublishToStaging = () =>
+    runAction("Publish to Staging", async () => {
+      await base44.entities.BlogStudioPost.update(post.id, { publish_request: "staging" });
       toast({
-        title: "Ready to publish",
-        description: "The post is prepared. Ask Base44 to publish it to WordPress via the WordPress connection.",
+        title: "Flagged for staging",
+        description: "Ask Base44 in chat to publish this article to the staging site.",
       });
-      return res;
     });
+
+  const handlePublishToProduction = () => {
+    if (!post.staging_wp_post_id_en && !post.staging_wp_post_id_es) {
+      toast({
+        title: "Staging required first",
+        description: "This article must be published to staging and reviewed before it can go to production.",
+        variant: "destructive",
+      });
+      return;
+    }
+    runAction("Publish to Production", async () => {
+      await base44.entities.BlogStudioPost.update(post.id, { publish_request: "production" });
+      toast({
+        title: "Flagged for production",
+        description: "Ask Base44 in chat to promote the staging version of this article to the live site.",
+      });
+    });
+  };
 
   const handleDelete = async () => {
     if (!window.confirm("Delete this blog post? This cannot be undone.")) return;
@@ -202,7 +219,8 @@ export default function BlogCard({ post, onAction }) {
           onSendToClickUp={handleSendToClickUp}
           onApprove={handleApprove}
           onReject={handleReject}
-          onPublishToWordPress={handlePublishToWordPress}
+          onPublishToStaging={handlePublishToStaging}
+          onPublishToProduction={handlePublishToProduction}
           onViewDetail={() => setShowDetail(true)}
           onViewQA={handleViewQA}
           onDelete={handleDelete}

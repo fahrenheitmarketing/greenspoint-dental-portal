@@ -24,6 +24,7 @@ const STATUSES = [
   { value: "rejected", label: "Rejected" },
   { value: "needs_revision", label: "Needs Revision" },
   { value: "ready_to_publish", label: "Ready to Publish" },
+  { value: "staged", label: "Staged" },
   { value: "scheduled", label: "Scheduled" },
   { value: "published", label: "Published" },
 ];
