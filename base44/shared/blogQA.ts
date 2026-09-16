@@ -178,8 +178,28 @@ export function fixEmDashes(post) {
   };
 }
 
-// LLM fix: regenerate the failing fields so the post passes the remaining checks.
+// Map of each check to the ONLY post fields its fix is allowed to touch.
+// Passing checks' fields must never be modified by an auto-fix pass.
+export const CHECK_FIX_FIELDS = {
+  meta_title_length: ["meta_title"],
+  meta_description_length: ["meta_description"],
+  word_count: ["content"],
+  no_unverifiable_statistics: ["content"],
+  no_claims: ["title", "content"],
+  cta_distinct: ["ctas"],
+};
+
+export function allowedFixFields(failingIds) {
+  const allowed = new Set();
+  for (const id of failingIds) {
+    for (const field of CHECK_FIX_FIELDS[id] || []) allowed.add(field);
+  }
+  return allowed;
+}
+
+// LLM fix: regenerate ONLY the fields tied to the failing checks.
 export async function llmAutoFix(base44, post, failingIds) {
+  const allowed = allowedFixFields(failingIds);
   const currentWords = countWords(post.content);
   const wordInstruction = failingIds.includes("word_count")
     ? `"word_count": The current content is ${currentWords} words — it MUST be between 900 and 1300 words. ${
@@ -191,8 +211,11 @@ export async function llmAutoFix(base44, post, failingIds) {
 
   const prompt = `You are fixing a dental practice blog post so it passes specific QA checks. Return ONLY the corrected fields as JSON. Keep the post's topic, structure, and meaning intact. Do NOT introduce em dashes (—). Do NOT add specific statistics, percentages, or medical claims/guarantees. Use soft language ("can help support", "may contribute to").
 
-FAILING CHECKS TO FIX:
+FAILING CHECKS TO FIX (ONLY these checks failed — every other check PASSED and must not be reworked):
 ${failingIds.map((id) => `- ${id}`).join("\n")}
+
+You may ONLY return these fields: ${[...allowed].join(", ") || "none"}.
+Do NOT return any other field. Do NOT rewrite, rephrase, or restructure any part of the post that is not required to fix the failing checks — passing content must be preserved verbatim.
 
 FIELD-SPECIFIC INSTRUCTIONS:
 - "meta_title_length": Rewrite meta_title to be between 50 and 60 characters (currently ${(post.meta_title || "").length} characters).
@@ -210,7 +233,7 @@ content (HTML):
 ${post.content || ""}
 ctas: ${JSON.stringify(post.ctas || [])}
 
-Return JSON with any of these keys you change: { "title": string, "meta_title": string, "meta_description": string, "content": string, "ctas": [{ "label": string, "page_path": string }] }. Do NOT use em dashes anywhere.`;
+Return JSON containing ONLY the keys listed above (${[...allowed].join(", ") || "none"}) that actually need to change, e.g. { "meta_title": "..." }. Do NOT use em dashes anywhere.`;
 
   const res = await base44.asServiceRole.integrations.Core.InvokeLLM({
     prompt,

@@ -1,5 +1,5 @@
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.40";
-import { runAllChecks, fixEmDashes, llmAutoFix, trimToWordCount, countWords } from "../../shared/blogQA.ts";
+import { runAllChecks, fixEmDashes, llmAutoFix, trimToWordCount, countWords, allowedFixFields } from "../../shared/blogQA.ts";
 
 // Performs ONE auto-fix pass: evaluate, apply programmatic + LLM corrections
 // for the failing checks, then re-run all checks. The frontend drives repeated
@@ -41,11 +41,14 @@ export default async function (req) {
     const remainingFailing = failing.filter((id) => id !== "no_em_dashes");
     if (remainingFailing.length > 0) {
       const llmRes = await llmAutoFix(base44, post, remainingFailing);
-      if (llmRes?.title) { updates.title = llmRes.title; changedFields.push("title"); }
-      if (llmRes?.meta_title) { updates.meta_title = llmRes.meta_title; changedFields.push("meta_title"); }
-      if (llmRes?.meta_description) { updates.meta_description = llmRes.meta_description; changedFields.push("meta_description"); }
-      if (llmRes?.content) { updates.content = llmRes.content; changedFields.push("content"); }
-      if (llmRes?.ctas) { updates.ctas = llmRes.ctas; changedFields.push("ctas"); }
+      // Only apply fields whose check actually failed — anything else the LLM
+      // returns for passing checks is discarded, so passed content stays intact.
+      const allowed = allowedFixFields(remainingFailing);
+      if (llmRes?.title && allowed.has("title")) { updates.title = llmRes.title; changedFields.push("title"); }
+      if (llmRes?.meta_title && allowed.has("meta_title")) { updates.meta_title = llmRes.meta_title; changedFields.push("meta_title"); }
+      if (llmRes?.meta_description && allowed.has("meta_description")) { updates.meta_description = llmRes.meta_description; changedFields.push("meta_description"); }
+      if (llmRes?.content && allowed.has("content")) { updates.content = llmRes.content; changedFields.push("content"); }
+      if (llmRes?.ctas && allowed.has("ctas")) { updates.ctas = llmRes.ctas; changedFields.push("ctas"); }
     }
 
     if (Object.keys(updates).length > 0) {
