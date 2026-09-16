@@ -34,6 +34,7 @@ export default async function (req) {
     if (!post.title) missing.push('title');
     if (!post.content) missing.push('content');
     if (!post.slug) missing.push('slug');
+    if (!post.slug_es) missing.push('slug_es');
     if (!post.image_url) missing.push('image_url (featured image)');
     if (missing.length > 0) {
       return Response.json({ error: `Missing required fields: ${missing.join(', ')}` }, { status: 400 });
@@ -55,6 +56,7 @@ export default async function (req) {
         title: post.title,
         title_es: post.title_es,
         slug: post.slug,
+        slug_es: post.slug_es,
         excerpt: post.excerpt,
         excerpt_es: post.excerpt_es,
         content: post.content,

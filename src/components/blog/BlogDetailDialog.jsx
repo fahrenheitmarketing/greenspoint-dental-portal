@@ -167,6 +167,10 @@ export default function BlogDetailDialog({ post, open, onOpenChange, onSaveField
               {renderField("slug", "Slug")}
             </div>
             <div>
+              <Label className="text-xs text-muted-foreground">Slug (ES) — Spanish URL slug</Label>
+              {renderField("slug_es", "Slug ES")}
+            </div>
+            <div>
               <Label className="text-xs text-muted-foreground">Meta Title (EN) — {post.meta_title?.length || 0} chars</Label>
               {renderField("meta_title", "Meta Title")}
             </div>

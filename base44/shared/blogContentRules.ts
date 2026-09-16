@@ -38,6 +38,7 @@ export const SEO_RULES = `SEO REQUIREMENTS (strict — follow every point):
 - meta_title: 50-60 characters. Front-load the primary keyword. Treat the title as a "query contract" that accurately promises what the page delivers — not just a catchy slogan. It must be highly correlated with or identical to the H1 (the post title); if they differ wildly, search engines ignore the meta title and display the H1 instead.
 - meta_description: 120-160 characters (aim for the lower end on mobile, which truncates near 120). Include the target keyword naturally (Google bolds it in results) and end with a clear benefit or soft call-to-action. This is your click-earning elevator pitch, not a ranking factor.
 - slug: short, lowercase, hyphenated, keyword-rich, no stop words (a, the, and), max ~5 words. The primary keyword MUST appear in the slug. NEVER include the year, month, or any date in the slug — URLs must stay evergreen so updates never require redirects.
+- slug_es: native Spanish translation of the English slug — 2-5 short Spanish words, all lowercase, hyphenated, no stop words, no dates. It must differ from the English slug (never a copy of the English words).
 - title (H1): compelling, includes the primary keyword, 50-70 characters. This is the single H1 of the page and must align with the meta_title.
 - excerpt: 1-2 sentence summary, 100-160 characters, used for blog listing previews.
 - Include 2-4 internal links to relevant Greenspoint Dental service pages. Use descriptive anchor text so users and crawlers know what the linked page is about — avoid generic text like "click here." Do NOT force exact-match keyword anchor text every time; vary it naturally to avoid over-optimization.
@@ -77,7 +78,7 @@ ${INTERNAL_PAGES.map((p) => `- <a href="${p.path}">${p.label}</a>`).join('\n')}
 
 CTAs: End the post with 1-2 hyperlinked call-to-action buttons linking to the most relevant page(s) — typically /contact, /new-patients, or a service page.
 
-Return ALL fields: title, title_es, slug, excerpt, excerpt_es, content (HTML), content_es (HTML), category, meta_title, meta_title_es, meta_description, meta_description_es, internal_links (array of {anchor_text, page_path}), external_links (array of {anchor_text, url}), ctas (array of {label, page_path}), image_prompt (a short specific description for the featured image — a positive, community-based lifestyle visual metaphor that directly represents the article's specific topic; NEVER dental offices, clinics, dental staff, chairs, tools, or clinical shots), read_time (integer minutes), seo_score (0-100 integer).`;
+Return ALL fields: title, title_es, slug, slug_es, excerpt, excerpt_es, content (HTML), content_es (HTML), category, meta_title, meta_title_es, meta_description, meta_description_es, internal_links (array of {anchor_text, page_path}), external_links (array of {anchor_text, url}), ctas (array of {label, page_path}), image_prompt (a short specific description for the featured image — a positive, community-based lifestyle visual metaphor that directly represents the article's specific topic; NEVER dental offices, clinics, dental staff, chairs, tools, or clinical shots), read_time (integer minutes), seo_score (0-100 integer).`;
 }
 
 // Fetch published post titles from the live WordPress site via its public REST API.
@@ -134,6 +135,7 @@ export async function generateOneBlogPost(base44, { topic, category, campaignMon
     title: genRes.title,
     title_es: genRes.title_es,
     slug: genRes.slug,
+    slug_es: genRes.slug_es,
     excerpt: genRes.excerpt,
     excerpt_es: genRes.excerpt_es,
     content: genRes.content,
@@ -180,6 +182,7 @@ export const BLOG_GENERATION_SCHEMA = {
     title: { type: 'string' },
     title_es: { type: 'string' },
     slug: { type: 'string' },
+    slug_es: { type: 'string' },
     excerpt: { type: 'string' },
     excerpt_es: { type: 'string' },
     content: { type: 'string' },
@@ -196,5 +199,5 @@ export const BLOG_GENERATION_SCHEMA = {
     read_time: { type: 'number' },
     seo_score: { type: 'number' },
   },
-  required: ['title', 'title_es', 'slug', 'excerpt', 'excerpt_es', 'content', 'content_es', 'category', 'meta_title', 'meta_title_es', 'meta_description', 'meta_description_es', 'image_prompt'],
+  required: ['title', 'title_es', 'slug', 'slug_es', 'excerpt', 'excerpt_es', 'content', 'content_es', 'category', 'meta_title', 'meta_title_es', 'meta_description', 'meta_description_es', 'image_prompt'],
 };

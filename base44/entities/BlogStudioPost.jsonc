@@ -12,7 +12,11 @@
     },
     "slug": {
       "type": "string",
-      "description": "URL-friendly slug (shared between EN and ES)"
+      "description": "URL-friendly slug (English)"
+    },
+    "slug_es": {
+      "type": "string",
+      "description": "Native Spanish URL slug for the Spanish version \u2014 a short, direct translation of the English slug (2-5 words)"
     },
     "excerpt": {
       "type": "string",

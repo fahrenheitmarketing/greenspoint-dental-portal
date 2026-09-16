@@ -49,6 +49,7 @@ export default async function (req) {
       if (llmRes?.meta_description && allowed.has("meta_description")) { updates.meta_description = llmRes.meta_description; changedFields.push("meta_description"); }
       if (llmRes?.content && allowed.has("content")) { updates.content = llmRes.content; changedFields.push("content"); }
       if (llmRes?.ctas && allowed.has("ctas")) { updates.ctas = llmRes.ctas; changedFields.push("ctas"); }
+      if (llmRes?.slug_es && allowed.has("slug_es")) { updates.slug_es = llmRes.slug_es; changedFields.push("slug_es"); }
     }
 
     if (Object.keys(updates).length > 0) {

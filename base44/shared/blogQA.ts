@@ -9,6 +9,7 @@ export const QA_CHECKS = [
   { id: "no_unverifiable_statistics", label: "No unverifiable statistics", description: "No specific statistics or percentages; no hallucinated metrics." },
   { id: "no_claims", label: "No claims", description: "No medical claims, health claims, or guarantees of results." },
   { id: "cta_distinct", label: "CTA distinct", description: "CTA is unique and focuses on form submission or calls." },
+  { id: "spanish_slug", label: "Spanish slug", description: "Native Spanish slug present, short (2-5 words), and different from the English slug." },
 ];
 
 const EM_DASH = "\u2014";
@@ -62,7 +63,25 @@ export function runProgrammaticChecks(post) {
       passed: words >= 900 && words <= 1300,
       detail: `Current: ${words} words (target 900–1300).`,
     },
+    {
+      id: "spanish_slug",
+      label: "Spanish slug",
+      passed: isSpanishSlugValid(post),
+      detail: post.slug_es
+        ? `Current Spanish slug: ${post.slug_es}${post.slug_es === post.slug ? " — it must be a Spanish translation, not a copy of the English slug." : ""}`
+        : "Missing — a native Spanish slug is required for the Spanish version.",
+    },
   ];
+}
+
+// A valid Spanish slug: lowercase hyphenated words, 1-6 segments, and it must
+// actually be Spanish (not a copy of the English slug).
+export function isSpanishSlugValid(post) {
+  const slugEs = post.slug_es || "";
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slugEs)) return false;
+  const words = slugEs.split("-").filter(Boolean).length;
+  if (words < 1 || words > 6) return false;
+  return slugEs !== (post.slug || "");
 }
 
 // LLM-based checks: unverifiable statistics, claims, and CTA distinctness.
@@ -187,6 +206,7 @@ export const CHECK_FIX_FIELDS = {
   no_unverifiable_statistics: ["content"],
   no_claims: ["title", "content"],
   cta_distinct: ["ctas"],
+  spanish_slug: ["slug_es"],
 };
 
 export function allowedFixFields(failingIds) {
@@ -224,9 +244,12 @@ ${wordInstruction}
 - "no_unverifiable_statistics": Remove or generalize any specific statistics or percentages in the content.
 - "no_claims": Remove or soften any medical claims or guarantees in the title and content.
 - "cta_distinct": Ensure at least one CTA focuses on booking, calling, or contacting. Update the ctas array accordingly.
+- "spanish_slug": Set slug_es to a native Spanish translation of the English slug: 2-5 short Spanish words, all lowercase, hyphenated, no stop words, no dates. It must differ from the English slug — never a copy of the English words.
 
 CURRENT POST:
 title: ${post.title || ""}
+slug: ${post.slug || ""}
+slug_es: ${post.slug_es || "(missing)"}
 meta_title: ${post.meta_title || ""}
 meta_description: ${post.meta_description || ""}
 content (HTML):
@@ -242,6 +265,7 @@ Return JSON containing ONLY the keys listed above (${[...allowed].join(", ") || 
       type: "object",
       properties: {
         title: { type: "string" },
+        slug_es: { type: "string" },
         meta_title: { type: "string" },
         meta_description: { type: "string" },
         content: { type: "string" },
