@@ -26,6 +26,7 @@ export default function BlogCard({ post, onAction }) {
   const [showDetail, setShowDetail] = useState(false);
   const [showQA, setShowQA] = useState(false);
   const [qaBusy, setQaBusy] = useState(false);
+  const [qaViewed, setQaViewed] = useState(false);
   const [qaReport, setQaReport] = useState(post.qa_report || null);
   const { toast } = useToast();
 
@@ -48,12 +49,17 @@ export default function BlogCard({ post, onAction }) {
       setQaBusy(true);
       try {
         const res = await base44.functions.invoke("runBlogQA", { postId: post.id });
-        if (res?.report) setQaReport(res.report);
+        if (res?.report) {
+          setQaReport(res.report);
+          setQaViewed(true);
+        }
       } catch (e) {
         toast({ title: "QA check failed", description: e?.response?.data?.error || e.message, variant: "destructive" });
       } finally {
         setQaBusy(false);
       }
+    } else {
+      setQaViewed(true);
     }
   };
 
@@ -62,6 +68,7 @@ export default function BlogCard({ post, onAction }) {
     try {
       const res = await runAction("Run QA", () => base44.functions.invoke("runBlogQA", { postId: post.id }));
       if (res?.report) setQaReport(res.report);
+      setQaViewed(true);
     } catch (e) {
       toast({ title: "QA check failed", description: e?.response?.data?.error || e.message, variant: "destructive" });
     } finally {
@@ -82,6 +89,7 @@ export default function BlogCard({ post, onAction }) {
         );
         lastRes = res;
         if (res?.report) setQaReport(res.report);
+        setQaViewed(true);
         if (res?.allPassed) break;
       }
       toast({
@@ -215,6 +223,7 @@ export default function BlogCard({ post, onAction }) {
         <BlogCardActions
           post={post}
           busy={busy || qaBusy}
+          qaViewed={qaViewed}
           onGenerateImage={handleGenerateImage}
           onSendToClickUp={handleSendToClickUp}
           onApprove={handleApprove}
@@ -235,6 +244,7 @@ export default function BlogCard({ post, onAction }) {
         busy={qaBusy}
         onAutoFix={handleAutoFixQA}
         onRecheck={handleRecheckQA}
+        onApprove={() => { setShowQA(false); handleApprove(); }}
       />
     </div>
   );

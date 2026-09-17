@@ -2,11 +2,10 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Check, X, Send, Trash2, FlaskConical, Rocket, Eye, ShieldCheck } from "lucide-react";
 
-export default function BlogCardActions({ post, busy, onGenerateImage, onSendToClickUp, onApprove, onReject, onPublishToStaging, onPublishToProduction, onViewDetail, onViewQA, onDelete }) {
+export default function BlogCardActions({ post, busy, qaViewed, onGenerateImage, onSendToClickUp, onApprove, onReject, onPublishToStaging, onPublishToProduction, onViewDetail, onViewQA, onDelete }) {
   const qaPassed = post.qa_report?.allPassed === true;
   const qaRun = !!post.qa_report;
   const prePublish = ["approved", "ready_to_publish"].includes(post.status);
-  const preProduction = prePublish || post.status === "staged";
   const staged = !!post.staging_wp_post_id_en || !!post.staging_wp_post_id_es;
   return (
     <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
@@ -31,9 +30,15 @@ export default function BlogCardActions({ post, busy, onGenerateImage, onSendToC
         </Button>
       )}
       {!["approved", "ready_to_publish", "staged", "published", "scheduled"].includes(post.status) && (
-        <Button size="sm" variant="default" disabled={busy || !qaPassed} onClick={onApprove} title={qaPassed ? "Approve this post" : "Post must pass all QA checks before it can be approved"}>
+        <Button
+          size="sm"
+          variant="default"
+          disabled={busy || !qaPassed || !qaViewed}
+          onClick={onApprove}
+          title={qaPassed ? (qaViewed ? "Approve this post" : "View the QA report first, then approve") : "Post must pass all QA checks before it can be approved"}
+        >
           <Check className="w-3.5 h-3.5 mr-1" />
-          Approve{!qaPassed && " (QA required)"}
+          Approve{!qaPassed ? " (QA required)" : !qaViewed ? " (View QA first)" : ""}
         </Button>
       )}
       {!["rejected", "published", "scheduled"].includes(post.status) && (
@@ -48,10 +53,16 @@ export default function BlogCardActions({ post, busy, onGenerateImage, onSendToC
           Publish to Staging
         </Button>
       )}
-      {preProduction && (
-        <Button size="sm" variant="secondary" disabled={busy} onClick={onPublishToProduction}>
+      {!["rejected", "published", "scheduled"].includes(post.status) && (
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={busy || !staged}
+          onClick={onPublishToProduction}
+          title={staged ? "Promote the staging version to production" : "Publish to staging first — production unlocks once the article is live on staging"}
+        >
           <Rocket className="w-3.5 h-3.5 mr-1" />
-          Publish to Production
+          Publish to Production{!staged && " (Staging first)"}
         </Button>
       )}
       {staged && post.staging_wp_url_en && (

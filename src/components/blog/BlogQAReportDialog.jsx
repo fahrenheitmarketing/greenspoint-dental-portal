@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Loader2, ShieldCheck, Wrench } from "lucide-react";
 
-export default function BlogQAReportDialog({ post, open, onOpenChange, report, busy, onAutoFix, onRecheck }) {
+export default function BlogQAReportDialog({ post, open, onOpenChange, report, busy, onAutoFix, onRecheck, onApprove }) {
   const checks = report?.checks || [];
   const allPassed = report?.allPassed;
   const hasFail = checks.some((c) => c.passed === false);
@@ -66,10 +66,15 @@ export default function BlogQAReportDialog({ post, open, onOpenChange, report, b
               <ShieldCheck className="w-3.5 h-3.5 mr-1" />
               Re-check
             </Button>
-            {hasFail && (
+            {hasFail ? (
               <Button size="sm" variant="default" disabled={busy} onClick={onAutoFix}>
                 <Wrench className="w-3.5 h-3.5 mr-1" />
                 Auto-Fix & Re-check
+              </Button>
+            ) : allPassed && (
+              <Button size="sm" variant="default" disabled={busy} onClick={onApprove} title="Approve this post — unlocks Publish to Staging">
+                <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
+                Approve
               </Button>
             )}
           </DialogFooter>
