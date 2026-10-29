@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Heart, Globe, DollarSign, Shield, Smile, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { base44 } from '@/api/base44Client';
 
 const steps = [
   {
@@ -28,6 +29,10 @@ const steps = [
 ];
 
 export default function NewPatients() {
+  useEffect(() => {
+    base44.analytics.track({ eventName: 'high_intent_page_viewed' });
+  }, []);
+
   return (
     <div>
       {/* Header */}

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, MapPin, Clock, Globe, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { base44 } from '@/api/base44Client';
 
 const RECAPTCHA_SITE_KEY = '6LdgfCgtAAAAANoWl1_s1qnYnxQnyeXgyij4t3MI';
 
@@ -13,6 +14,10 @@ export default function Contact() {
   const [recaptchaToken, setRecaptchaToken] = useState(null);
   const [recaptchaError, setRecaptchaError] = useState(false);
   const recaptchaRef = useRef(null);
+
+  useEffect(() => {
+    base44.analytics.track({ eventName: 'contact_page_viewed' });
+  }, []);
 
   useEffect(() => {
     // Load reCAPTCHA script if not already present
