@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Phone, MapPin, Clock, Heart, Facebook, Instagram } from 'lucide-react';
 
-const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
 const LOGO_WHITE_URL = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/0710677bc_LogoWhitetext.svg";
 
 export default function Footer() {
@@ -168,9 +167,28 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-background/10">
-        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-background/40">
-          <p>© 2024 Greenspoint Dental. {isSpanish ? 'Todos los derechos reservados.' : 'All rights reserved.'}</p>
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-background/40 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center justify-center flex-wrap gap-x-3 gap-y-1">
+            <p>© {new Date().getFullYear()} Greenspoint Dental. {isSpanish ? 'Todos los derechos reservados.' : 'All rights reserved.'}</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+              <a href="https://greenspointdental.com/privacy-policy/" className="hover:text-secondary transition-colors">
+                {isSpanish ? 'Política de Privacidad' : 'Privacy Policy'}
+              </a>
+              <span aria-hidden="true" className="hidden sm:inline text-background/20">|</span>
+              <a href="https://greenspointdental.com/terms-of-service/" className="hover:text-secondary transition-colors">
+                {isSpanish ? 'Términos de Servicio' : 'Terms of Service'}
+              </a>
+            </div>
+          </div>
           <p>{isSpanish ? 'Odontología General, Cosmética y Restauradora' : 'General, Cosmetic & Restorative Dentistry'}</p>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 pb-6 text-center text-sm text-background/40">
+          {isSpanish
+            ? 'Diseño web, desarrollo web y marketing digital por '
+            : 'Web Design, Web development and Digital Marketing by '}
+          <a href="https://www.fahrenheitmarketing.com" className="hover:text-secondary transition-colors">
+            Fahrenheit Marketing
+          </a>
         </div>
       </div>
     </footer>
