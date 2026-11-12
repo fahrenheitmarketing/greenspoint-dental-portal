@@ -10,14 +10,14 @@ export default function HeroSectionES() {
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <h1 className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-2xl sm:rounded-full text-sm md:text-base font-medium mb-6">
               <Globe className="w-4 h-4" />
-              <span>Hablamos Español • Serving Houston Since 1997</span>
-            </div>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-6">
+              <span>Dentista Familiar Asequible en el Norte de Houston, TX</span>
+            </h1>
+            <p className="font-heading text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-6">
               Sin Juicios.<span className="text-primary"> Sin Presión.</span>
               <span className="text-primary"> Solo Sonrisas.</span>
-            </h1>
+            </p>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4 max-w-lg">
               Atención dental asequible y de calidad para toda tu familia en Houston. Hablamos español con fluidez, ofrecemos financiamiento flexible y te damos la bienvenida sin importar cuánto tiempo haya pasado desde tu última visita.
             </p>
