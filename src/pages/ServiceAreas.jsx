@@ -26,6 +26,7 @@ const SCHEMA = {
     postalCode: '77060',
     addressCountry: 'US',
   },
+  telephone: '+1-281-823-9987',
   areaServed: [
     'Greenspoint',
     'Imperial Valley',
