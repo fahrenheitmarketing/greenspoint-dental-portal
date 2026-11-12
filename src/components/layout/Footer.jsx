@@ -11,13 +11,13 @@ export default function Footer() {
 
   const links = isSpanish
     ? [
-        { label: 'Acerca de', path: '/es/about' },
-        { label: 'Servicios', path: '/es/services' },
-        { label: 'Financiamiento', path: '/es/financing' },
-        { label: 'Pacientes Nuevos', path: '/es/new-patients' },
-        { label: 'Blog', path: '/blog' },
+        { label: 'Acerca de', path: '/es/acerca' },
+        { label: 'Servicios', path: '/es/servicios' },
+        { label: 'Financiamiento', path: '/es/financiacion' },
+        { label: 'Pacientes Nuevos', path: '/es/nuevos-pacientes' },
+        { label: 'Blog', path: '/es/blog' },
         { label: 'Áreas de Servicio', path: '/service-areas/' },
-        { label: 'Contacto', path: '/es/contact' },
+        { label: 'Contacto', path: '/es/contacto' },
       ]
     : [
         { label: 'About', path: '/about' },
@@ -31,11 +31,11 @@ export default function Footer() {
 
   const serviceLinks = isSpanish
     ? [
-        { label: 'Odontología General', path: '/es/services/general' },
-        { label: 'Odontología Cosmética', path: '/es/services/cosmetic' },
-        { label: 'Odontología Restauradora', path: '/es/services/restorative' },
-        { label: 'Ortodoncia', path: '/es/services/orthodontics' },
-        { label: 'Atención de Emergencia', path: '/es/services/general' },
+        { label: 'Odontología General', path: '/es/servicios/general' },
+        { label: 'Odontología Cosmética', path: '/es/servicios/cosmetica' },
+        { label: 'Odontología Restauradora', path: '/es/servicios/restauracion' },
+        { label: 'Ortodoncia', path: '/es/servicios/ortodoncia' },
+        { label: 'Atención de Emergencia', path: '/es/servicios/general' },
       ]
     : [
         { label: 'General Dentistry', path: '/services/general' },
@@ -60,7 +60,7 @@ export default function Footer() {
               : 'No judgment. No pressure. Just honest, affordable dental care for you and your family. Se habla español.'}
           </p>
           <Link
-            to={isSpanish ? '/es/contact' : '/contact'}
+            to={isSpanish ? '/es/contacto' : '/contact'}
             className="inline-block bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold px-8 py-3 rounded-full transition-colors"
           >
             {isSpanish ? 'Programa Tu Visita Hoy' : 'Schedule Your Visit Today'}
