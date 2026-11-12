@@ -1,4 +1,5 @@
 import React from 'react';
+import { Phone } from 'lucide-react';
 import { HOURS, MAP_EMBED_URL } from './areasData';
 
 export default function FindUsSection() {
@@ -41,6 +42,14 @@ export default function FindUsSection() {
                 ))}
               </tbody>
             </table>
+
+            <a
+              href="tel:+12818239987"
+              className="mt-5 inline-flex items-center gap-2 font-body text-base font-semibold text-primary hover:underline"
+            >
+              <Phone className="h-4 w-4" aria-hidden="true" />
+              Call us: (281) 823-9987
+            </a>
 
             <p className="mt-5 font-body text-sm leading-relaxed text-muted-foreground">
               Morning visits are easiest to book. If something hurts, call us and we will do our best
