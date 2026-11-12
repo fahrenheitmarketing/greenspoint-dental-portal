@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone, Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import CallTrackingNumber from './CallTrackingNumber';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
@@ -132,6 +131,7 @@ export default function Navbar() {
 
   const bookLabel = isSpanish ? 'Reservar Cita' : 'Book Appointment';
   const bookPath = isSpanish ? '/es/contacto' : '/contact';
+  const phoneLabel = '(281) 823-9987';
   const addressLabel = isSpanish ? '12523 Greenspoint Dr, Houston' : '12523 Greenspoint Dr, Houston';
 
   return (
@@ -140,10 +140,10 @@ export default function Navbar() {
       <div className="bg-primary text-primary-foreground text-sm">
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
+            <a href="tel:2818239987" className="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
               <Phone className="w-3.5 h-3.5" />
-              <CallTrackingNumber />
-            </span>
+              <span>{phoneLabel}</span>
+            </a>
             <span className="hidden sm:inline text-primary-foreground/60">|</span>
             <span className="hidden sm:inline">{addressLabel}</span>
           </div>

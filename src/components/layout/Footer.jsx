@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Phone, MapPin, Clock, Heart, Facebook, Instagram } from 'lucide-react';
-import CallTrackingNumber from './CallTrackingNumber';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_696032597527e77c90fca3ba/15765cb4d_image.png";
 const LOGO_WHITE_URL = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/0710677bc_LogoWhitetext.svg";
@@ -147,7 +146,7 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <Phone className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
-                <CallTrackingNumber className="text-background/80 text-sm" />
+                <a href="tel:2818239987" className="text-background/80 hover:text-secondary transition-colors text-sm">(281) 823-9987</a>
               </div>
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
