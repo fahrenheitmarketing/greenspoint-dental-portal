@@ -210,7 +210,7 @@ export default function NewPatients() {
             Take the first step toward a healthier smile. Your first consultation is complimentary, and our team will help you every step of the way. Se habla español.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:2818239987">
+            <a href="tel:+12818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
                 Call (281) 823-9987
               </Button>

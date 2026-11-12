@@ -196,7 +196,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                    <a href="tel:2818239987" className="text-primary hover:underline">(281) 823-9987</a>
+                    <a href="tel:+12818239987" className="text-primary hover:underline">(281) 823-9987</a>
                     <p className="text-sm text-muted-foreground mt-1">Call us for same-day emergency appointments</p>
                   </div>
                 </div>

@@ -218,7 +218,7 @@ export default function SmileSimulator() {
                           Book Free Consultation
                         </Button>
                       </Link>
-                      <a href="tel:2818239987">
+                      <a href="tel:+12818239987">
                         <Button size="sm" variant="outline" className="rounded-full px-5 border-primary/30 text-primary gap-2">
                           <Phone className="w-3.5 h-3.5" />
                           (281) 823-9987

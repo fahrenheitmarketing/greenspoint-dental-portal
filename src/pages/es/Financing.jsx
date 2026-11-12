@@ -141,7 +141,7 @@ export default function FinancingES() {
           <h2 className="font-heading text-3xl text-foreground mb-4">¿Preguntas sobre Pago?</h2>
           <p className="text-muted-foreground mb-8">Nuestro equipo amable y bilingüe está feliz de guiarte a través de tus opciones. Llámanos o envía un mensaje — estamos aquí para ayudarte.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:2818239987">
+            <a href="tel:+12818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Llamar (281) 823-9987</Button>
             </a>
             <Link to="/es/contacto">

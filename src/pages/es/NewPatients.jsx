@@ -129,7 +129,7 @@ export default function NewPatientsES() {
           <h2 className="font-heading text-3xl text-foreground mb-4">¿Listo para Comenzar?</h2>
           <p className="text-muted-foreground mb-8">Da el primer paso hacia una sonrisa más saludable. Tu primera consulta es gratuita, y nuestro equipo te ayudará en cada paso del camino.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:2818239987">
+            <a href="tel:+12818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Llamar (281) 823-9987</Button>
             </a>
             <Link to="/es/contacto">

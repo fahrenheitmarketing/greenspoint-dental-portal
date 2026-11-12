@@ -143,7 +143,7 @@ export default function Financing() {
           <h2 className="font-heading text-3xl text-foreground mb-4">Questions About Payment?</h2>
           <p className="text-muted-foreground mb-8">Our friendly, bilingual team is happy to walk you through your options. Call us or send a message — we're here to help.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:2818239987">
+            <a href="tel:+12818239987">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">Call (281) 823-9987</Button>
             </a>
             <Link to="/contact">

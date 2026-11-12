@@ -140,7 +140,7 @@ export default function Navbar() {
       <div className="bg-primary text-primary-foreground text-sm">
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <a href="tel:2818239987" className="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
+            <a href="tel:+12818239987" className="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
               <Phone className="w-3.5 h-3.5" />
               <span>{phoneLabel}</span>
             </a>

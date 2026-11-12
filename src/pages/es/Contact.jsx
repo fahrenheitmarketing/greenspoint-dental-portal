@@ -73,7 +73,7 @@ export default function ContactES() {
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0"><Phone className="w-5 h-5 text-primary" /></div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Teléfono</h3>
-                    <a href="tel:2818239987" className="text-primary hover:underline">(281) 823-9987</a>
+                    <a href="tel:+12818239987" className="text-primary hover:underline">(281) 823-9987</a>
                     <p className="text-sm text-muted-foreground mt-1">Llámanos para citas de emergencia el mismo día</p>
                   </div>
                 </div>
