@@ -8,7 +8,7 @@ export const BUSINESS_NODE = {
   image: 'https://media.base44.com/images/public/69e928fd4b865057d3a65de3/ac3a6cc6c_logo.png',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '12523 Greenspoint Drive',
+    streetAddress: '12523 Greenspoint Dr',
     addressLocality: 'Houston',
     addressRegion: 'TX',
     postalCode: '77060',
