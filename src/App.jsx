@@ -21,6 +21,7 @@ import BlogPostPage from './pages/BlogPost';
 import NewPatients from './pages/NewPatients';
 import Contact from './pages/Contact';
 import ServiceAreas from './pages/ServiceAreas';
+import ServiceAreasGreenspoint from './pages/service-areas/Greenspoint';
 import SocialMediaStudio from './pages/SocialMediaStudio';
 import BlogStudio from './pages/BlogStudio';
 import ImperialValley from './pages/service-areas/ImperialValley';
@@ -79,6 +80,7 @@ const AuthenticatedApp = () => {
         <Route path="/new-patients" element={<NewPatients />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/service-areas" element={<ServiceAreas />} />
+        <Route path="/service-areas/greenspoint" element={<ServiceAreasGreenspoint />} />
         <Route path="/service-areas/imperial-valley" element={<ImperialValley />} />
         <Route path="/service-areas/southbrook" element={<Southbrook />} />
         <Route path="/service-areas/colonial-hills" element={<ColonialHills />} />
