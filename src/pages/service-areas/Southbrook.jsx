@@ -242,31 +242,6 @@ export default function Southbrook() {
         </div>
       </section>
 
-      {/* Schema markup */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "name": "Greenspoint Dental - Southbrook",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "12523 Greenspoint Dr",
-            "addressLocality": "Houston",
-            "addressRegion": "TX",
-            "postalCode": "77060"
-          },
-          "telephone": "(281) 823-9987",
-          "serviceArea": {
-            "@type": "GeoCircle",
-            "geoMidpoint": {
-              "@type": "GeoCoordinates",
-              "latitude": 29.86,
-              "longitude": -95.27
-            },
-            "geoRadius": "1 mile"
-          }
-        })}
-      </script>
     </div>
   );
 }

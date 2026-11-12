@@ -242,31 +242,6 @@ export default function ImperialValley() {
         </div>
       </section>
 
-      {/* Schema markup */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "name": "Greenspoint Dental - Imperial Valley",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "12523 Greenspoint Dr",
-            "addressLocality": "Houston",
-            "addressRegion": "TX",
-            "postalCode": "77060"
-          },
-          "telephone": "(281) 823-9987",
-          "serviceArea": {
-            "@type": "GeoCircle",
-            "geoMidpoint": {
-              "@type": "GeoCoordinates",
-              "latitude": 29.85,
-              "longitude": -95.25
-            },
-            "geoRadius": "2 miles"
-          }
-        })}
-      </script>
     </div>
   );
 }
