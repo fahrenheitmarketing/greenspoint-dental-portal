@@ -27,6 +27,7 @@ const DENTIST_SCHEMA = {
     postalCode: '77060',
     addressCountry: 'US',
   },
+  telephone: '+1-281-823-9987',
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday', opens: '08:00', closes: '16:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '08:00', closes: '12:00' },
