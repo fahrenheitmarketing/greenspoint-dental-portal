@@ -69,6 +69,15 @@ export default function Blog() {
               Practical advice on affordable dental care, keeping your family's teeth healthy, 
               and understanding why a healthy smile matters more than you might think.
             </p>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              Looking for a dentist close to home? We are minutes from{' '}
+              <Link to="/service-areas/greenspoint" className="font-medium text-primary hover:underline">Greenspoint</Link>,{' '}
+              <Link to="/service-areas/imperial-valley" className="font-medium text-primary hover:underline">Imperial Valley</Link>,{' '}
+              <Link to="/service-areas/southbrook" className="font-medium text-primary hover:underline">Southbrook</Link>,{' '}
+              <Link to="/service-areas/colonial-hills" className="font-medium text-primary hover:underline">Colonial Hills</Link>{' '}
+              and{' '}
+              <Link to="/service-areas/green-ridge-north" className="font-medium text-primary hover:underline">Green Ridge North</Link>.
+            </p>
           </div>
         </div>
       </section>

@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import LanguageSwitcher from '@/components/blog/LanguageSwitcher';
 import { serviceLinks } from '@/lib/serviceLinks';
 import InternalLinkHub from '@/components/seo/InternalLinkHub';
+import InlineAreaLinks from '@/components/blog/InlineAreaLinks';
 
 const categoryLabels = {
   'affordable-dentistry': 'Affordable Dentistry',
@@ -170,6 +171,7 @@ export default function BlogPostPage() {
               {post.content.replace(/^# .*\n/, '')}
             </ReactMarkdown>
           </article>
+          <InlineAreaLinks />
         </div>
       </section>
 

@@ -66,6 +66,15 @@ export default function BlogES() {
               Consejos prácticos sobre atención dental asequible, cómo mantener los dientes de tu familia sanos, 
               y por qué una sonrisa saludable importa más de lo que crees.
             </p>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              ¿Buscas un dentista cerca de casa? Estamos a pocos minutos de{' '}
+              <Link to="/es/areas-de-servicio/greenspoint" className="font-medium text-primary hover:underline">Greenspoint</Link>,{' '}
+              <Link to="/es/areas-de-servicio/imperial-valley" className="font-medium text-primary hover:underline">Imperial Valley</Link>,{' '}
+              <Link to="/es/areas-de-servicio/southbrook" className="font-medium text-primary hover:underline">Southbrook</Link>,{' '}
+              <Link to="/es/areas-de-servicio/colonial-hills" className="font-medium text-primary hover:underline">Colonial Hills</Link>{' '}
+              y{' '}
+              <Link to="/es/areas-de-servicio/green-ridge-north" className="font-medium text-primary hover:underline">Green Ridge North</Link>.
+            </p>
           </div>
         </div>
       </section>
