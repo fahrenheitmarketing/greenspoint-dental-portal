@@ -34,14 +34,12 @@ export default function Footer() {
         { label: 'Odontología Cosmética', path: '/es/servicios/cosmetica' },
         { label: 'Odontología Restauradora', path: '/es/servicios/restauracion' },
         { label: 'Ortodoncia', path: '/es/servicios/ortodoncia' },
-        { label: 'Atención de Emergencia', path: '/es/servicios/general' },
       ]
     : [
         { label: 'General Dentistry', path: '/services/general' },
         { label: 'Cosmetic Dentistry', path: '/services/cosmetic' },
         { label: 'Restorative Dentistry', path: '/services/restorative' },
         { label: 'Orthodontics', path: '/services/orthodontics' },
-        { label: 'Emergency Dental Care', path: '/services/general' },
       ];
 
   return (
@@ -171,11 +169,11 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-center flex-wrap gap-x-3 gap-y-1">
             <p>© {new Date().getFullYear()} Greenspoint Dental. {isSpanish ? 'Todos los derechos reservados.' : 'All rights reserved.'}</p>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              <a href="https://greenspointdental.com/privacy-policy/" className="hover:text-secondary transition-colors">
+              <a href={isSpanish ? "https://greenspointdental.com/es/politica-de-privacidad/" : "https://greenspointdental.com/privacy-policy/"} className="hover:text-secondary transition-colors">
                 {isSpanish ? 'Política de Privacidad' : 'Privacy Policy'}
               </a>
               <span aria-hidden="true" className="hidden sm:inline text-background/20">|</span>
-              <a href="https://greenspointdental.com/terms-of-service/" className="hover:text-secondary transition-colors">
+              <a href={isSpanish ? "https://greenspointdental.com/es/terminos-del-servicio/" : "https://greenspointdental.com/terms-of-service/"} className="hover:text-secondary transition-colors">
                 {isSpanish ? 'Términos de Servicio' : 'Terms of Service'}
               </a>
             </div>
