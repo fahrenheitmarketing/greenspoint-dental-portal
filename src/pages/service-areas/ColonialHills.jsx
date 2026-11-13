@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MapPin, Clock, CheckCircle, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const faqs = [
   {
@@ -225,6 +226,12 @@ export default function ColonialHills() {
           </div>
         </div>
       </section>
+
+      <InternalLinkHub
+        currentPath="/service-areas/colonial-hills/"
+        areaName="Colonial Hills"
+        intro="Colonial Hills patients reach our Greenspoint office in about 5 minutes along Beltway 8. Explore the treatments we offer, or find the neighborhood page closest to you."
+      />
 
       {/* CTA */}
       <section className="py-16 bg-background">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MapPin, Clock, CheckCircle, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const faqs = [
   {
@@ -226,6 +227,12 @@ export default function ImperialValley() {
           </div>
         </div>
       </section>
+
+      <InternalLinkHub
+        currentPath="/service-areas/imperial-valley/"
+        areaName="Imperial Valley"
+        intro="Patients near Imperial Valley Drive come to our Greenspoint office for everything from cleanings to implants. Explore the treatments we offer, or find the neighborhood page closest to you."
+      />
 
       {/* CTA */}
       <section className="py-16 bg-background">

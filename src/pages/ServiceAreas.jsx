@@ -8,6 +8,7 @@ import FindUsSection from '@/components/service-areas/FindUsSection';
 import WhyNeighborsSection from '@/components/service-areas/WhyNeighborsSection';
 import AreasFaq from '@/components/service-areas/AreasFaq';
 import ClosingCta from '@/components/service-areas/ClosingCta';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const TITLE = 'Family Dentist Serving North Houston - Greenspoint Dental';
 const DESCRIPTION =
@@ -24,6 +25,10 @@ export default function ServiceAreas() {
       <FindUsSection />
       <WhyNeighborsSection />
       <AreasFaq />
+      <InternalLinkHub
+        currentPath="/service-areas"
+        intro="Each neighborhood page covers drive times, parking and the care patients nearby ask for most. Our service pages explain every treatment in detail."
+      />
       <ClosingCta />
       <script type="application/ld+json">
         {toJsonLdString({ '@context': 'https://schema.org', ...BUSINESS_NODE })}

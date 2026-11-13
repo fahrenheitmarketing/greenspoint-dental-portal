@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const treatments = [
   {
@@ -118,6 +119,8 @@ export default function Orthodontics() {
           </Accordion>
         </div>
       </section>
+
+      <InternalLinkHub currentPath="/services/orthodontics" />
 
       <section className="py-16 bg-background">
         <div className="max-w-3xl mx-auto px-4 text-center">

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Sparkles, Star, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const VENEER_IMAGE = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/a0da5b2e7_generated_image.png";
 const ORTHO_IMAGE = "https://media.base44.com/images/public/69e928fd4b865057d3a65de3/9f231d14f_generated_image.png";
@@ -198,6 +199,8 @@ export default function Specials() {
           </div>
         </div>
       </section>
+
+      <InternalLinkHub currentPath="/services/specials" />
 
       {/* Final CTA */}
       <section className="py-16 bg-primary/5">

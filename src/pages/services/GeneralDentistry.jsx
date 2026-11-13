@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Heart, Globe, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const services = [
   { title: 'Professional Cleanings', description: "We remove the plaque and tartar buildup that your toothbrush can't reach. A professional cleaning twice a year keeps your teeth and gums healthy and helps prevent more serious problems." },
@@ -74,6 +75,8 @@ export default function GeneralDentistry() {
           </Accordion>
         </div>
       </section>
+
+      <InternalLinkHub currentPath="/services/general" />
 
       <section className="py-16 bg-background">
         <div className="max-w-3xl mx-auto px-4 text-center">

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const services = [
   {
@@ -121,6 +122,8 @@ export default function CosmeticDentistry() {
           </Accordion>
         </div>
       </section>
+
+      <InternalLinkHub currentPath="/services/cosmetic" />
 
       <section className="py-16 bg-background">
         <div className="max-w-3xl mx-auto px-4 text-center">

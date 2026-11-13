@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import LanguageSwitcher from '@/components/blog/LanguageSwitcher';
 import { serviceLinks } from '@/lib/serviceLinks';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const categoryLabels = {
   'affordable-dentistry': 'Affordable Dentistry',
@@ -171,6 +172,13 @@ export default function BlogPostPage() {
           </article>
         </div>
       </section>
+
+      <InternalLinkHub
+        currentPath={`/blog/${post.slug}`}
+        title="Keep Exploring"
+        intro="See the treatments behind this article, the neighborhoods we serve, and more guides from our team."
+        showResources={false}
+      />
 
       {/* Language switcher */}
       <LanguageSwitcher currentLang="en" translationSlug={post.translation_slug} />

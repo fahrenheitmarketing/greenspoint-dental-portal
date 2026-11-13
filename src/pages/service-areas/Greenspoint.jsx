@@ -9,6 +9,7 @@ import NearbyAreas from '@/components/service-areas/greenspoint/NearbyAreas';
 import GreenspointFaq from '@/components/service-areas/greenspoint/GreenspointFaq';
 import GreenspointClosing from '@/components/service-areas/greenspoint/GreenspointClosing';
 import { BUSINESS_NODE, toJsonLdString } from '@/lib/businessSchema';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const TITLE = 'Family Dentist in Greenspoint, TX 77060 - Greenspoint Dental';
 const DESCRIPTION =
@@ -46,6 +47,13 @@ export default function Greenspoint() {
       <CostSection />
       <NearbyAreas />
       <GreenspointFaq />
+      <InternalLinkHub
+        currentPath="/service-areas/greenspoint/"
+        areaName="Greenspoint"
+        title="Dental Services at Our Greenspoint Office"
+        intro="Everything from routine cleanings to full smile restoration happens under one roof on Greenspoint Drive. Here is where to start."
+        showAreas={false}
+      />
       <GreenspointClosing />
       <script type="application/ld+json">
         {toJsonLdString({ '@context': 'https://schema.org', ...BUSINESS_NODE })}

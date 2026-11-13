@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 import SmileSimulator from '@/components/services/SmileSimulator';
 
 const services = [
@@ -115,6 +116,8 @@ export default function RestorativeDentistry() {
           </Accordion>
         </div>
       </section>
+
+      <InternalLinkHub currentPath="/services/restorative" />
 
       <section className="py-16 bg-background">
         <div className="max-w-3xl mx-auto px-4 text-center">

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CreditCard, CheckCircle, Heart, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
 const paymentOptions = [
   {
@@ -137,6 +138,8 @@ export default function Financing() {
           </Accordion>
         </div>
       </section>
+
+      <InternalLinkHub currentPath="/financing" />
 
       <section className="py-16 bg-primary/5">
         <div className="max-w-3xl mx-auto px-4 text-center">
