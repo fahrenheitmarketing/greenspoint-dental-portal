@@ -42,6 +42,12 @@ import GeneralDentistryES from './pages/es/services/GeneralDentistry';
 import CosmeticDentistryES from './pages/es/services/CosmeticDentistry';
 import RestorativeDentistryES from './pages/es/services/RestorativeDentistry';
 import OrthodonticsES from './pages/es/services/Orthodontics';
+import ServiceAreasES from './pages/es/service-areas/ServiceAreas';
+import GreenspointES from './pages/es/service-areas/Greenspoint';
+import ImperialValleyES from './pages/es/service-areas/ImperialValley';
+import SouthbrookES from './pages/es/service-areas/Southbrook';
+import ColonialHillsES from './pages/es/service-areas/ColonialHills';
+import GreenRidgeNorthES from './pages/es/service-areas/GreenRidgeNorth';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -101,6 +107,12 @@ const AuthenticatedApp = () => {
         <Route path="/es/blog" element={<BlogES />} />
         <Route path="/es/blog/:slug" element={<BlogPostPageES />} />
         <Route path="/es/contacto" element={<ContactES />} />
+        <Route path="/es/areas-de-servicio" element={<ServiceAreasES />} />
+        <Route path="/es/areas-de-servicio/greenspoint" element={<GreenspointES />} />
+        <Route path="/es/areas-de-servicio/imperial-valley" element={<ImperialValleyES />} />
+        <Route path="/es/areas-de-servicio/southbrook" element={<SouthbrookES />} />
+        <Route path="/es/areas-de-servicio/colonial-hills" element={<ColonialHillsES />} />
+        <Route path="/es/areas-de-servicio/green-ridge-north" element={<GreenRidgeNorthES />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Route>

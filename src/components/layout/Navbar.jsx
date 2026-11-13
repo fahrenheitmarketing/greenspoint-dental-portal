@@ -46,6 +46,17 @@ const routeMap = {
     '/es/blog': '/es/blog',
     '/es/nuevos-pacientes': '/es/nuevos-pacientes',
     '/es/contacto': '/es/contacto',
+    '/service-areas/greenspoint': '/es/areas-de-servicio/greenspoint',
+    '/service-areas/imperial-valley': '/es/areas-de-servicio/imperial-valley',
+    '/service-areas/southbrook': '/es/areas-de-servicio/southbrook',
+    '/service-areas/colonial-hills': '/es/areas-de-servicio/colonial-hills',
+    '/service-areas/green-ridge-north': '/es/areas-de-servicio/green-ridge-north',
+    '/es/areas-de-servicio': '/es/areas-de-servicio',
+    '/es/areas-de-servicio/greenspoint': '/es/areas-de-servicio/greenspoint',
+    '/es/areas-de-servicio/imperial-valley': '/es/areas-de-servicio/imperial-valley',
+    '/es/areas-de-servicio/southbrook': '/es/areas-de-servicio/southbrook',
+    '/es/areas-de-servicio/colonial-hills': '/es/areas-de-servicio/colonial-hills',
+    '/es/areas-de-servicio/green-ridge-north': '/es/areas-de-servicio/green-ridge-north',
   }
 };
 
@@ -62,6 +73,12 @@ const esToEnMap = {
   '/es/blog': '/blog',
   '/es/nuevos-pacientes': '/new-patients',
   '/es/contacto': '/contact',
+  '/es/areas-de-servicio': '/service-areas',
+  '/es/areas-de-servicio/greenspoint': '/service-areas/greenspoint',
+  '/es/areas-de-servicio/imperial-valley': '/service-areas/imperial-valley',
+  '/es/areas-de-servicio/southbrook': '/service-areas/southbrook',
+  '/es/areas-de-servicio/colonial-hills': '/service-areas/colonial-hills',
+  '/es/areas-de-servicio/green-ridge-north': '/service-areas/green-ridge-north',
 };
 
 function toEnPath(path) {

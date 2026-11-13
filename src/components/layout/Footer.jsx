@@ -15,7 +15,7 @@ export default function Footer() {
         { label: 'Financiamiento', path: '/es/financiacion' },
         { label: 'Pacientes Nuevos', path: '/es/nuevos-pacientes' },
         { label: 'Blog', path: '/es/blog' },
-        { label: 'Áreas de Servicio', path: '/service-areas/' },
+        { label: 'Áreas de Servicio', path: '/es/areas-de-servicio' },
         { label: 'Contacto', path: '/es/contacto' },
       ]
     : [
