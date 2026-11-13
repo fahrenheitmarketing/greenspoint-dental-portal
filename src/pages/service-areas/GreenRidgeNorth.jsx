@@ -1,228 +1,263 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MapPin, Clock, CheckCircle, Phone } from 'lucide-react';
+import { MapPin, Phone, Sparkles, CalendarDays, CreditCard } from 'lucide-react';
 import { motion } from 'framer-motion';
+import usePageMeta from '@/hooks/usePageMeta';
 import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
-const faqs = [
+const TITLE = 'Cosmetic Dentist Near Green Ridge North, Houston TX - Greenspoint Dental';
+const DESCRIPTION =
+  'Veneers, whitening and clear aligners five minutes from Green Ridge North. $695 per veneer, free cosmetic consultations and payment plans for smile upgrades.';
+
+const TIMELINE = [
   {
-    q: "What services do you offer for new patients near Green Ridge North?",
-    a: "We offer everything from routine cleanings and exams to crowns, fillings, and cosmetic consultations."
+    when: 'Three months before',
+    what: 'Consultation and plan',
+    text: 'We photograph your smile, talk through veneers, whitening or aligners, and give you a written quote before anything is booked.',
   },
   {
-    q: "Is it possible to be seen the same day for a dental issue?",
-    a: "Yes. We try to accommodate same-day visits whenever possible, especially for urgent concerns."
+    when: 'Six weeks before',
+    what: 'Treatment begins',
+    text: 'Prep and impressions for veneers, or the first set of aligner trays. Most cosmetic plans need two or three visits in this window.',
   },
   {
-    q: "Do you provide dental care for the whole family?",
-    a: "Yes, we see patients of all ages, including children and teens."
+    when: 'Two weeks before',
+    what: 'Whitening and fittings',
+    text: 'Final shades chosen, trays delivered or veneers seated, with time left to adjust anything that feels off.',
   },
   {
-    q: "What are my options if I'm paying out of pocket?",
-    a: "We offer affordable exam options and payment plans, and we'll go over costs with you before treatment begins."
+    when: 'The week of',
+    what: 'A short polish',
+    text: 'A quick visit to polish edges and check the bite, so photos and the event itself go smoothly.',
+  },
+];
+
+const COMPARISON = [
+  {
+    option: 'Porcelain veneers',
+    best: 'Chipped, uneven or discolored front teeth',
+    time: 'Two to three visits',
+    price: '$695 per veneer',
+  },
+  {
+    option: 'Professional whitening',
+    best: 'Staining from coffee, tea or smoking',
+    time: 'One visit plus trays at home',
+    price: 'Quoted at consultation',
+  },
+  {
+    option: 'Clear aligners',
+    best: 'Crowding or gaps you want closed discreetly',
+    time: 'Six to eighteen months',
+    price: 'Free consultation first',
+  },
+];
+
+const FAQS = [
+  {
+    q: 'How far ahead should I book whitening before a wedding?',
+    a: 'Two to three weeks is comfortable. Whitening peaks in the first week and settles after that, and the extra time lets us fine tune the shade if you want it brighter.',
+  },
+  {
+    q: 'What do veneers cost here?',
+    a: 'Our veneers are $695 per tooth when you are having four to six done, which comes to $2,780 for four or $4,170 for six. That is well below the Houston average, and you get the full quote in writing first.',
+  },
+  {
+    q: 'Does dental insurance cover cosmetic treatment?',
+    a: 'Usually not for pure cosmetic work, though some plans contribute to crowns that also improve appearance. We will check your benefits and show you the cash price alongside it so you can decide.',
+  },
+  {
+    q: 'Can I fix crowding without metal braces?',
+    a: 'In many cases yes. Clear aligners handle mild to moderate crowding well. If your bite needs more than that, we will say so honestly rather than sell you trays that will not finish the job.',
   },
 ];
 
 export default function GreenRidgeNorth() {
+  usePageMeta({ title: TITLE, description: DESCRIPTION });
+
   return (
     <div>
       {/* Header */}
-      <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="max-w-3xl">
-            <Link to="/service-areas" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← All Service Areas</Link>
-            <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Dentist Near Green Ridge North, Houston TX</h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              If you live in Green Ridge North, Greenspoint Dental is about a mile away. Most patients reach us in under five minutes 
-              using local roads, without needing to get on the freeway.
-            </p>
+      <section className="bg-gradient-to-br from-secondary/15 via-background to-primary/5 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid gap-10 md:grid-cols-5 md:items-end">
+            <div className="md:col-span-3">
+              <Link
+                to="/service-areas"
+                className="mb-4 inline-block text-sm font-medium text-primary hover:underline"
+              >
+                ← All Service Areas
+              </Link>
+              <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-4 py-1.5 font-body text-sm font-medium text-secondary-foreground">
+                <Sparkles className="h-4 w-4" />
+                Smile design, five minutes from Green Ridge North
+              </p>
+              <h1 className="mb-6 font-heading text-4xl text-foreground md:text-5xl">
+                Cosmetic Dentist Near Green Ridge North, Houston TX
+              </h1>
+              <p className="font-body text-lg leading-relaxed text-muted-foreground">
+                If you have been putting off whitening, veneers or aligners because the timeline felt
+                vague, this page is for you. We plan cosmetic work backwards from the date that
+                matters, whether that is a wedding, a graduation or a first day at a new job, and we
+                quote the price before we start.
+              </p>
+            </div>
+            <div className="rounded-3xl border border-border bg-card p-6 md:col-span-2">
+              <p className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
+                Veneer pricing
+              </p>
+              <p className="mt-2 font-heading text-4xl font-bold text-primary">$695</p>
+              <p className="font-body text-sm text-muted-foreground">per veneer, four to six teeth</p>
+              <div className="mt-4 space-y-1.5 font-body text-sm text-muted-foreground">
+                <p className="flex justify-between">
+                  <span>Four veneers</span>
+                  <span className="font-medium text-foreground">$2,780</span>
+                </p>
+                <p className="flex justify-between">
+                  <span>Six veneers</span>
+                  <span className="font-medium text-foreground">$4,170</span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Distance highlights */}
-      <div className="bg-primary/5 py-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-8">
-          <div className="flex items-center gap-2 text-sm">
-            <MapPin className="w-4 h-4 text-primary" />
-            <span>About a mile away</span>
-          </div>
-          <div className="text-border">|</div>
-          <div className="flex items-center gap-2 text-sm">
-            <Clock className="w-4 h-4 text-secondary" />
-            <span>About 5 minutes</span>
-          </div>
-          <div className="text-border">|</div>
-          <div className="flex items-center gap-2 text-sm">
-            <Phone className="w-4 h-4 text-accent" />
-            <span className="text-primary font-medium">(281) 823-9987</span>
-          </div>
+      {/* Stats */}
+      <div className="border-y border-border bg-card py-6">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 font-body text-sm">
+          <span className="flex items-center gap-2 text-foreground">
+            <MapPin className="h-4 w-4 text-secondary" />
+            About 5 minutes on local roads
+          </span>
+          <span className="flex items-center gap-2 text-foreground">
+            <Sparkles className="h-4 w-4 text-secondary" />
+            Free cosmetic consultation
+          </span>
+          <span className="flex items-center gap-2 text-foreground">
+            <CreditCard className="h-4 w-4 text-secondary" />
+            Monthly payment plans available
+          </span>
+          <span className="flex items-center gap-2 text-foreground">
+            <Phone className="h-4 w-4 text-secondary" />
+            <a href="tel:+12818239987" className="font-medium text-primary hover:underline">
+              (281) 823-9987
+            </a>
+          </span>
         </div>
       </div>
 
-      {/* Content sections */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="space-y-12">
-            {/* Convenience */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">A Convenient Local Dentist, Not Across Town</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Having a dentist close by makes it much easier to stay on top of your dental care. It also makes a difference 
-                when something starts bothering you and you want it checked quickly.
-              </p>
-              <div className="space-y-2 text-muted-foreground">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <strong>About 5 minutes away</strong> from Green Ridge North
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <strong>Free, easy parking</strong> right in front of our office
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <strong>Simple neighborhood routes</strong> — no freeway needed
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+      {/* Timeline */}
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-5xl px-4">
+          <h2 className="mb-3 font-heading text-3xl text-foreground">
+            Working backwards from your date
+          </h2>
+          <p className="mb-10 max-w-2xl font-body leading-relaxed text-muted-foreground">
+            Cosmetic dentistry is mostly scheduling. Here is the realistic countdown we use when a
+            patient tells us they have a wedding or a photo shoot coming up.
+          </p>
+          <div className="relative border-l border-border pl-6 md:pl-8">
+            {TIMELINE.map((step, index) => (
+              <motion.div
+                key={step.when}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="relative mb-8 last:mb-0"
+              >
+                <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-secondary md:-left-[39px]" />
+                <p className="font-body text-xs font-medium uppercase tracking-wide text-secondary">
+                  {step.when}
+                </p>
+                <h3 className="mt-1 mb-1 font-heading text-lg text-foreground">{step.what}</h3>
+                <p className="font-body text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Family care */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">Dental Care for the Whole Family</h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Most patients who come in are dealing with one of two things — either staying on top of routine care or fixing something that's already started to go wrong.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Routine Care</h3>
-                  <p className="text-sm text-muted-foreground">Exams, digital X-rays, and cleanings that help prevent bigger issues from developing.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Restorative Solutions</h3>
-                  <p className="text-sm text-muted-foreground">Treating cavities, restoring damaged teeth with crowns, and replacing missing teeth.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Smile Improvements</h3>
-                  <p className="text-sm text-muted-foreground">Whitening, veneers, and Invisalign consultations for those who want to improve their smile.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Pediatric Care</h3>
-                  <p className="text-sm text-muted-foreground">Straightforward, low-stress visits so kids can build good habits early.</p>
-                </div>
-              </div>
-            </motion.div>
+      {/* Comparison */}
+      <section className="bg-muted/50 py-16 md:py-20">
+        <div className="mx-auto max-w-5xl px-4">
+          <h2 className="mb-3 font-heading text-3xl text-foreground">
+            Veneers, whitening or aligners?
+          </h2>
+          <p className="mb-8 max-w-2xl font-body leading-relaxed text-muted-foreground">
+            These three do different jobs, and the right one depends on what is bothering you about
+            your smile. Here is the short version.
+          </p>
+          <div className="overflow-hidden rounded-2xl border border-border bg-background">
+            <table className="w-full text-left">
+              <thead className="bg-muted/60">
+                <tr className="font-body text-xs uppercase tracking-wide text-muted-foreground">
+                  <th className="px-4 py-3 font-medium">Treatment</th>
+                  <th className="px-4 py-3 font-medium">Best for</th>
+                  <th className="hidden px-4 py-3 font-medium sm:table-cell">Time</th>
+                  <th className="px-4 py-3 font-medium">Cost</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border font-body text-sm">
+                {COMPARISON.map((row) => (
+                  <tr key={row.option}>
+                    <td className="px-4 py-4 font-medium text-foreground">{row.option}</td>
+                    <td className="px-4 py-4 text-muted-foreground">{row.best}</td>
+                    <td className="hidden px-4 py-4 text-muted-foreground sm:table-cell">{row.time}</td>
+                    <td className="px-4 py-4 text-muted-foreground">{row.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-            {/* Emergency care */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">If Something Goes Wrong, We're Here for That Too</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Things don't always go to plan with your teeth. If something changes suddenly, pain, swelling, or damage, it's worth getting it looked at quickly.
-              </p>
-              <div className="bg-primary/5 p-6 rounded-xl mb-6">
-                <p className="text-foreground font-medium mb-3">If you're dealing with:</p>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Ongoing tooth pain</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Visible swelling</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>A broken or sensitive tooth</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>A missing crown or filling</span>
-                  </li>
-                </ul>
-              </div>
-              <p className="text-muted-foreground">
-                Call us, and we'll do our best to see you the same day. Once you're in, the first step is always to address the immediate issue. 
-                After that, we'll explain what caused it, your options, and what each option entails so you can make an informed decision.
-              </p>
-            </motion.div>
-
-            {/* Pricing */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">Straightforward Pricing & Payment Options</h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                We believe dental care should be easy to understand, especially when it comes to pricing. That's why we keep everything upfront.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="p-6 rounded-xl bg-secondary/10 border border-secondary/20">
-                  <p className="text-3xl font-heading font-bold text-secondary mb-2">$39</p>
-                  <p className="font-semibold text-foreground mb-1">Exam & X-Ray</p>
-                  <p className="text-sm text-muted-foreground">Special offer for new patients</p>
-                </div>
-                <div className="p-6 rounded-xl bg-primary/10 border border-primary/20">
-                  <p className="text-3xl font-heading font-bold text-primary mb-2">$99</p>
-                  <p className="font-semibold text-foreground mb-1">New Patient Package</p>
-                  <p className="text-sm text-muted-foreground">Includes exam, X-rays, and cleaning</p>
-                </div>
-              </div>
-              <ul className="space-y-2 text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span>Payment plans available</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span>Most PPO insurance accepted</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span>There are no surprises. You'll know what to expect before treatment begins.</span>
-                </li>
-              </ul>
-            </motion.div>
+      {/* Financing */}
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="rounded-3xl border border-border bg-card p-8 md:p-10">
+            <div className="mb-4 flex items-center gap-3">
+              <CalendarDays className="h-6 w-6 text-secondary" />
+              <h2 className="font-heading text-2xl text-foreground md:text-3xl">
+                Paying for elective treatment
+              </h2>
+            </div>
+            <p className="mb-5 font-body leading-relaxed text-muted-foreground">
+              Cosmetic work is rarely covered by insurance, so we treat the money side as part of the
+              plan. You get a written quote before treatment, and monthly payment plans spread the
+              cost of veneers or aligners across the months the work takes.
+            </p>
+            <div className="flex flex-wrap gap-3 font-body text-sm">
+              <Link
+                to="/financing"
+                className="rounded-full bg-primary/10 px-4 py-2 font-medium text-primary hover:bg-primary/15"
+              >
+                See financing options
+              </Link>
+              <Link
+                to="/services/specials"
+                className="rounded-full bg-secondary/15 px-4 py-2 font-medium text-secondary-foreground hover:bg-secondary/25"
+              >
+                Current veneer specials
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* FAQs */}
-      <section className="py-20 bg-muted/50">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="font-heading text-3xl text-foreground mb-8 text-center">Questions Patients Often Ask</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="p-6 rounded-xl bg-card border border-border"
-              >
-                <h3 className="font-semibold text-foreground mb-2">{faq.q}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
-              </motion.div>
+      <section className="bg-muted/50 py-16 md:py-20">
+        <div className="mx-auto max-w-3xl px-4">
+          <h2 className="mb-8 font-heading text-3xl text-foreground">Smile questions from Green Ridge</h2>
+          <div className="divide-y divide-border rounded-2xl border border-border bg-background px-6">
+            {FAQS.map((faq) => (
+              <div key={faq.q} className="py-5">
+                <h3 className="mb-2 font-heading text-base text-foreground">{faq.q}</h3>
+                <p className="font-body text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -231,24 +266,38 @@ export default function GreenRidgeNorth() {
       <InternalLinkHub
         currentPath="/service-areas/green-ridge-north/"
         areaName="Green Ridge North"
-        intro="Green Ridge North patients reach our Greenspoint office in about 5 minutes on local roads. Explore the treatments we offer, or find the neighborhood page closest to you."
+        intro="Green Ridge North patients come to our Greenspoint office for veneers, whitening, aligners and the general dentistry that keeps a new smile healthy. Explore the treatments we offer, or find the neighborhood page closest to you."
       />
 
       {/* CTA */}
-      <section className="py-16 bg-background">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl text-foreground mb-4">A Local Dentist You Can Rely On</h2>
-          <p className="text-muted-foreground mb-8">
-            If you're near Green Ridge North, we're just a short drive away. Call or book online.
+      <section className="bg-background py-16">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <h2 className="mb-4 font-heading text-3xl text-foreground">
+            Start with a free cosmetic consultation
+          </h2>
+          <p className="mb-8 font-body text-muted-foreground">
+            Bring a photo of the smile you have in mind and any date you are working toward. You will
+            leave with a plan, a price and a realistic timeline.
           </p>
-          <Link to="/contact">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
-              Book Your Appointment
-            </Button>
-          </Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/contact">
+              <Button size="lg" className="rounded-full bg-primary px-8 font-semibold hover:bg-primary/90">
+                Book Your Consultation
+              </Button>
+            </Link>
+            <a href="tel:+12818239987">
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full border-primary/30 px-8 font-semibold text-primary"
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                (281) 823-9987
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
-
     </div>
   );
 }

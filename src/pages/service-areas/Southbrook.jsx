@@ -1,227 +1,236 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MapPin, Clock, CheckCircle, Phone } from 'lucide-react';
+import { MapPin, Phone, Users, FileText, HeartHandshake } from 'lucide-react';
 import { motion } from 'framer-motion';
+import usePageMeta from '@/hooks/usePageMeta';
 import InternalLinkHub from '@/components/seo/InternalLinkHub';
 
-const faqs = [
+const TITLE = 'Dentist Near Southbrook, Houston TX - Greenspoint Dental';
+const DESCRIPTION =
+  'The closest dentist to Southbrook, two to five minutes away. Long term patients, honest second opinions before big treatment, and care for aging teeth.';
+
+const STAY_REASONS = [
   {
-    q: "What kind of dental care do you provide to patients near Southbrook?",
-    a: "We offer full-service dental care, including cleanings, exams, fillings, crowns, and cosmetic options for both adults and children."
+    title: 'The same team, year after year',
+    text: 'Patients who started with us in the late 1990s still come back with their children and now their grandchildren. Your chart follows you, so nobody starts from scratch.',
   },
   {
-    q: "If something goes wrong with my tooth, how soon can I come in?",
-    a: "We keep same-day appointments available and will do our best to see you as quickly as possible."
+    title: 'A record of every filling and crown',
+    text: 'We keep the treatment history in one place. When an old restoration finally needs replacing, we already know what is underneath it.',
   },
   {
-    q: "Is this a good dentist for families?",
-    a: "Yes. We regularly see both adults and children and aim to make visits comfortable for all ages."
+    title: 'Referred by a neighbor, not an ad',
+    text: 'Most Southbrook patients arrive because someone on their street sent them. That is the kind of reputation we work to keep.',
+  },
+];
+
+const SECOND_OPINION_POINTS = [
+  'Bring your X-rays or ask us to take new ones',
+  'We explain what is urgent and what can wait',
+  'No pressure to book the full plan the same day',
+  'A written quote for any treatment you do choose',
+];
+
+const AGING_CARE = [
+  { title: 'Gum recession', text: 'Sensitive roots and longer looking teeth usually start with gums, not enamel. We measure and monitor it instead of guessing.' },
+  { title: 'Dry mouth', text: 'Common with blood pressure and allergy medication, and a leading cause of new cavities after 60. We can help you manage it.' },
+  { title: 'Dentures and partials', text: 'Relines, adjustments and repairs for dentures that no longer sit the way they used to.' },
+  { title: 'Replacing old work', text: 'Silver fillings and older crowns have a lifespan. We tell you when one is close to failing rather than waiting for it to break.' },
+];
+
+const FAQS = [
+  {
+    q: 'Can I get a second opinion on a large treatment plan?',
+    a: 'Please do. Bring the estimate and any X-rays you were given. We will review what is needed now, what is optional, and what could reasonably wait a few months, then put our own quote in writing.',
   },
   {
-    q: "Do I need insurance to book an appointment?",
-    a: "No. We welcome patients with or without insurance and will explain costs before starting any treatment."
+    q: 'I have been seeing another dentist for years. Is switching awkward?',
+    a: 'Not at all. We request your records, review them before your first visit, and carry on from where you left off. Many Southbrook patients came to us exactly this way.',
+  },
+  {
+    q: 'Do you handle denture adjustments and repairs?',
+    a: 'Yes. We do relines, adjustments and repairs, including for patients who had the denture made somewhere else.',
+  },
+  {
+    q: 'My insurance changed this year. What should I check first?',
+    a: 'Call us with the plan name and we will tell you whether we are in network before you book. If the new plan does not cover us, we will quote our flat fees so you can compare fairly.',
   },
 ];
 
 export default function Southbrook() {
+  usePageMeta({ title: TITLE, description: DESCRIPTION });
+
   return (
     <div>
       {/* Header */}
-      <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="bg-gradient-to-br from-secondary/10 via-background to-background py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4">
           <div className="max-w-3xl">
-            <Link to="/service-areas" className="text-primary text-sm font-medium hover:underline mb-4 inline-block">← All Service Areas</Link>
-            <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-6">Dentist Near Southbrook, Houston TX</h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Living in Southbrook means you're already very close to our office, and most patients are here in just a few minutes. 
-              That makes it easier to fit dental visits into your routine without planning around a long drive.
+            <Link
+              to="/service-areas"
+              className="mb-4 inline-block text-sm font-medium text-primary hover:underline"
+            >
+              ← All Service Areas
+            </Link>
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-4 py-1.5 font-body text-sm font-medium text-secondary-foreground">
+              <HeartHandshake className="h-4 w-4" />
+              Our closest neighborhood, two to five minutes away
+            </p>
+            <h1 className="mb-6 font-heading text-4xl text-foreground md:text-5xl">
+              Dentist Near Southbrook, Houston TX
+            </h1>
+            <p className="font-body text-lg leading-relaxed text-muted-foreground">
+              Southbrook is the shortest drive to our door, and it shows in our schedule: many of the
+              patients we see each week have been coming from these few streets since the 1990s. If
+              you are looking for a dentist who remembers your history without checking the chart,
+              this is the page for you.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Distance highlights */}
-      <div className="bg-primary/5 py-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-8">
-          <div className="flex items-center gap-2 text-sm">
-            <MapPin className="w-4 h-4 text-primary" />
-            <span>Under a mile away</span>
-          </div>
-          <div className="text-border">|</div>
-          <div className="flex items-center gap-2 text-sm">
-            <Clock className="w-4 h-4 text-secondary" />
-            <span>2-5 minutes</span>
-          </div>
-          <div className="text-border">|</div>
-          <div className="flex items-center gap-2 text-sm">
-            <Phone className="w-4 h-4 text-accent" />
-            <span className="text-primary font-medium">(281) 823-9987</span>
-          </div>
+      {/* Stats */}
+      <div className="bg-secondary/10 py-6">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-10 gap-y-4 px-4 font-body text-sm">
+          <span className="flex items-center gap-2 text-foreground">
+            <MapPin className="h-4 w-4 text-secondary" />
+            Two to five minutes away
+          </span>
+          <span className="flex items-center gap-2 text-foreground">
+            <Users className="h-4 w-4 text-secondary" />
+            Caring for Houston since 1997
+          </span>
+          <span className="flex items-center gap-2 text-foreground">
+            <Phone className="h-4 w-4 text-secondary" />
+            <a href="tel:+12818239987" className="font-medium text-primary hover:underline">
+              (281) 823-9987
+            </a>
+          </span>
         </div>
       </div>
 
-      {/* Content sections */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="space-y-12">
-            {/* Convenience */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">A Convenient Local Dentist, Not Across Town</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                When you're choosing a dentist, convenience matters more than most people expect. It's the difference between staying consistent 
-                with your care and putting things off longer than you should.
-              </p>
-              <div className="space-y-2 text-muted-foreground">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <strong>Typically under 5 minutes away</strong> from anywhere in Southbrook
-                  </div>
+      {/* Why patients stay */}
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="mb-3 font-heading text-3xl text-foreground">
+            Why Southbrook patients keep coming back
+          </h2>
+          <p className="mb-10 max-w-2xl font-body leading-relaxed text-muted-foreground">
+            A dentist is not a one visit decision. It is a relationship measured in decades, and it
+            matters most when something complicated shows up.
+          </p>
+          <div className="space-y-4">
+            {STAY_REASONS.map((reason, index) => (
+              <motion.div
+                key={reason.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="flex gap-4 border-l-4 border-secondary bg-card p-5"
+              >
+                <div>
+                  <h3 className="mb-1 font-heading text-lg text-foreground">{reason.title}</h3>
+                  <p className="font-body text-sm leading-relaxed text-muted-foreground">
+                    {reason.text}
+                  </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <strong>Free, easy parking</strong> right in front of our office
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <strong>Simple route via I-45 service road</strong> — no complicated navigation
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Family care */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">Dental Care for the Whole Family</h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Dental care usually falls into a few key areas, and we handle them all in one place.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Ongoing Care</h3>
-                  <p className="text-sm text-muted-foreground">Regular exams, X-rays, and cleanings help keep things stable and prevent small issues from becoming bigger ones.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Repair & Restoration</h3>
-                  <p className="text-sm text-muted-foreground">Fillings and crowns to restore function and protect your teeth long-term when damage occurs.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Smile Improvements</h3>
-                  <p className="text-sm text-muted-foreground">Whitening, veneers, and Invisalign for patients interested in improving how their smile looks.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Family Care</h3>
-                  <p className="text-sm text-muted-foreground">We treat children with patience and clarity so both kids and parents feel comfortable.</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Emergency care */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">If Something Goes Wrong, We're Here for That Too</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Even with regular checkups, dental issues can still happen — and when they do, timing matters.
-              </p>
-              <div className="bg-primary/5 p-6 rounded-xl mb-6">
-                <p className="text-foreground font-medium mb-3">If you're experiencing:</p>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Persistent tooth pain</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Swelling or signs of infection</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>A chipped, cracked, or broken tooth</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>A loose or missing crown or filling</span>
-                  </li>
-                </ul>
-              </div>
-              <p className="text-muted-foreground">
-                Give us a call. We keep same-day availability where possible and will do our best to fit you in quickly. 
-                The priority is to stabilize the situation first, then walk you through the next steps clearly.
-              </p>
-            </motion.div>
-
-            {/* Pricing */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl text-foreground mb-4">Straightforward Pricing & Payment Options</h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                We aim to keep dental care easy to understand, especially when it comes to cost.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="p-6 rounded-xl bg-secondary/10 border border-secondary/20">
-                  <p className="text-3xl font-heading font-bold text-secondary mb-2">$39</p>
-                  <p className="font-semibold text-foreground mb-1">Exam & X-Ray</p>
-                  <p className="text-sm text-muted-foreground">Special offer for new patients</p>
-                </div>
-                <div className="p-6 rounded-xl bg-primary/10 border border-primary/20">
-                  <p className="text-3xl font-heading font-bold text-primary mb-2">$99</p>
-                  <p className="font-semibold text-foreground mb-1">New Patient Package</p>
-                  <p className="text-sm text-muted-foreground">Includes exam, X-rays, and cleaning</p>
-                </div>
-              </div>
-              <ul className="space-y-2 text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span>Payment plans available</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span>Most PPO insurance accepted</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <span>Everything is explained up front so you can decide what works for you</span>
-                </li>
-              </ul>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* Second opinions */}
+      <section className="bg-muted/50 py-16 md:py-20">
+        <div className="mx-auto grid max-w-5xl gap-10 px-4 md:grid-cols-2">
+          <div>
+            <div className="mb-4 flex items-center gap-3">
+              <FileText className="h-5 w-5 text-secondary" />
+              <h2 className="font-heading text-2xl text-foreground md:text-3xl">
+                A second opinion before a big bill
+              </h2>
+            </div>
+            <p className="mb-4 font-body leading-relaxed text-muted-foreground">
+              A full mouth of crowns or a set of implants is a serious amount of money, and it is
+              reasonable to want another set of eyes on it. We will tell you if the plan you were
+              given looks right, and we will also tell you if it looks like more than you need.
+            </p>
+            <p className="font-body leading-relaxed text-muted-foreground">
+              That conversation costs you nothing but an exam, and it has saved more than a few
+              Southbrook families several thousand dollars.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-background p-6">
+            <p className="mb-4 font-heading text-base text-foreground">How a review works</p>
+            <ul className="space-y-3">
+              {SECOND_OPINION_POINTS.map((point) => (
+                <li key={point} className="flex items-start gap-2 font-body text-sm text-muted-foreground">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Aging teeth */}
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-5xl px-4">
+          <h2 className="mb-3 font-heading text-3xl text-foreground">Care that changes as you do</h2>
+          <p className="mb-10 max-w-2xl font-body leading-relaxed text-muted-foreground">
+            Teeth that have been in service for sixty or seventy years need a different plan than
+            teeth that are twenty. Much of our Southbrook work is this quieter, longer term kind of
+            dentistry.
+          </p>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {AGING_CARE.map((item) => (
+              <div key={item.title} className="rounded-xl border border-border bg-card p-6">
+                <h3 className="mb-2 font-heading text-lg text-foreground">{item.title}</h3>
+                <p className="font-body text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Insurance */}
+      <section className="bg-secondary/10 py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="mb-4 font-heading text-3xl text-foreground">
+            When your insurance changes, we adapt
+          </h2>
+          <p className="mb-4 font-body leading-relaxed text-muted-foreground">
+            Plans change every year, and retirement often means moving off an employer plan
+            entirely. We file with most dental plans and will confirm your network status before you
+            book, so there is no surprise at the front desk.
+          </p>
+          <p className="font-body leading-relaxed text-muted-foreground">
+            If you are between plans or paying out of pocket, our flat fees are published and our
+            payment plans are explained in plain language. Nobody here will pressure you into
+            treatment you cannot afford this month.
+          </p>
+        </div>
+      </section>
+
       {/* FAQs */}
-      <section className="py-20 bg-muted/50">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="font-heading text-3xl text-foreground mb-8 text-center">Questions Patients Often Ask</h2>
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-3xl px-4">
+          <h2 className="mb-8 font-heading text-3xl text-foreground">Questions from Southbrook</h2>
           <div className="space-y-4">
-            {faqs.map((faq, i) => (
+            {FAQS.map((faq, index) => (
               <motion.div
-                key={i}
+                key={faq.q}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="p-6 rounded-xl bg-card border border-border"
+                transition={{ delay: index * 0.05 }}
+                className="rounded-xl border border-border bg-card p-6"
               >
-                <h3 className="font-semibold text-foreground mb-2">{faq.q}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
+                <h3 className="mb-2 font-heading text-base text-foreground">{faq.q}</h3>
+                <p className="font-body text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
               </motion.div>
             ))}
           </div>
@@ -231,24 +240,38 @@ export default function Southbrook() {
       <InternalLinkHub
         currentPath="/service-areas/southbrook/"
         areaName="Southbrook"
-        intro="Southbrook patients reach our Greenspoint office in 2 to 5 minutes. Explore the treatments we offer, or find the neighborhood page closest to you."
+        intro="From our Greenspoint office, Southbrook patients reach cleanings, crowns, dentures and root canals in a five minute drive. Here is where to look next."
       />
 
       {/* CTA */}
-      <section className="py-16 bg-background">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl text-foreground mb-4">A Local Dentist You Can Rely On</h2>
-          <p className="text-muted-foreground mb-8">
-            If you're near Southbrook and need a dentist, getting started is simple.
+      <section className="bg-background py-16">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <h2 className="mb-4 font-heading text-3xl text-foreground">
+            Same neighborhood, same team, since 1997
+          </h2>
+          <p className="mb-8 font-body text-muted-foreground">
+            If it has been a few years since your last visit, that is fine. Call us, or start with a
+            second opinion and decide after you have heard us out.
           </p>
-          <Link to="/contact">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 font-semibold">
-              Book Your Appointment
-            </Button>
-          </Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/contact">
+              <Button size="lg" className="rounded-full bg-primary px-8 font-semibold hover:bg-primary/90">
+                Book Your Appointment
+              </Button>
+            </Link>
+            <a href="tel:+12818239987">
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full border-primary/30 px-8 font-semibold text-primary"
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                (281) 823-9987
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
-
     </div>
   );
 }
